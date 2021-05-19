@@ -13,6 +13,14 @@ const shared = gql`
     type Telefono{
         telefono: String
     }
+
+    input EmailInput{
+        email: String
+    }
+
+    input TelefonoInput{
+        telefono: String
+    }
 `;
 
 module.exports = shared;

@@ -13,18 +13,18 @@ export default {
     },
     Mutation: {
         insertarPermiso: async (_, { input }) => {
-            const { descripcion } = input;
-            const existe = await Permiso.findOne({ descripcion });
-            if (existe) {
-                return "El permiso ya existe";
-            } else {
-                try {
+            try {
+                const { descripcion } = input;
+                const existe = await Permiso.findOne({ descripcion });
+                if (existe) {
+                    return "El permiso ya existe";
+                } else {
                     const permiso = new Permiso(input);
                     const result = await permiso.save();
                     return result;
-                } catch (error) {
-                    return error;
                 }
+            } catch (error) {
+                return error;
             }
         },
         actualizarPermiso: async (_, { id, input }) => {
@@ -37,10 +37,10 @@ export default {
         },
         desactivarPermiso: async (_, { id }) => {
             try {
-                const permiso = await Permiso.findOneAndUpdate({ _id: id }, {estado: 'INACTIVO'}, { new: true });
-                if(permiso){
-                    return "Permiso eliminado";
-                }else{
+                const permiso = await Permiso.findOneAndUpdate({ _id: id }, { estado: 'INACTIVO' }, { new: true });
+                if (permiso) {
+                    return "Permiso eliminado correctamente";
+                } else {
                     return "No se pudo eliminar el permiso";
                 }
             } catch (error) {

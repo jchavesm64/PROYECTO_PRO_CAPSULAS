@@ -13,19 +13,20 @@ export default {
     },
     Mutation: {
         insertarRol: async (_, { input }) => {
-            const { tipo } = input;
-            const existe = await Rol.findOne({ tipo });
-            if (existe) {
-                return "Ya existe el rol";
-            } else {
-                try {
+            try {
+                const { tipo } = input;
+                const existe = await Rol.findOne({ tipo });
+                if (existe) {
+                    return "El rol ya existe";
+                } else {
                     const rol = new Rol(input);
                     const result = await rol.save();
                     return result;
-                } catch (error) {
-                    return error;
                 }
+            } catch (error) {
+                return error;
             }
+
         },
         actualizarRol: async (_, { id, input }) => {
             try {
@@ -37,11 +38,11 @@ export default {
         },
         desactivarRol: async (_, { id }) => {
             try {
-                const rol = await Rol.findOneAndUpdate({_id: id}, {estado: 'INACTIVO'}, {new: true});
-                if(rol){
-                    return "Rol eliminado";
-                }else{
-                    return "El rol no pudo ser eliminado";
+                const rol = await Rol.findOneAndUpdate({ _id: id }, { estado: 'INACTIVO' }, { new: true });
+                if (rol) {
+                    return "Rol eliminado correctamente";
+                } else {
+                    return "No se pudo eliminar el rol";
                 }
             } catch (error) {
                 return error;
