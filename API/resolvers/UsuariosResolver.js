@@ -15,11 +15,18 @@ export default {
     Query: {
         obtenerUsuariosActivos: async (_, { }) => {
             try {
-                const usuarios = await Usuario.find({ estado: "ACTIVO" }).populate('rol');
+                const usuarios = await Usuario.find({ estado: "ACTIVO" }).populate({path: 'roles', populate: [{path: 'permisos'}]});
                 return usuarios;
             } catch (error) {
                 return error;
             }
+        },
+        obtenerUsuarioAutenticado: async (root, args, {usuarioActual}) => {
+            if(!usuarioActual){
+                return null;
+            }
+            const usuario = await Usuario.findOne({cedula: usuarioActual.cedula}).populate({path: 'roles', populate: [{path: 'permisos'}]});
+            return usuario;
         }
     },
     Mutation: {

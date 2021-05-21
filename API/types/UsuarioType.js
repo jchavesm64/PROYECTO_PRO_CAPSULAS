@@ -17,6 +17,7 @@ const usuario_type = gql`
     }
 
     type Query{
+        obtenerUsuarioAutenticado: Usuario
         obtenerUsuariosActivos: [Usuario]
     }
 

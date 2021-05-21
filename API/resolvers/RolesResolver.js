@@ -4,7 +4,7 @@ export default {
     Query: {
         obtenerRoles: async (_, { }) => {
             try {
-                const roles = await Rol.find().populate('permisos');
+                const roles = await Rol.find({estado: 'ACTIVO'}).populate('permisos');
                 return roles;
             } catch (error) {
                 return error;
