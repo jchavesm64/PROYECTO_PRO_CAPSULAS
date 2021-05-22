@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import Boton from '../shared/Boton'
-import { Icon, Panel, Form, FormGroup, FormControl, InputGroup, ButtonToolbar, ControlLabel, Notification, Loader} from 'rsuite';
+import { Icon, Panel, Form, FormGroup, FormControl, InputGroup, ButtonToolbar, ControlLabel, Notification, Loader } from 'rsuite';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { LOGIN } from '../../services/UsuarioService';
@@ -13,6 +13,32 @@ const Login = ({ ...props }) => {
 
     const onEnter = async (e) => {
         if (e.key === 'Enter') {
+            if (cedula !== "" && clave !== "") {
+                localStorage.removeItem('rol', '');
+                const { data } = await autenticarUsuario({ variables: { cedula, clave } });
+                if (data.autenticarUsuario.token !== '0') {
+                    await localStorage.setItem('rol', null);
+                    await localStorage.setItem('token', data.autenticarUsuario.token);
+                    await props.refetch().then(() => {
+                        props.history.push('/');
+                    })
+                } else {
+                    Notification['warning']({
+                        title: 'Alerta',
+                        description: 'Usuario y/o contraseña incorrecta'
+                    });
+                }
+            }else{
+                Notification['warning']({
+                    title: 'Iniciar Sesión',
+                    description: 'Rellene los campos de cedula y clave'
+                });
+            }
+        }
+    }
+
+    const clickIniciarSesion = async () => {
+        if (cedula !== "" && clave !== "") {
             localStorage.removeItem('rol', '');
             const { data } = await autenticarUsuario({ variables: { cedula, clave } });
             if (data.autenticarUsuario.token !== '0') {
@@ -20,43 +46,33 @@ const Login = ({ ...props }) => {
                 await localStorage.setItem('token', data.autenticarUsuario.token);
                 await props.refetch().then(() => {
                     props.history.push('/');
-                })
+
+                });
             } else {
                 Notification['warning']({
                     title: 'Alerta',
                     description: 'Usuario y/o contraseña incorrecta'
                 });
             }
-        }
-    }
-
-    const clickIniciarSesion = async () => {
-        const {data } = await autenticarUsuario({ variables: { cedula, clave } });
-        if (data.autenticarUsuario.token !== '0') {
-            await localStorage.setItem('token', data.autenticarUsuario.token); 
-            await props.refetch().then(()=>{
-              props.history.push('/');
-              
-            });
-        } else {
+        }else{
             Notification['warning']({
-              title: 'Alerta',
-              description: 'Usuario y/o contraseña incorrecta'
-            }); 
+                title: 'Iniciar Sesión',
+                description: 'Rellene los campos de cedula y clave'
+            });
         }
     }
 
-    if(load_login){
-        return <Loader backdrop content="Autenticando..." vertical  size="lg"/>
-      }
-      if(error_login){
-        
-          Notification['error']({
+    if (load_login) {
+        return <Loader backdrop content="Autenticando..." vertical size="lg" />
+    }
+    if (error_login) {
+
+        Notification['error']({
             title: 'Error',
             description: error_login.message,
-            duration:25000
-          });
-      }
+            duration: 25000
+        });
+    }
 
     return (
         <Panel header={<h3>Iniciar Sesión</h3>} bordered className="w-75 mx-auto">
@@ -81,7 +97,7 @@ const Login = ({ ...props }) => {
                 </FormGroup>
                 <FormGroup>
                     <ButtonToolbar>
-                        <Boton id="btnLogin" name="Iniciar sesion" tooltip="Iniciar sesion" color="green" icon="sign-in" size="sm" position="end" onClick={clickIniciarSesion}/>
+                        <Boton id="btnLogin" name="Iniciar sesion" tooltip="Iniciar sesion" color="green" icon="sign-in" size="sm" position="end" onClick={clickIniciarSesion} />
                         <Link to="/login" style={{ color: 'blue' }}>¿Olvido su contraseña?</Link>
                     </ButtonToolbar>
                 </FormGroup>

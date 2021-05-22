@@ -1,9 +1,15 @@
 const { gql } = require('apollo-server-express');
 
 const usuario_type = gql`
+    type confirmacion{
+        success: Boolean
+        message: String
+    }
+
     type token{
-        success: Boolean,
+        success: Boolean
         token: String
+        mensaje: String
     }
     type Usuario {
         id: ID
@@ -36,6 +42,8 @@ const usuario_type = gql`
         insertarUsuario(input:UsuarioInput):Usuario
         actualizarUsuario(id:ID, input:UsuarioInput):Usuario
         desactivarUsuario(id:ID):Usuario
+        cambiarClave(id:ID, actual:String, nueva:String):confirmacion
+        recuperarClave(id:ID, nueva:String):confirmacion
     }
 `;
 

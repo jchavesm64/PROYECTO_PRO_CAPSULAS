@@ -15,39 +15,48 @@ export default {
     Query: {
         obtenerUsuariosActivos: async (_, { }) => {
             try {
-                const usuarios = await Usuario.find({ estado: "ACTIVO" }).populate({path: 'roles', populate: [{path: 'permisos'}]});
+                const usuarios = await Usuario.find({ estado: "ACTIVO" }).populate({ path: 'roles', populate: [{ path: 'permisos' }] });
                 return usuarios;
             } catch (error) {
                 return error;
             }
         },
-        obtenerUsuarioAutenticado: async (root, args, {usuarioActual}) => {
-            if(!usuarioActual){
+        obtenerUsuarioAutenticado: async (root, args, { usuarioActual }) => {
+            if (!usuarioActual) {
                 return null;
             }
-            const usuario = await Usuario.findOne({cedula: usuarioActual.cedula}).populate({path: 'roles', populate: [{path: 'permisos'}]});
+            const usuario = await Usuario.findOne({ cedula: usuarioActual.cedula }).populate({ path: 'roles', populate: [{ path: 'permisos' }] });
             return usuario;
         }
     },
     Mutation: {
-        autenticarUsuario: async (_, {cedula, clave}) => {
-            try{
-                const existe = await Usuario.findOne({cedula}).populate('roles');
-                if(!existe){
-                    return "No existe un usuario con esas credenciales";
-                }else{
+        autenticarUsuario: async (_, { cedula, clave }) => {
+            try {
+                const existe = await Usuario.findOne({ cedula }).populate('roles');
+                if (!existe) {
+                    return {
+                        token: "0",
+                        mensaje: "No existe un usuario con esas credenciales"
+                    };
+                } else {
                     const valid = await bcrypt.compare(clave, existe.clave);
-                    if(!valid){
-                        return "La contraseña es incorrecta";
-                    }else{
+                    if (!valid) {
                         return {
-                            success: true,
-                            token: await crearToken(existe, process.env.SECRETO, "1hr")
+                            token: "0",
+                            mensaje: "La contraseña es incorrecta"
+                        };
+                    } else {
+                        return {
+                            token: await crearToken(existe, process.env.SECRETO, "1hr"),
+                            mensaje: "Usuario correcto"
                         }
                     }
                 }
-            }catch(error){
-                return error;
+            } catch (error) {
+                return {
+                    token: "0",
+                    mensaje: "Error inesperado"
+                };
             }
         },
         insertarUsuario: async (_, { input }) => {
@@ -65,18 +74,18 @@ export default {
                         const result = await usuario.save();
                         return result;
                     }
-                }else{
+                } else {
                     return "La cédula solo debe contener numeros y letras";
                 }
             } catch (error) {
                 return error;
             }
         },
-        actualizarUsuario: async (_, {id, input}) => {
-            try{
-                const usuario = await Usuario.findOneAndUpdate({_id: id}, input, { new: true }).populate('roles');
+        actualizarUsuario: async (_, { id, input }) => {
+            try {
+                const usuario = await Usuario.findOneAndUpdate({ _id: id }, input, { new: true }).populate('roles');
                 return usuario;
-            }catch(error){
+            } catch (error) {
                 return error;
             }
         },
@@ -90,6 +99,66 @@ export default {
                 }
             } catch (error) {
                 return error;
+            }
+        },
+        cambiarClave: async (_, { id, actual, nueva }) => {
+            try {
+                const usuario = Usuario.findOne({ _id: id });
+                if (usuario) {
+                    const valid = await bcrypt.compare(actual, usuario.clave);
+                    if (valid) {
+                        var clave_enc = await bcrypt.hash(nueva, 10);
+                        const result = await Usuario.findOneAndUpdate({ _id: id }, { clave: clave_enc }, { new: true });
+                        if (result) {
+                            return {
+                                success: true,
+                                message: "Contraseña cambiada correctamente"
+                            }
+                        } else {
+                            return {
+                                success: false,
+                                message: "No se puedo cambiar la contraseña"
+                            }
+                        }
+                    } else {
+                        return {
+                            success: false,
+                            message: "La contraseña actual no es correcto"
+                        }
+                    }
+                } else {
+                    return {
+                        success: false,
+                        message: "No existe el usuario"
+                    }
+                }
+            } catch (error) {
+                return {
+                    success: false,
+                    message: "Error inesperado"
+                }
+            }
+        },
+        recuperarClave: async (_, { id, nueva }) => {
+            try {
+                var clave_enc = await bcrypt.hash(nueva, 10);
+                const result = await Usuario.findOneAndUpdate({ _id: id }, { clave: clave_enc }, { new: true });
+                if (result) {
+                    return {
+                        success: true,
+                        message: "Contraseña cambiada correctamente"
+                    }
+                } else {
+                    return {
+                        success: false,
+                        message: "No se puedo cambiar la contraseña"
+                    }
+                }
+            } catch (error) {
+                return {
+                    success: false,
+                    message: "Error inesperado"
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { OBTENER_ROLES } from '../../services/RolService';
@@ -6,10 +6,9 @@ import { Loader, Modal, Icon } from 'rsuite';
 import Logout from '../authentication/Logout';
 
 const SideBar = ({ session }) => {
-
     const [show, setShow] = useState(true);
     const [rolTipo, setRolTipo] = useState(localStorage.getItem('rol'));
-    const { loading, error, data } = useQuery(OBTENER_ROLES, { pollInterval: 1000 });
+    const { loading, data } = useQuery(OBTENER_ROLES, { pollInterval: 1000 });
 
     const agregarRol = async (rol) => {
         setRolTipo(rol);
@@ -19,14 +18,14 @@ const SideBar = ({ session }) => {
     if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
     return (
-        <Fragment>
+        <>
             {
                 rolTipo !== null && data.obtenerRoles.some(rol => rol.tipo === rolTipo) && session.roles.some(rol => rol.tipo === rolTipo) ?
                     (
                         <nav id="sidebar">
                             <div className="sidebar-header  text-center ">
-                                <h4> Gestión de la Calidad</h4>
-                                <strong>GC v6.20</strong>
+                                <h4> Sistema Pro Cápsulas </h4>
+                                <strong>SPC v1.0</strong>
                             </div>
                             <ul className="list-unstyled components" >
                                 {/*Modulos*/}
@@ -50,7 +49,6 @@ const SideBar = ({ session }) => {
                                         </Modal.Header>
                                         <Modal.Body>
                                             <div className="form-group">
-
                                                 <select
                                                     onChange={e => agregarRol(e.target.value)}
                                                     value={rolTipo}
@@ -62,19 +60,17 @@ const SideBar = ({ session }) => {
                                                         ))
                                                     }
                                                 </select>
-
-
                                             </div>
                                         </Modal.Body>
                                         <Modal.Footer>
 
                                         </Modal.Footer>
-                                    </Modal> : (agregarRol(session.roles[0].tipo))
+                                    </Modal> : agregarRol(session.roles[0].tipo)
                             }
                         </>
                     )
             }
-        </Fragment>
+        </>
     )
 }
 
