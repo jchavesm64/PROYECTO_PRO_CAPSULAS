@@ -11,6 +11,7 @@ const proveedor_type = gql`
         telefonos: [Telefono]
         correos: [Email] 
         provedurias: [TipoProveduria]
+        estado: Estado
     }
 
     type Query{
@@ -26,6 +27,7 @@ const proveedor_type = gql`
         telefonos: [TelefonoInput]
         correos: [EmailInput] 
         provedurias: [ID]
+        estado: Estado
     }
 
     type Mutation{
