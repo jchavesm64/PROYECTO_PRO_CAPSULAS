@@ -2,9 +2,11 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif;/*
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;*/
+  background: #fafafa !important;
+  zoom: 80% !important;
 }
 
 code {
@@ -17,6 +19,22 @@ code {
   padding: 20px;
   min-height: 100vh;
   transition: all 0.3s;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
 }
 
 /*-----------------------------------
@@ -36,11 +54,6 @@ code {
   box-shadow: none;
   outline: none !important;
   border: none;
-}
-
-.wrapper {
-  display: flex;
-  align-items: stretch;
 }
 
 .line {
@@ -166,6 +179,13 @@ code {
   display: none;
 }
 
+#sidebar ul li a {
+  color: rgb(92, 92, 92);
+}
+
+#sidebar.active ul li a {
+  color: white;
+}
 
 #sidebar ul li a:hover {
   color: rgb(255, 255, 255);
@@ -238,6 +258,15 @@ a.article:hover {
 
 #sidebar.active ul li.link {
   font-size: 0.75em;
+}
+
+.linkConfig {
+  color: rgb(92, 92, 92);
+}
+
+.linkConfig:hover{
+  color: #0CA3AE;
+  text-decoration: none;
 }
 
 /* ---------------------------------------------------

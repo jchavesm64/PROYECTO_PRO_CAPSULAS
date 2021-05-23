@@ -1,4 +1,4 @@
-import TipoProducto from '../models';
+import { TipoProducto } from '../models';
 
 export default {
     Query: {
@@ -28,10 +28,10 @@ export default {
             }
         },
         actualizarTipoProductos: async (_, { id, input }) => {
-            try{
-                const tipo = await TipoProducto.findOneAndUpdate({_id: id}, input, {new: true});
+            try {
+                const tipo = await TipoProducto.findOneAndUpdate({ _id: id }, input, { new: true });
                 return tipo;
-            }catch(error){
+            } catch (error) {
                 return error;
             }
         },

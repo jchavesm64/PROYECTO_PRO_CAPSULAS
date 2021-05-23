@@ -1,4 +1,4 @@
-import Proveedor from '../models';
+import { Proveedor } from '../models';
 
 export default {
     Query: {
@@ -28,22 +28,22 @@ export default {
             }
         },
         actualizarProveedor: async (_, { id, input }) => {
-            try{
-                const proveedor = Proveedor.findOneAndUpdate({_id: id}, input, {new: true});
+            try {
+                const proveedor = Proveedor.findOneAndUpdate({ _id: id }, input, { new: true });
                 return proveedor;
-            }catch(error){
+            } catch (error) {
                 return proveedor;
             }
         },
-        desactivarProveedor: async (_, {id}) => {
-            try{
-                const proveedor = Proveedor.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
-                if(proveedor){
+        desactivarProveedor: async (_, { id }) => {
+            try {
+                const proveedor = Proveedor.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
+                if (proveedor) {
                     return "Proveedor eliminado correctamente";
-                }else{
+                } else {
                     return "No se pudo eliminar el porveedor";
                 }
-            }catch(error){
+            } catch (error) {
                 return error;
             }
         }

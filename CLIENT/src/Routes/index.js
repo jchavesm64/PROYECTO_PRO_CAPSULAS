@@ -5,6 +5,8 @@ import NavMenu from '../components/layout/NavMenu';
 import Session from '../components/Session';
 import Sidebar from '../components/layout/Sidebar';
 import Perfil from '../components/Perfil/Perfil';
+import Configuracion from '../components/ConfiguracionesGenerales/Configuraciones';
+import TipoProductos from '../components/ConfiguracionesGenerales/TipoProducto/TipoProduto';
 
 const Router = ({ refetch, session }) => {
 
@@ -22,6 +24,8 @@ const Router = ({ refetch, session }) => {
                             <Switch>
                                 {!obtenerUsuarioAutenticado ? <Route exact path="/login" render={() => <Login refetch={refetch} />} /> : ''}
                                 <Route exact path="/perfil" render={(props) => <Perfil refetch={refetch} />} />
+                                <Route exact path="/config" render={(props) => <Configuracion session={obtenerUsuarioAutenticado} refetch={refetch} />} />
+                                <Route exact path="/config/tipoproductos" render={() => <TipoProductos session={obtenerUsuarioAutenticado} refetch={refetch}/>}/>
                                 {obtenerUsuarioAutenticado && localStorage.getItem('rol') && <Redirect from="/" to='perfil' />}
                             </Switch>
                         </div>

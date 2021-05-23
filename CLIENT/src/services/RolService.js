@@ -12,3 +12,12 @@ export const OBTENER_ROLES = gql`
         }
     }
 `;
+
+export const OBTENER_PERMISOS = gql`
+    query obtenerPermisos{
+        obtenerPermisos{
+            descripcion,
+            estado
+        }
+    }
+`;

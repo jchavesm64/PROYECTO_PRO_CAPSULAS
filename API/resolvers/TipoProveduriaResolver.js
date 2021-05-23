@@ -1,4 +1,4 @@
-import TipoProveduria from '../models';
+import { TipoProveduria } from '../models';
 
 export default {
     Query: {

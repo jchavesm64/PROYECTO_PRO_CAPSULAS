@@ -6,6 +6,7 @@ import { Loader, Modal, Icon } from 'rsuite';
 import Logout from '../authentication/Logout';
 
 const SideBar = ({ session }) => {
+    console.log(session);
     const [show, setShow] = useState(true);
     const [rolTipo, setRolTipo] = useState(localStorage.getItem('rol'));
     const { loading, data } = useQuery(OBTENER_ROLES, { pollInterval: 1000 });
@@ -32,12 +33,23 @@ const SideBar = ({ session }) => {
                             </ul>
                             <ul className="list-unstyled components">
                                 <li className="link">
-                                    <Link to="/perfil"><Icon icon="user-circle-o"/>Mi perfil</Link>
+                                    <Link to="/perfil"><Icon icon="user-circle-o" />Mi perfil</Link>
                                 </li>
                                 <li className="link">
-                                    <Logout name="Cerrar Sesión"/>
+                                    <Logout name="Cerrar Sesión" />
                                 </li>
                             </ul>
+                            {
+                                session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "CONFIGURACIONES GENERALES"))) ?
+                                    <ul className="list-unstyled components">
+                                        <div className="text-center">
+                                            <strong>Accesos</strong>
+                                            <li className="link">
+                                                <Link to="/config"><Icon icon="cog" />Configuraciones Generales</Link>
+                                            </li>
+                                        </div>
+                                    </ul> : ""
+                            }
                         </nav>
                     ) : (
                         <>
