@@ -1,15 +1,20 @@
 const mongoose = require('mongoose');
 
 const RolSchema = new mongoose.Schema({
-    tipo:{
+    tipo: {
         type: String,
         require: true,
         trim: true
     },
-    permisos:[{
+    permisos: [{
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'permisos'
     }],
+    acciones: {
+        type: Array,
+        require: true,
+        trim: true
+    },
     estado: {
         type: String,
         require: true,
