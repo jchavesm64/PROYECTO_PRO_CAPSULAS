@@ -26,22 +26,25 @@ export const OBTENER_USUARIOS_ACTIVOS = gql`
 export const OBTENER_USUARIO_AUTENTICADO = gql`
     query obtenerUsuarioAutenticado{
         obtenerUsuarioAutenticado{
-            id,
-            nombre,
-            cedula,
-            correos{
-                email
-            },
-            telefonos{
-                telefono
-            },
-            roles{
-                tipo
-                permisos{
-                    descripcion
-                }
-            },
-            estado
+            estado,
+            data{
+                id,
+                nombre,
+                cedula,
+                correos{
+                    email
+                },
+                telefonos{
+                    telefono
+                },
+                roles{
+                    tipo
+                    permisos{
+                        descripcion
+                    }
+                },
+                estado 
+            }
         }
     }
 `;

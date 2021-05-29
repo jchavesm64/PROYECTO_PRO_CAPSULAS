@@ -23,7 +23,7 @@ const usuario_type = gql`
     }
 
     type Query{
-        obtenerUsuarioAutenticado: Usuario
+        obtenerUsuarioAutenticado: RespuestaUsuario
         obtenerUsuariosActivos: [Usuario]
     }
 
@@ -37,11 +37,17 @@ const usuario_type = gql`
         estado: Estado
     }
 
+    type RespuestaUsuario{
+        estado: Boolean,
+        data: Usuario,
+        message: String
+    }
+
     type Mutation{
         autenticarUsuario(cedula: String!, clave: String!):token
-        insertarUsuario(input:UsuarioInput):Usuario
-        actualizarUsuario(id:ID, input:UsuarioInput):Usuario
-        desactivarUsuario(id:ID):Usuario
+        insertarUsuario(input:UsuarioInput):RespuestaUsuario
+        actualizarUsuario(id:ID, input:UsuarioInput):RespuestaUsuario
+        desactivarUsuario(id:ID):RespuestaUsuario
         cambiarClave(id:ID, actual:String, nueva:String):confirmacion
         recuperarClave(id:ID, nueva:String):confirmacion
     }

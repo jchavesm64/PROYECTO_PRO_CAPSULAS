@@ -37,10 +37,16 @@ const rol_type = gql`
         estado: Estado
     }
 
+    type RespuestaRol{
+        estado: Boolean
+        data: Rol
+        message: String
+    }
+
     type Mutation{
-        insertarRol(input:RolInput):Rol
-        actualizarRol(id:ID, input:RolInput):Rol
-        desactivarRol(id:ID):String
+        insertarRol(input:RolInput):RespuestaRol
+        actualizarRol(id:ID, input:RolInput):RespuestaRol
+        desactivarRol(id:ID):RespuestaRol
     }
 `;
 

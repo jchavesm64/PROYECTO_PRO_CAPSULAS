@@ -7,10 +7,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { OBTENER_USUARIO_AUTENTICADO } from '../../services/UsuarioService';
 import { Loader, Notification, Icon } from 'rsuite';
 import {useState} from 'react';
+import { Redirect } from 'react-router-dom';
 
 const Perfil = ({ ...props }) => {
     const [active, setActive] = useState('info');
-    const { loading, error, data } = useQuery(OBTENER_USUARIO_AUTENTICADO, { pollInterval: 500 });
+    const { loading, error, data: usuario } = useQuery(OBTENER_USUARIO_AUTENTICADO, { pollInterval: 500 });
 
     if (loading) return <Loader backdrop content="Cargando..." vertical size="lg" />
     if (error) {
@@ -28,16 +29,16 @@ const Perfil = ({ ...props }) => {
         })
     }
 
-    const usuario = data.obtenerUsuarioAutenticado;
-
+    const {estado, data} = usuario.obtenerUsuarioAutenticado;
     return (
         <>
+            {estado ? ' ' :  <Redirect to="/login" /> }
             <div className="w-75 mx-auto">
                 <div className="text-center mb-5">
                     <span style={{ color: '#0CA3AE', fontSize: 80 }}>
                         <Icon icon="user-circle-o" size="lg" />
                     </span>
-                    <h3 className="mt-3">{usuario.nombre}</h3>
+                    <h3 className="mt-3">{data.nombre}</h3>
                     <span className="help-block">Permisos de {localStorage.getItem('rol')}</span>
                 </div>
                 <div className="form-group col-md-12">
@@ -45,9 +46,9 @@ const Perfil = ({ ...props }) => {
                         <NavPerfil active={active} setActive={setActive}/>
                     </div>
                 </div>
-                {(active === 'info') ? <Info usuario={usuario}/> : ''}
-                {(active === 'editar') ? <Editar usuario={usuario}/> : ''}
-                {(active === 'password') ? <Clave usuario={usuario}/> : ''}
+                {(active === 'info') ? <Info usuario={data}/> : ''}
+                {(active === 'editar') ? <Editar usuario={data}/> : ''}
+                {(active === 'password') ? <Clave usuario={data}/> : ''}
             </div>
         </>
     );

@@ -13,7 +13,8 @@ export const OBTENER_TIPO_PRODUCTOS = gql`
 export const SAVE_TIPO_PRODUCTOS = gql`
     mutation insertarTipoProductos($input:TipoProductoInput){
         insertarTipoProductos(input:$input){
-            id
+            estado
+            message
         }
     }
 `;
@@ -21,13 +22,17 @@ export const SAVE_TIPO_PRODUCTOS = gql`
 export const UPDATE_TIPO_PRODUCTOS = gql`
     mutation actualizarTipoProductos($id:ID, $input:TipoProductoInput){
         actualizarTipoProductos(id:$id, input:$input){
-            id
+            estado
+            message
         }
     }
 `;
 
 export const DELETE_TIPO_PRODUCTOS = gql`
-    mutation desactivarTipoProductos($id:ID){
-        desactivarTipoProductos(id:$id)
+    mutation desactivarTipoProducto($id:ID){
+        desactivarTipoProducto(id:$id){
+            estado
+            message
+        }
     }
 `;

@@ -6,7 +6,6 @@ import { Loader, Modal, Icon } from 'rsuite';
 import Logout from '../authentication/Logout';
 
 const SideBar = ({ session }) => {
-    console.log(session);
     const [show, setShow] = useState(true);
     const [rolTipo, setRolTipo] = useState(localStorage.getItem('rol'));
     const { loading, data } = useQuery(OBTENER_ROLES, { pollInterval: 1000 });

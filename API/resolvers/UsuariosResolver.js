@@ -23,10 +23,18 @@ export default {
         },
         obtenerUsuarioAutenticado: async (root, args, { usuarioActual }) => {
             if (!usuarioActual) {
-                return null;
+                return {
+                    estado: false,
+                    data: null,
+                    message: ""
+                }
             }
             const usuario = await Usuario.findOne({ cedula: usuarioActual.cedula }).populate({ path: 'roles', populate: [{ path: 'permisos' }] });
-            return usuario;
+            return {
+                estado: true,
+                data: usuario,
+                message: ""
+            };
         }
     },
     Mutation: {
@@ -65,37 +73,69 @@ export default {
                 if (format.test(cedula)) {
                     const existe = await Usuario.findOne({ cedula });
                     if (existe) {
-                        return "El usuario ya existe";
+                        return {
+                            estado: false,
+                            data: null,
+                            message: "El usuario ya existe"
+                        };
                     } else {
                         var clave = input.clave;
                         var clave_enc = await bcrypt.hash(clave, 10);
                         input.clave = clave_enc;
                         const usuario = new Usuario(input);
                         const result = await usuario.save();
-                        return result;
+                        return {
+                            estado: true,
+                            data: result,
+                            message: "Usuario agregado correctamente"
+                        };
                     }
                 } else {
-                    return "La cédula solo debe contener numeros y letras";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "La cédula solo debe contener numeros y letras"
+                    };
                 }
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al guardar el usuario"
+                };
             }
         },
         actualizarUsuario: async (_, { id, input }) => {
             try {
                 const usuario = await Usuario.findOneAndUpdate({ _id: id }, input, { new: true }).populate('roles');
-                return usuario;
+                return {
+                    estado: true,
+                    data: usuario,
+                    message: "Usuario actualizado correctamente"
+                };
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al actualizar el usuario"
+                };
             }
         },
         desactivarUsuario: async (_, { id }) => {
             try {
                 const usuario = await Usuario.findOneAndUpdate({ _id: id }, { estado: 'INACTIVO' }, { new: true });
                 if (usuario) {
-                    return "Usuario eliminado correctamente";
+                    return {
+                        estado: true,
+                        data: null,
+                        message: "Usuario eliminado correctamente"
+                    };
                 } else {
-                    return "No se pudo eliminar el usuario";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "No se pudo eliminar el usuario"
+                    };
                 }
             } catch (error) {
                 return error;

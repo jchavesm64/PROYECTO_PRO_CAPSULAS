@@ -11,6 +11,7 @@ import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
 import { ApolloProvider } from 'react-apollo';
+import { Notification } from 'rsuite';
 
 const uploadLink = createUploadLink({ uri: "http://localhost:4000/graphql" });
 

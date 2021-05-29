@@ -15,36 +15,68 @@ export default {
         insertarTipoProveduria: async (_, { input }) => {
             try {
                 const { tipo } = input;
-                const existe = TipoProveduria.findOne({ tipo });
+                const existe = await TipoProveduria.findOne({ tipo });
                 if (existe) {
-                    return "El tipo de proveduria ya existe";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "El tipo de proveduria ya existe"
+                    };
                 } else {
                     const tipoProveduria = new TipoProveduria(input);
-                    const result = tipoProveduria.save();
-                    return result;
+                    const result = await tipoProveduria.save();
+                    return {
+                        estado: true,
+                        data: result,
+                        message: "El tipo de proveduria fue agregado exitosamente"  
+                    };
                 }
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al guardar el tipo de proveduria"
+                };
             }
         },
         actualizarTipoProveduria: async (_, { id, input }) => {
             try {
-                const tipo = TipoProveduria.findOneAndUpdate({ _id: id }, input, { new: true });
-                return tipo;
+                const tipo = await TipoProveduria.findOneAndUpdate({ _id: id }, input, { new: true });
+                return {
+                    estado: true,
+                    data: tipo,
+                    message: "El tipo de proveduria fue actualizado exitosamente"  
+                };
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al actualizar el tipo de proveduria"
+                };
             }
         },
         desactivarTipoProveduria: async (_, { id }) => {
             try {
                 const tipo = await TipoProveduria.findOneAndUpdate({ _id: id }, { estado: 'INACTIVO' }, { new: true });
                 if (tipo) {
-                    return "Tipo de proveduria eliminado correctamente";
+                    return {
+                        estado: true,
+                        data: null,
+                        message: "Tipo de proveduria eliminado correctamente"
+                    }
                 } else {
-                    return "No se pudo eliminar el tipo de proveduria ";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "No se pudo eliminar el tipo de proveduria"
+                    };
                 }
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al eliminar el tipo de proveduria"
+                };
             }
         }
     }

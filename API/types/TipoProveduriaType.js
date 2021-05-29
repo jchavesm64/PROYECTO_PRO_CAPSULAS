@@ -16,10 +16,16 @@ const tipoProveduria_type = gql`
         estado: Estado
     }
 
+    type RespuestaTipoProveduria{
+        estado: Boolean,
+        data: TipoProveduria
+        message: String
+    }
+
     type Mutation{
-        insertarTipoProveduria(input:TipoProveduriaInput):TipoProveduria
-        actualizarTipoProveduria(id:ID, input:TipoProveduriaInput):TipoProveduria
-        desactivarTipoProveduria(id:ID):String
+        insertarTipoProveduria(input:TipoProveduriaInput):RespuestaTipoProveduria
+        actualizarTipoProveduria(id:ID, input:TipoProveduriaInput):RespuestaTipoProveduria
+        desactivarTipoProveduria(id:ID):RespuestaTipoProveduria
     }
 `;
 

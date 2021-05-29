@@ -17,11 +17,11 @@ const List = (props) => {
         setDisplayLength(dataKey);
     }
 
-    const { data, actions } = props;
+    const { data, edit, borrar } = props;
     return (
         <div>
             <Table className="mx-auto w-75" height={250} data={data}>
-                {actions ?
+                {(edit && borrar) ?
                     (
                         <Column width={300}>
                             <HeaderCell style={{ background: '#0CA3AE', color: 'white' }}>{props.header}</HeaderCell>
@@ -34,19 +34,23 @@ const List = (props) => {
                         </Column>
                     )
                 }
-                {actions &&
+                {(edit || borrar) &&
                     <Column width={75} fixed="right">
                         <HeaderCell style={{ background: '#0CA3AE', color: 'white' }}>Acciones</HeaderCell>
                         <Cell>
                             {rowData => {
                                 return (
                                     <>
-                                        <div className="d-inline-block">
-                                            <Action tooltip="Editar dato" color="orange" icon="edit" size="xs" />
-                                        </div>
-                                        <div className="d-inline-block">
-                                            <Action tooltip="Eliminar dato" color="red" icon="trash" size="xs" />
-                                        </div>
+                                        {edit &&
+                                            <div className="d-inline-block">
+                                                <Action tooltip="Editar dato" color="orange" icon="edit" size="xs" />
+                                            </div>
+                                        }
+                                        {borrar &&
+                                            <div className="d-inline-block">
+                                                <Action tooltip="Eliminar dato" color="red" icon="trash" size="xs" />
+                                            </div>
+                                        }
                                     </>
                                 );
                             }}

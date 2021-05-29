@@ -16,10 +16,16 @@ const tipoProducto_type = gql`
         estado: Estado
     }
 
+    type RespuestaTipoProducto{
+        estado: Boolean
+        data: TipoProducto
+        message: String
+    }
+
     type Mutation{
-        insertarTipoProductos(input:TipoProductoInput):TipoProducto
+        insertarTipoProductos(input:TipoProductoInput):RespuestaTipoProducto
         actualizarTipoProductos(id:ID, input:TipoProductoInput):TipoProducto
-        desactivarTipoProducto(id:ID): String
+        desactivarTipoProducto(id:ID): RespuestaTipoProducto
     }
 `;
 
