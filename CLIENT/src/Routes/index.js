@@ -9,12 +9,17 @@ import Configuracion from '../components/ConfiguracionesGenerales/Configuracione
 import TipoProductos from '../components/ConfiguracionesGenerales/TipoProducto/TipoProducto';
 import TipoProveduria from '../components/ConfiguracionesGenerales/Proveduria/TipoProveduria';
 import Roles from '../components/ConfiguracionesGenerales/Roles/GestionarRoles';
+import Usuarios from '../components/usuarios/Usuarios';
+import NuevoUsuario from '../components/usuarios/NuevoUsuario';
+import Clientes from '../components/clientes/Clientes';
+
+import Proveedores from '../components/proveedores/Proveedores';
 
 const Router = ({ refetch, session }) => {
 
-    const mensaje = (!session) ? <Redirect to="/login" /> : ''
     const { obtenerUsuarioAutenticado } = session;
     const {estado, data} = obtenerUsuarioAutenticado;
+    var mensaje = (!session || !estado) ? <Redirect to="/login" /> : ''
     return (
         <BrowserRouter>
             <>
@@ -31,7 +36,11 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/tipoproductos" render={() => <TipoProductos session={data} refetch={refetch}/>}/>
                                 <Route exact path="/config/tipoproveduria" render={() => <TipoProveduria session={data} refetch={refetch}/>}/>
                                 <Route exact path="/config/roles" render={() => <Roles session={data} refetch={refetch}/>}/>
-                                {console.log(estado && localStorage.getItem('rol'))}
+                                <Route exact path="/usuarios" render={(props) => <Usuarios session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/usuarios/nuevo" render={(props) => <NuevoUsuario session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/clientes" render={(props) => <Clientes session={data} refetch={refetch} {...props}/>}/>
+
+                                <Route exact path="/proveedores" render={(props) => <Proveedores session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

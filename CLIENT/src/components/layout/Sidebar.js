@@ -28,7 +28,60 @@ const SideBar = ({ session }) => {
                                 <strong>SPC v1.0</strong>
                             </div>
                             <ul className="list-unstyled components" >
-                                {/*Modulos*/}
+                                {
+                                    session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "USUARIOS"))) ?
+                                    <li>
+                                        <a href="#usuarios" data-bs-toggle="collapse" aria-expanded="false" >
+                                            <h6><Icon icon="user"/>Usuarios</h6>
+                                            <strong><Icon icon="user"/>Usuarios</strong>
+                                        </a>
+                                        <ul className="collapse list-unstyled" id="usuarios">
+                                            <li className="List">
+                                                <Link to={`/usuarios`}><Icon icon="user"/>Usuarios</Link>
+                                            </li>
+                                            <li className="List">
+                                                <Link to={`/usuarios/nuevo`}><Icon icon="user"/>Nuevo Usuario</Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    : ''
+                                }
+                                {
+                                    session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "CLIENTES"))) ?
+                                    <li>
+                                        <a href="#clientes" data-bs-toggle="collapse" aria-expanded="false" >
+                                            <h6><Icon icon="male"/>Clientes</h6>
+                                            <strong><Icon icon="male"/>Clientes</strong>
+                                        </a>
+                                        <ul className="collapse list-unstyled" id="clientes">
+                                            <li className="List">
+                                                <Link to={`/clientes`}><Icon icon="male"/>Clientes</Link>
+                                            </li>
+                                            <li className="List">
+                                                <Link to={`/clientes/nuevo`}><Icon icon="male"/>Nuevo Cliente</Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    : ''
+                                }
+                                {
+                                    session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "PROVEEDORES"))) ?
+                                    <li>
+                                        <a href="#proveedores" data-bs-toggle="collapse" aria-expanded="false" >
+                                            <h6><Icon icon="shopping-cart"/>Proveedores</h6>
+                                            <strong><Icon icon="shopping-cart"/>Proveedores</strong>
+                                        </a>
+                                        <ul className="collapse list-unstyled" id="proveedores">
+                                            <li className="List">
+                                                <Link to={`/proveedores`}><Icon icon="shopping-cart"/>Proveedores</Link>
+                                            </li>
+                                            <li className="List">
+                                                <Link to={`/proveedores/nuevo`}><Icon icon="shopping-cart"/>Nuevo Proveedor</Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    : ''
+                                }
                             </ul>
                             <ul className="list-unstyled components">
                                 <li className="link">

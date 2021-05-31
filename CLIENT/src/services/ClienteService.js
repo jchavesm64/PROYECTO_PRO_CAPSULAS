@@ -5,6 +5,7 @@ export const OBTENER_CLIENTES = gql`
         obtenerClientes{
             id
             tipo
+            nombre
             codigo
             pais
             ciudad
@@ -23,7 +24,8 @@ export const OBTENER_CLIENTES = gql`
 export const SAVE_CLIENTE = gql`
     mutation insertarCliente($input:ClienteInput){
         insertarCliente(input:$input){
-            id
+            estado
+            message
         }
     }
 `;
@@ -31,13 +33,17 @@ export const SAVE_CLIENTE = gql`
 export const UPDATE_CLIENTE = gql`
     mutation actualizarCliente($id:ID, $input:ClienteInput){
         actualizarCliente(id:$id, input:$input){
-            id
+            estado
+            message
         }
     }
 `;
 
 export const DELETE_CLIENTE = gql`
     mutation desactivarCliente($id:ID){
-        desactivarCliente(id:$id)
+        desactivarCliente(id:$id){
+            estado
+            message
+        }
     }
 `;

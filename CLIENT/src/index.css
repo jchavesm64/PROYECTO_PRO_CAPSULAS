@@ -183,13 +183,17 @@ p {
   color: rgb(92, 92, 92);
 }
 
-#sidebar.active ul li a {
+#sidebar.active ul a {
   color: white;
 }
 
-#sidebar ul li a:hover {
-  color: rgb(255, 255, 255);
-  background: rgb(92, 92, 92);
+#sidebar.active .List a{
+  color: rgb(92, 92, 92);
+}
+
+#sidebar.active ul li a:hover {
+  color: rgb(92, 92, 92);
+  background: rgb(255, 255, 255);
 }
 
 #sidebar ul li a i {
@@ -199,7 +203,7 @@ p {
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
   color: #fff;
-  background: #353535a6;
+  background: #0ca3aeb2;
 }
 
 #sidebar.active ul li ul li {

@@ -15,36 +15,68 @@ export default {
         insertarProveedor: async (_, { input }) => {
             try {
                 const { cedula } = input;
-                const existe = Proveedor.findOne({ cedula });
+                const existe = await Proveedor.findOne({ cedula });
                 if (existe) {
-                    return "El proveedor ya esta registrado";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "El proveedor ya esta registrado"
+                    };
                 } else {
                     const proveedor = new Proveedor(input);
-                    const result = proveedor.save();
-                    return result;
+                    const result = await proveedor.save();
+                    return {
+                        estado: true,
+                        data: result,
+                        message: "Proveedor registrado con éxito"
+                    };
                 }
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al registrar el proveedor"
+                };
             }
         },
         actualizarProveedor: async (_, { id, input }) => {
             try {
-                const proveedor = Proveedor.findOneAndUpdate({ _id: id }, input, { new: true });
-                return proveedor;
+                const proveedor = await Proveedor.findOneAndUpdate({ _id: id }, input, { new: true });
+                return {
+                    estado: true,
+                    data: proveedor,
+                    message: "Proveedor actualizado con éxito"
+                };
             } catch (error) {
-                return proveedor;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al actualizar el proveedor"
+                };
             }
         },
         desactivarProveedor: async (_, { id }) => {
             try {
-                const proveedor = Proveedor.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
+                const proveedor = await Proveedor.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
                 if (proveedor) {
-                    return "Proveedor eliminado correctamente";
+                    return {
+                        estado: true,
+                        data: null,
+                        message: "Proveedor eliminado correctamente"
+                    };
                 } else {
-                    return "No se pudo eliminar el porveedor";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "No se pudo eliminar el porveedor"
+                    };
                 }
             } catch (error) {
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error inesperado al desactivar el proveedor"
+                };
             }
         }
     }

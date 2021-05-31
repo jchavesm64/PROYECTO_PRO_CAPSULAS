@@ -17,6 +17,11 @@ export const OBTENER_USUARIOS_ACTIVOS = gql`
             permisos{
                 descripcion
             }
+            acciones{
+                eliminar
+                editar
+                agregar
+            }
         },
         estado
         }
@@ -42,6 +47,11 @@ export const OBTENER_USUARIO_AUTENTICADO = gql`
                     permisos{
                         descripcion
                     }
+                    acciones{
+                        eliminar
+                        editar
+                        agregar
+                    }
                 },
                 estado 
             }
@@ -57,3 +67,29 @@ export const LOGIN = gql`
     }
 `;
 
+export const SAVE_USER = gql`
+    mutation insertarUsuario($input:UsuarioInput){
+        insertarUsuario(input:$input){
+            estado
+            message
+        }
+    }
+`;
+
+export const UPDATE_USER = gql`
+    mutation actualizarUsuario($id:ID, $input:UsuarioInput){
+        actualizarUsuario(id:$id, input:$input){
+            estado
+            message
+        }
+    }
+`;
+
+export const DELETE_USER = gql`
+    mutation desactivarUsuario($id:ID){
+        desactivarUsuario(id:$id){
+            estado
+            message
+        }
+    }
+`;

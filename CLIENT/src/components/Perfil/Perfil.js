@@ -32,7 +32,7 @@ const Perfil = ({ ...props }) => {
     const {estado, data} = usuario.obtenerUsuarioAutenticado;
     return (
         <>
-            {estado ? ' ' :  <Redirect to="/login" /> }
+            {!estado && <Redirect to="/login" /> }
             <div className="w-75 mx-auto">
                 <div className="text-center mb-5">
                     <span style={{ color: '#0CA3AE', fontSize: 80 }}>

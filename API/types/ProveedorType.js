@@ -6,7 +6,7 @@ const proveedor_type = gql`
         empresa: String
         cedula: String
         pais: String
-        cuidad: String
+        ciudad: String
         direccion: String
         telefonos: [Telefono]
         correos: [Email] 
@@ -22,7 +22,7 @@ const proveedor_type = gql`
         empresa: String
         cedula: String
         pais: String
-        cuidad: String
+        ciudad: String
         direccion: String
         telefonos: [TelefonoInput]
         correos: [EmailInput] 
@@ -30,10 +30,16 @@ const proveedor_type = gql`
         estado: Estado
     }
 
+    type RespuestaProveedor{
+        estado: Boolean
+        data: Proveedor
+        message: String
+    }
+
     type Mutation{
-        insertarProveedor(input:ProveedorInput):Proveedor
-        actualizarProveedor(id:ID, input:ProveedorInput):Proveedor
-        desactivarProveedor(id:ID):String
+        insertarProveedor(input:ProveedorInput):RespuestaProveedor
+        actualizarProveedor(id:ID, input:ProveedorInput):RespuestaProveedor
+        desactivarProveedor(id:ID):RespuestaProveedor
     }
 `;
 

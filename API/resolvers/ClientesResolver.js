@@ -1,4 +1,4 @@
-import Cliente from '../models';
+import {Cliente} from '../models';
 
 export default{
     Query:{
@@ -17,34 +17,66 @@ export default{
                 const { codigo } = input;
                 const existe = await Cliente.findOne({codigo});
                 if(existe){
-                    return "El cliente ya existe";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "El cliente ya existe"
+                    };
                 }else{
                     const cliente = new Cliente(input);
                     const result = cliente.save();
-                    return result;
+                    return {
+                        estado: true,
+                        data: result,
+                        message: "El cliente fue registrado con éxito"
+                    };
                 }
             }catch(error){
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error al registrar el cliente"
+                };
             }
         },
         actualizarCliente: async (_, {id, input}) => {
             try{
                 const cliente = await Cliente.findOneAndUpdate({_id: id}, input, {new: true});
-                return cliente;
+                return {
+                    estado: true,
+                    data: cliente,
+                    message: "El cliente fue actualizado con éxito"
+                };
             }catch(error){
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error al registrar el cliente"
+                };
             }
         },
         desactivarCliente: async (_, {id}) => {
             try{
                 const cliente = await Cliente.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
                 if(cliente){
-                    return "Cliente eliminado correctamente";
+                    return {
+                        estado: true,
+                        data: null,
+                        message: "Cliente eliminado correctamente"
+                    };
                 }else{
-                    return "No se pudo eliminar el cliente";
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "No se pudo eliminar el cliente"
+                    };
                 }
             }catch(error){
-                return error;
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error al eliminar el cliente"
+                };
             }
         }
     }

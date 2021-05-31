@@ -8,6 +8,7 @@ const cliente_type = gql`
 
     type Cliente{
         id: ID
+        nombre: String
         tipo: TipoCliente
         codigo: String
         pais: String
@@ -24,6 +25,7 @@ const cliente_type = gql`
 
     input ClienteInput{
         tipo: TipoCliente
+        nombre: String
         codigo: String
         pais: String
         ciudad: String
@@ -33,10 +35,16 @@ const cliente_type = gql`
         estado: Estado
     }
 
+    type RespuestaCliente{
+        estado: Boolean
+        data: Cliente
+        message: String
+    }
+
     type Mutation{
-        insertarCliente(input:ClienteInput):Cliente
-        actualizarCliente(id:ID, input:ClienteInput):Cliente
-        desactivarCliente(id:ID):String
+        insertarCliente(input:ClienteInput):RespuestaCliente
+        actualizarCliente(id:ID, input:ClienteInput):RespuestaCliente
+        desactivarCliente(id:ID):RespuestaCliente
     }
 `;
 

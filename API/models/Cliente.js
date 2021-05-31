@@ -6,6 +6,11 @@ const ClientesSchema = new mongoose.Schema({
         require: true,
         trim: true,
     },
+    nombre:{
+        type: String,
+        require: true,
+        trim: true,
+    },
     codigo:{
         type: String,
         require: true,
