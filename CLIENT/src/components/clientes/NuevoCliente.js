@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Loader, Notification, SelectPicker, InputGroup, Icon } from 'rsuite'
+import { Notification, SelectPicker, InputGroup, Icon } from 'rsuite'
 import Boton from '../shared/Boton'
 import { withRouter } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
@@ -7,7 +7,6 @@ import { SAVE_CLIENTE } from '../../services/ClienteService'
 import { countries } from '../../Json/countries.json'
 import { states } from '../../Json/states.json'
 import List from '../shared/List'
-import Action from '../shared/Action'
 
 const NuevoCliente = (props) => {
     const [tipo, setTipo] = useState('');
