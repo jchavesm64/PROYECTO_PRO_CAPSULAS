@@ -147,7 +147,6 @@ const Clientes = ({ ...props }) => {
     }
 
     const data = getData();
-    console.log(props)
     return (
         <>
             <h3 className="text-center">Gestión de Clientes</h3>
@@ -231,7 +230,7 @@ const Clientes = ({ ...props }) => {
                 />
             </div>
             <div className="d-flex justify-content-start">
-                <Link to={`/usuarios/nuevo`}><Boton tooltip="Nueva comisión" name="Nuevo" icon="plus" color="green" /></Link>
+                <Link to={`/clientes/nuevo`}><Boton tooltip="Nueva comisión" name="Nuevo" icon="plus" color="green" /></Link>
             </div>
             {isConfirmation}
         </>

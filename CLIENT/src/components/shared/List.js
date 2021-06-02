@@ -6,7 +6,7 @@ const { Column, HeaderCell, Cell, Pagination } = Table;
 const List = (props) => {
 
     const [page, setPage] = useState(1);
-    const [displayLength, setDisplayLength] = useState(10);
+    const [displayLength, setDisplayLength] = useState(5);
 
     const handleChangePage = (dataKey) => {
         setPage(dataKey)
@@ -17,10 +17,10 @@ const List = (props) => {
         setDisplayLength(dataKey);
     }
 
-    const { data, edit, borrar } = props;
+    const { data, edit, borrar, estilos } = props;
     return (
         <div>
-            <Table className="mx-auto w-75" height={250} data={data}>
+            <Table className={estilos} height={270} data={data}>
                 {(edit && borrar) ?
                     (
                         <Column width={300}>
@@ -58,8 +58,8 @@ const List = (props) => {
                     </Column>
                 }
             </Table>
-            { data.length > 5 &&
-                < Pagination className="w-75"
+            { (data.length > 5) &&
+                < Pagination className={estilos}
                     first={false}
                     last={false}
                     next={false}

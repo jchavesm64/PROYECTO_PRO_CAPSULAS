@@ -12,7 +12,7 @@ import Roles from '../components/ConfiguracionesGenerales/Roles/GestionarRoles';
 import Usuarios from '../components/usuarios/Usuarios';
 import NuevoUsuario from '../components/usuarios/NuevoUsuario';
 import Clientes from '../components/clientes/Clientes';
-
+import NuevoCliente from '../components/clientes/NuevoCliente';
 import Proveedores from '../components/proveedores/Proveedores';
 
 const Router = ({ refetch, session }) => {
@@ -39,7 +39,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/usuarios" render={(props) => <Usuarios session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/usuarios/nuevo" render={(props) => <NuevoUsuario session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes" render={(props) => <Clientes session={data} refetch={refetch} {...props}/>}/>
-
+                                <Route exact path="/clientes/nuevo" render={(props) => <NuevoCliente session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores" render={(props) => <Proveedores session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>

@@ -24,7 +24,7 @@ export default{
                     };
                 }else{
                     const cliente = new Cliente(input);
-                    const result = cliente.save();
+                    const result = await cliente.save();
                     return {
                         estado: true,
                         data: result,
