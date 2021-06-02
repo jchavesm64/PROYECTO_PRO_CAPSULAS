@@ -14,7 +14,7 @@ import NuevoUsuario from '../components/usuarios/NuevoUsuario';
 import Clientes from '../components/clientes/Clientes';
 import NuevoCliente from '../components/clientes/NuevoCliente';
 import Proveedores from '../components/proveedores/Proveedores';
-
+import NuevoProveedor from '../components/proveedores/NuevoProveedor'
 const Router = ({ refetch, session }) => {
 
     const { obtenerUsuarioAutenticado } = session;
@@ -41,6 +41,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/clientes" render={(props) => <Clientes session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes/nuevo" render={(props) => <NuevoCliente session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores" render={(props) => <Proveedores session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/proveedores/nuevo" render={(props) => <NuevoProveedor session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

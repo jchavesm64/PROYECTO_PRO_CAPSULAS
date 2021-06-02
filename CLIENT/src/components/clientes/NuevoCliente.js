@@ -122,7 +122,7 @@ const NuevoCliente = (props) => {
                 })
             }
         } catch (error) {
-            Notification['success']({
+            Notification['error']({
                 title: 'Insertar Cliente',
                 duration: 5000,
                 description: "Hubo un error inesperado al guardar el cliente"

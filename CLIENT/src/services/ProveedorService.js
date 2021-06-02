@@ -26,7 +26,8 @@ export const OBTENER_PROVEEDORES = gql`
 export const SAVE_PROVEEDOR = gql`
     mutation insertarProveedor($input:ProveedorInput){
         insertarProveedor(input:$input){
-            id
+            estado
+            message
         }
     }
 `;
@@ -34,13 +35,17 @@ export const SAVE_PROVEEDOR = gql`
 export const UPDATE_PROVEEDOR = gql`
     mutation actualizarProveedor($id:ID, $input:ProveedorInput){
         actualizarProveedor(id:$id, input:$input){
-            id
+            estado
+            message
         }
     }
 `;
 
 export const DELETE_PROVEEDOR = gql`
     mutation desactivarProveedor($id:ID){
-        desactivarProveedor(id:$id)
+        desactivarProveedor(id:$id){
+            estado
+            message
+        }
     }
 `;
