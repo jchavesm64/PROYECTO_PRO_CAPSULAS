@@ -21,6 +21,27 @@ export const OBTENER_CLIENTES = gql`
     }
 `;
 
+export const OBTENER_CLIENTE = gql`
+    query obtenerCliente($id:ID){
+        obtenerCliente(id:$id){
+            id
+            tipo
+            nombre
+            codigo
+            pais
+            ciudad
+            direccion
+            telefonos{
+                telefono
+            }
+            correos{
+                email
+            }
+            estado
+        }
+    }
+`;
+
 export const SAVE_CLIENTE = gql`
     mutation insertarCliente($input:ClienteInput){
         insertarCliente(input:$input){

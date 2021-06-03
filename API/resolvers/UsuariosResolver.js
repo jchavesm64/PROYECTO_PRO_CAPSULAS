@@ -11,6 +11,8 @@ const crearToken = (usuario, secreto, expiresIn) => {
     return jwt.sign({ cedula }, secreto, { expiresIn })
 }
 
+//qwwdxrbrshvxgdlf
+
 export default {
     Query: {
         obtenerUsuariosActivos: async (_, { }) => {

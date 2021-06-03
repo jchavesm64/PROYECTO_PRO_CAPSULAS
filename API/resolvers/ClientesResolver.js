@@ -9,6 +9,14 @@ export default{
             }catch(error){
                 return error;
             }
+        },
+        obtenerCliente: async (_, {id}) => {
+            try{
+                const cliente = await Cliente.findById(id);
+                return cliente;
+            }catch(error){
+                return error;
+            }
         }
     },
     Mutation:{

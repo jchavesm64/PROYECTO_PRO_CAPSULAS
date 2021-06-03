@@ -21,6 +21,7 @@ const cliente_type = gql`
 
     type Query{
         obtenerClientes: [Cliente]
+        obtenerCliente(id:ID): Cliente
     }
 
     input ClienteInput{

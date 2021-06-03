@@ -203,7 +203,7 @@ const Clientes = ({ ...props }) => {
                                     return (
                                         <>
                                             <div className="d-inline-block mx-2">
-                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].editar === true)) ? <Redirect to={`clientes/editar/${rowData.id}`} /> : mostrarMsj() }} tooltip="Editar Cliente" color="orange" icon="edit" size="xs" />
+                                            <Link to={`clientes/editar/${rowData.id}`} ><Action tooltip="Editar Cliente" color="orange" icon="edit" size="xs" /></Link>
                                             </div>
                                             <div className="d-inline-block">
                                                 <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Cliente" color="red" icon="trash" size="xs" />
