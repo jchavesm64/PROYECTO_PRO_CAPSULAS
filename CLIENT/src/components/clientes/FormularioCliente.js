@@ -118,7 +118,42 @@ const FormularioCliente = ({ props, cliente }) => {
     }
 
     const onUpdateCliente = async () => {
-
+        try {
+            const input = {
+                tipo,
+                nombre,
+                codigo,
+                pais: pais.name,
+                ciudad: ciudad.name,
+                direccion,
+                telefonos,
+                correos,
+                estado: "ACTIVO"
+            }
+            const { data } = await actualizar({ variables: { id: cliente.id, input }, errorPolicy: 'all' });
+            const { estado, message } = data.actualizarCliente;
+            if (estado) {
+                Notification['success']({
+                    title: 'Actualizar Cliente',
+                    duration: 5000,
+                    description: message
+                })
+                props.history.push(`/clientes`);
+            } else {
+                Notification['error']({
+                    title: 'Actualizar Cliente',
+                    duration: 5000,
+                    description: message
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            Notification['error']({
+                title: 'Insertar Cliente',
+                duration: 5000,
+                description: "Hubo un error inesperado al guardar el cliente"
+            })
+        }
     }
 
     return (
