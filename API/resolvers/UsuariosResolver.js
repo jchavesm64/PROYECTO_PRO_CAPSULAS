@@ -302,12 +302,13 @@ export default {
         },
         cambiarClave: async (_, { id, actual, nueva }) => {
             try {
-                const usuario = Usuario.findOne({ _id: id });
+                const usuario = await Usuario.findById(id);
+                console.log(usuario)
                 if (usuario) {
                     const valid = await bcrypt.compare(actual, usuario.clave);
                     if (valid) {
                         var clave_enc = await bcrypt.hash(nueva, 10);
-                        const result = await Usuario.findOneAndUpdate({ _id: id }, { clave: clave_enc }, { new: true });
+                        const result = await Usuario.findByIdAndUpdate(id, { clave: clave_enc }, { new: true });
                         if (result) {
                             return {
                                 success: true,
@@ -332,6 +333,7 @@ export default {
                     }
                 }
             } catch (error) {
+                console.log(error)
                 return {
                     success: false,
                     message: "Error inesperado"

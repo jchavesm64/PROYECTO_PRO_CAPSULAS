@@ -153,3 +153,12 @@ export const RECUPERAR_CLAVE = gql`
         }
     }
 `;
+
+export const CAMBIAR_CLAVE = gql`
+    mutation cambiarClave($id:ID, $actual:String, $nueva:String){
+        cambiarClave(id:$id, actual:$actual, nueva:$nueva){
+            success
+            message
+        }
+    }
+`;
