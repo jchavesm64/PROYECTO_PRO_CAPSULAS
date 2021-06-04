@@ -118,7 +118,11 @@ const NuevoUsuario = ({ ...props }) => {
                     duration: 5000,
                     description: message
                 })
-                props.history.push(`/usuarios`);
+                if (!props.perfil) {
+                    props.history.push(`/usuarios`);
+                }else{
+                    props.history.push(`/perfil`);
+                }
             } else {
                 Notification['error']({
                     title: 'Actualizar Usuario',
@@ -139,9 +143,11 @@ const NuevoUsuario = ({ ...props }) => {
 
     return (
         <>
-            <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/usuarios`)} icon="arrow-left-line" tooltip="Ir a comisiones" size="xs" color="blue" />
-            </div>
+            {!props.perfil &&
+                <div>
+                    <Boton name="Atras" onClick={e => props.history.push(`/usuarios`)} icon="arrow-left-line" tooltip="Ir a comisiones" size="xs" color="blue" />
+                </div>
+            }
             <h3 className="text-center">Editar Usuario</h3>
             <div>
                 <div className="row border-bottom border-dark my-3">
@@ -194,14 +200,16 @@ const NuevoUsuario = ({ ...props }) => {
                         </div>
                     </div>
                 }
-                <div className="row border-bottom border-dark my-3">
-                    <div className="col-md-11 float-left">
-                        <h5>Roles del Usuario</h5>
+                {!props.perfil &&
+                    <div className="row border-bottom border-dark my-3">
+                        <div className="col-md-11 float-left">
+                            <h5>Roles del Usuario</h5>
+                        </div>
+                        <div className="d-flex col-md-1 justify-content-end float-right">
+                            <Action className="mb-1" onClick={() => { setRolesUsuario(!rolesUsuario) }} tooltip={rolesUsuario ? "Ocultar" : "Mostrar"} color={"cyan"} icon={rolesUsuario ? "angle-up" : "angle-down"} size="xs" />
+                        </div>
                     </div>
-                    <div className="d-flex col-md-1 justify-content-end float-right">
-                        <Action className="mb-1" onClick={() => { setRolesUsuario(!rolesUsuario) }} tooltip={rolesUsuario ? "Ocultar" : "Mostrar"} color={"cyan"} icon={rolesUsuario ? "angle-up" : "angle-down"} size="xs" />
-                    </div>
-                </div>
+                }
                 {rolesUsuario &&
                     <TagPicker className="my-3" data={getRoles()} block value={roles} onChange={e => setRoles(e)} />
                 }

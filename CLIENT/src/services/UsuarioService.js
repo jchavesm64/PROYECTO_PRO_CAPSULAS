@@ -43,6 +43,7 @@ export const OBTENER_USUARIO_AUTENTICADO = gql`
                     telefono
                 },
                 roles{
+                    id
                     tipo
                     permisos{
                         descripcion
