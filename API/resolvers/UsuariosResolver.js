@@ -234,9 +234,9 @@ export default {
                         })
                         var mailOptions = {
                             from: "sistema.procapsulas@gmail.com",
-                            to: input.correos[0],
+                            to: input.correos[0].email,
                             subject: "Bienvenida a Sistema ProCápsulas",
-                            text: crearMensajeClave(usuario.nombre, clave)
+                            html: crearMensajeClave(usuario.nombre, clave)
                         }
                         transporte.sendMail(mailOptions, (error) => {
                             if (error) {
