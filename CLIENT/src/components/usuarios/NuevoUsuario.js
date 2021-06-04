@@ -46,24 +46,24 @@ const NuevoUsuario = ({ ...props }) => {
         if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(correo)) {
             var band = false;
             correos.map(c => {
-                if(c.email === correo){
+                if (c.email === correo) {
                     band = true;
                 }
             })
-            if(!band){
+            if (!band) {
                 correos.push({
                     "email": correo
                 })
                 document.getElementById('correo').value = "";
                 setRefrescar(!refrescar);
-            }else{
+            } else {
                 Notification['info']({
                     title: 'Agregar Correo',
                     duration: 5000,
                     description: "Ya está agregado el correo"
                 })
             }
-        }else{
+        } else {
             Notification['info']({
                 title: 'Agregar Correo',
                 duration: 5000,
@@ -101,7 +101,7 @@ const NuevoUsuario = ({ ...props }) => {
                 estado: "ACTIVO"
             }
             const { data } = await insertar({ variables: { input }, errorPolicy: 'all' })
-            const {estado, message} = data.insertarUsuario;
+            const { estado, message } = data.insertarUsuario;
             if (estado) {
                 Notification['success']({
                     title: 'Insertar Usuario',
@@ -129,6 +129,9 @@ const NuevoUsuario = ({ ...props }) => {
 
     return (
         <>
+            <div>
+                <Boton name="Atras" onClick={e => props.history.push(`/usuarios`)} icon="arrow-left-line" tooltip="Ir a usuarios" size="xs" color="blue" />
+            </div>
             <h3 className="text-center">Registrar Usuario</h3>
             <div>
                 <div className="row border-bottom border-dark my-3">
@@ -141,7 +144,9 @@ const NuevoUsuario = ({ ...props }) => {
                 </div>
                 {datos &&
                     <>
+                        <h6>Nombre del Usuario</h6>
                         <input className="form-control mt-3 mb-3" type="text" placeholder="Nombre del usuario" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                        <h6>Número de identificación del usuario</h6>
                         <input className="form-control mt-3 mb-3" type="text" placeholder="Número de identificación del usuario" value={cedula} onChange={(e) => setCedula(e.target.value)} />
                     </>
                 }
@@ -190,7 +195,10 @@ const NuevoUsuario = ({ ...props }) => {
                     </div>
                 </div>
                 {rolesUsuario &&
-                    <TagPicker className="my-3" data={getRoles()} block value={roles} onChange={e => setRoles(e)} />
+                    <>
+                        <h6>Roles</h6>
+                        <TagPicker className="my-3" placeholder="Roles" data={getRoles()} block value={roles} onChange={e => setRoles(e)} />
+                    </>
                 }
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">

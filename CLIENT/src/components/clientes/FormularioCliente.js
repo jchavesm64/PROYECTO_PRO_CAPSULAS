@@ -183,7 +183,7 @@ const FormularioCliente = ({ props, cliente }) => {
     return (
         <>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/clientes`)} icon="arrow-left-line" tooltip="Ir a comisiones" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/clientes`)} icon="arrow-left-line" tooltip="Ir a clientes" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Editar Cliente</h3>
             <div>
@@ -199,12 +199,15 @@ const FormularioCliente = ({ props, cliente }) => {
                     <>
                         <div className="row">
                             <div className="col-md-4 float-left">
+                                <h6>Tipo de Cliente</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Tipo de Cliente" data={getTipos()} onChange={(e) => setTipo(e)} searchable={false} defaultValue={tipo} />
                             </div>
-                            <div className="d-flex justify-content-end col-md-8 float-right">
+                            <div className="justify-content-end col-md-8 float-right">
+                                <h6>Número de identificación de la empresa o persona</h6>
                                 <input className="form-control mt-3" type="text" placeholder="Número de identificación de la empresa o persona" value={codigo} onChange={(e) => setCodigo(e.target.value)} disabled/>
                             </div>
                         </div>
+                        <h6 className="mt-3">Nombre del cliente</h6>
                         <input className="form-control mt-3 mb-3" type="text" placeholder="Nombre del cliente" value={nombre} onChange={(e) => setNombre(e.target.value)} />
                     </>
                 }
@@ -255,13 +258,16 @@ const FormularioCliente = ({ props, cliente }) => {
                 {ubicacion &&
                     <>
                         <div className="row">
-                            <div className="d-flex col-md-6 float-left w-90">
+                            <div className="col-md-6 float-left w-90">
+                                <h6>Paises</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Paises" data={getPaises()} onChange={(e) => setPais(e)} defaultValue={pais} />
                             </div>
-                            <div className="d-flex justify-content-end col-md-6 float-right w-90">
+                            <div className="justify-content-end col-md-6 float-right w-90">
+                                <h6>Ciudades</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Provincias o Estados" data={getCiudades()} onChange={(e) => setCiudad(e)} defaultValue={ciudad} />
                             </div>
                         </div>
+                        <h6 className="mt-3">Dirección o señas particulares</h6>
                         <input className="form-control mt-3" type="text" placeholder="Dirección o señas particulares" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
                     </>
                 }

@@ -90,24 +90,24 @@ const NuevoCliente = (props) => {
         if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(correo)) {
             var band = false;
             correos.map(c => {
-                if(c.email === correo){
+                if (c.email === correo) {
                     band = true;
                 }
             })
-            if(!band){
+            if (!band) {
                 correos.push({
                     "email": correo
                 })
                 document.getElementById('correo').value = "";
                 setRefrescar(!refrescar);
-            }else{
+            } else {
                 Notification['info']({
                     title: 'Agregar Correo',
                     duration: 5000,
                     description: "Ya está agregado el correo"
                 })
             }
-        }else{
+        } else {
             Notification['info']({
                 title: 'Agregar Correo',
                 duration: 5000,
@@ -161,7 +161,7 @@ const NuevoCliente = (props) => {
     return (
         <>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/clientes`)} icon="arrow-left-line" tooltip="Ir a comisiones" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/clientes`)} icon="arrow-left-line" tooltip="Ir a clientes" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Registrar Cliente</h3>
             <div>
@@ -177,12 +177,15 @@ const NuevoCliente = (props) => {
                     <>
                         <div className="row">
                             <div className="col-md-4 float-left">
+                                <h6>Tipo de Cliente</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Tipo de Cliente" data={getTipos()} onChange={(e) => setTipo(e)} searchable={false} />
                             </div>
-                            <div className="d-flex justify-content-end col-md-8 float-right">
+                            <div className="justify-content-end col-md-8 float-right">
+                                <h6>Número de identificación de la empresa o persona</h6>
                                 <input className="form-control mt-3" type="text" placeholder="Número de identificación de la empresa o persona" value={codigo} onChange={(e) => setCodigo(e.target.value)} />
                             </div>
                         </div>
+                        <h6 className="mt-3">Nombre del cliente</h6>
                         <input className="form-control mt-3 mb-3" type="text" placeholder="Nombre del cliente" value={nombre} onChange={(e) => setNombre(e.target.value)} />
                     </>
                 }
@@ -197,7 +200,7 @@ const NuevoCliente = (props) => {
                 {contacto &&
                     <div className="row mt-3">
                         <div className="w-50 d-inline-block">
-                            <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true}  setRefrescar={setRefrescar}/>
+                            <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
                                     <InputGroup.Addon>
@@ -209,7 +212,7 @@ const NuevoCliente = (props) => {
                             </div>
                         </div>
                         <div className="w-50 d-inline-block">
-                            <List data={correos} clave="email" header="Correos" edit={false} borrar={true}  setRefrescar={setRefrescar}/>
+                            <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
                                     <InputGroup.Addon>
@@ -233,13 +236,16 @@ const NuevoCliente = (props) => {
                 {ubicacion &&
                     <>
                         <div className="row">
-                            <div className="d-flex col-md-6 float-left w-90">
+                            <div className="col-md-6 float-left w-90">
+                                <h6>Paises</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Paises" data={getPaises()} onChange={(e) => setPais(e)} />
                             </div>
-                            <div className="d-flex justify-content-end col-md-6 float-right w-90">
+                            <div className="justify-content-end col-md-6 float-right w-90">
+                                <h6 className>Ciudades</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Provincias o Estados" data={getCiudades()} onChange={(e) => setCiudad(e)} />
                             </div>
                         </div>
+                        <h6 className="mt-3">Dirección o señas particulares</h6>
                         <input className="form-control mt-3" type="text" placeholder="Dirección o señas particulares" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
                     </>
                 }

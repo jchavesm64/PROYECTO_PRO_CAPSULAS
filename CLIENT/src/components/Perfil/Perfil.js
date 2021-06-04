@@ -34,22 +34,20 @@ const Perfil = ({ ...props }) => {
         <>
             {!estado && <Redirect to="/login" />}
             <div className="w-75 mx-auto">
-                {active !== 'editar' &&
-                    <div className="text-center mb-5">
-                        <span style={{ color: '#0CA3AE', fontSize: 80 }}>
-                            <Icon icon="user-circle-o" size="lg" />
-                        </span>
-                        <h3 className="mt-3">{data.nombre}</h3>
-                        <span className="help-block">Permisos de {localStorage.getItem('rol')}</span>
-                    </div>
-                }
+                <div className="text-center mb-5">
+                    <span style={{ color: '#0CA3AE', fontSize: 80 }}>
+                        <Icon icon="user-circle-o" size="lg" />
+                    </span>
+                    <h3 className="mt-3">{data.nombre}</h3>
+                    <span className="help-block">Permisos de {localStorage.getItem('rol')}</span>
+                </div>
                 <div className="form-group col-md-12">
                     <div>
                         <NavPerfil active={active} setActive={setActive} />
                     </div>
                 </div>
                 {(active === 'info') ? <Info usuario={data} /> : ''}
-                {(active === 'editar') ? <Editar props={props} usuario={data} perfil={true}/> : ''}
+                {(active === 'editar') ? <Editar props={props} usuario={data} perfil={true} /> : ''}
                 {(active === 'password') ? <Clave usuario={data} /> : ''}
             </div>
         </>

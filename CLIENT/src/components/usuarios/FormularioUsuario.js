@@ -120,7 +120,7 @@ const NuevoUsuario = ({ ...props }) => {
                 })
                 if (!props.perfil) {
                     props.history.push(`/usuarios`);
-                }else{
+                } else {
                     props.history.push(`/perfil`);
                 }
             } else {
@@ -144,11 +144,13 @@ const NuevoUsuario = ({ ...props }) => {
     return (
         <>
             {!props.perfil &&
-                <div>
-                    <Boton name="Atras" onClick={e => props.history.push(`/usuarios`)} icon="arrow-left-line" tooltip="Ir a comisiones" size="xs" color="blue" />
-                </div>
+                <>
+                    <div>
+                        <Boton name="Atras" onClick={e => props.history.push(`/usuarios`)} icon="arrow-left-line" tooltip="Ir a usuarios" size="xs" color="blue" />
+                    </div>
+                    <h3 className="text-center">Editar Usuario</h3>
+                </>
             }
-            <h3 className="text-center">Editar Usuario</h3>
             <div>
                 <div className="row border-bottom border-dark my-3">
                     <div className="col-md-11 float-left">
@@ -160,7 +162,9 @@ const NuevoUsuario = ({ ...props }) => {
                 </div>
                 {datos &&
                     <>
+                        <h6>Nombrel del Usuario</h6>
                         <input className="form-control mt-3 mb-3" type="text" placeholder="Nombre del usuario" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                        <h6>Número de identificación del usuario</h6>
                         <input className="form-control mt-3 mb-3" type="text" placeholder="Número de identificación del usuario" value={cedula} onChange={(e) => setCedula(e.target.value)} />
                     </>
                 }
@@ -211,7 +215,10 @@ const NuevoUsuario = ({ ...props }) => {
                     </div>
                 }
                 {rolesUsuario &&
-                    <TagPicker className="my-3" data={getRoles()} block value={roles} onChange={e => setRoles(e)} />
+                    <>
+                        <h6>Roles</h6>
+                        <TagPicker className="my-3" data={getRoles()} block value={roles} onChange={e => setRoles(e)} />
+                    </>
                 }
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
