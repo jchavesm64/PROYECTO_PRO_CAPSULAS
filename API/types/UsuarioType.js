@@ -22,9 +22,18 @@ const usuario_type = gql`
         estado: Estado
     }
 
+    type RespuestaVerificacion{
+        estado: Boolean,
+        codigo: String,
+        message: String
+    }
+
     type Query{
         obtenerUsuarioAutenticado: RespuestaUsuario
         obtenerUsuariosActivos: [Usuario]
+        obtenerUsuario(id:ID):Usuario
+        obtenerUsuarioByCodigo(codigo:String):Usuario
+        enviarCodigoVerificacion(id:ID, correo:String):RespuestaVerificacion
     }
 
     input UsuarioInput{

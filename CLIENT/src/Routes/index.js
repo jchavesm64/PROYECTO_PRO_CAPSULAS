@@ -11,6 +11,7 @@ import TipoProveduria from '../components/ConfiguracionesGenerales/Proveduria/Ti
 import Roles from '../components/ConfiguracionesGenerales/Roles/GestionarRoles';
 import Usuarios from '../components/usuarios/Usuarios';
 import NuevoUsuario from '../components/usuarios/NuevoUsuario';
+import EditarUsuario from '../components/usuarios/EditarUsuario';
 import Clientes from '../components/clientes/Clientes';
 import NuevoCliente from '../components/clientes/NuevoCliente';
 import EditarCliente from '../components/clientes/EditarCliente';
@@ -41,6 +42,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/roles" render={() => <Roles session={data} refetch={refetch}/>}/>
                                 <Route exact path="/usuarios" render={(props) => <Usuarios session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/usuarios/nuevo" render={(props) => <NuevoUsuario session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/usuarios/editar/:id" render={(props) => <EditarUsuario session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes" render={(props) => <Clientes session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes/nuevo" render={(props) => <NuevoCliente session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes/editar/:id" render={(props) => <EditarCliente session={data} refetch={refetch} {...props}/>}/>

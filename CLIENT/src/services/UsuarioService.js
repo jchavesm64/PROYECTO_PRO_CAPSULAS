@@ -3,27 +3,27 @@ import gql from 'graphql-tag';
 export const OBTENER_USUARIOS_ACTIVOS = gql`
     query obtenerUsuariosActivos{
         obtenerUsuariosActivos{
-        id,
-        nombre,
-        cedula,
-        correos{
-            email
-        },
-        telefonos{
-            telefono
-        },
-        roles{
-            tipo
-            permisos{
-                descripcion
-            }
-            acciones{
-                eliminar
-                editar
-                agregar
-            }
-        },
-        estado
+            id,
+            nombre,
+            cedula,
+            correos{
+                email
+            },
+            telefonos{
+                telefono
+            },
+            roles{
+                tipo
+                permisos{
+                    descripcion
+                }
+                acciones{
+                    eliminar
+                    editar
+                    agregar
+                }
+            },
+            estado
         }
     }
 `;
@@ -55,6 +55,56 @@ export const OBTENER_USUARIO_AUTENTICADO = gql`
                 },
                 estado 
             }
+        }
+    }
+`;
+
+export const OBTENER_USUARIO = gql`
+    query obtenerUsuario($id:ID){
+        obtenerUsuario(id:$id){
+            id,
+            nombre,
+            cedula,
+            correos{
+                email
+            },
+            telefonos{
+                telefono
+            },
+            roles{
+                id
+                tipo
+                permisos{
+                    descripcion
+                }
+                acciones{
+                    eliminar
+                    editar
+                    agregar
+                }
+            },
+            estado
+        }
+    }
+`;
+
+export const OBTENER_USUARIO_CODIGO = gql`
+    query obtenerUsuario($codigo:String){
+        obtenerUsuario(codigo:$codigo){
+            id,
+            correos{
+                email
+            }
+        }
+    }
+`;
+
+export const ENVIAR_CORREO = gql`
+    query enviarCodigoVerificacion($id:ID, $correo:String){
+        enviarCodigoVerificacion(id:$id, correo:$correo){
+            estado,
+            codigo,
+            message
         }
     }
 `;

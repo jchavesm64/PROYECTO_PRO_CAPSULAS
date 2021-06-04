@@ -6,20 +6,31 @@ import Boton from '../shared/Boton'
 import { InputGroup, Icon, TagPicker, Loader, Notification } from 'rsuite'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { OBTENER_ROLES } from '../../services/RolService'
-import { SAVE_USER } from '../../services/UsuarioService';
+import { UPDATE_USER } from '../../services/UsuarioService';
 
 const NuevoUsuario = ({ ...props }) => {
+
+    const usuario = props.usuario;
+
+    const getSelectedRoles = () => {
+        const datos = [];
+        usuario.roles.map(r => {
+            datos.push(r.id);
+        })
+        return datos;
+    }
+
     const [datos, setDatos] = useState(true);
     const [contacto, setContacto] = useState(false);
     const [rolesUsuario, setRolesUsuario] = useState(false);
-    const [nombre, setNombre] = useState('');
-    const [cedula, setCedula] = useState('');
-    const [telefonos, setTelefonos] = useState([]);
-    const [correos, setCorreos] = useState([]);
-    const [roles, setRoles] = useState([]);
+    const [nombre, setNombre] = useState(usuario.nombre);
+    const [cedula, setCedula] = useState(usuario.cedula);
+    const [telefonos, setTelefonos] = useState(usuario.telefonos);
+    const [correos, setCorreos] = useState(usuario.correos);
+    const [roles, setRoles] = useState(getSelectedRoles());
     const [refrescar, setRefrescar] = useState(false);
     const { loading: load_roles, data: data_roles } = useQuery(OBTENER_ROLES, { pollInterval: 1000 });
-    const [insertar] = useMutation(SAVE_USER);
+    const [actualizar] = useMutation(UPDATE_USER);
 
     const agregarTelefono = (telefono) => {
         var band = false;
@@ -46,24 +57,24 @@ const NuevoUsuario = ({ ...props }) => {
         if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(correo)) {
             var band = false;
             correos.map(c => {
-                if(c.email === correo){
+                if (c.email === correo) {
                     band = true;
                 }
             })
-            if(!band){
+            if (!band) {
                 correos.push({
                     "email": correo
                 })
                 document.getElementById('correo').value = "";
                 setRefrescar(!refrescar);
-            }else{
+            } else {
                 Notification['info']({
                     title: 'Agregar Correo',
                     duration: 5000,
                     description: "Ya está agregado el correo"
                 })
             }
-        }else{
+        } else {
             Notification['info']({
                 title: 'Agregar Correo',
                 duration: 5000,
@@ -94,31 +105,30 @@ const NuevoUsuario = ({ ...props }) => {
             const input = {
                 nombre,
                 cedula,
-                clave: "0000",
                 correos,
                 telefonos,
                 roles,
                 estado: "ACTIVO"
             }
-            const { data } = await insertar({ variables: { input }, errorPolicy: 'all' })
-            const {estado, message} = data.insertarUsuario;
+            const { data } = await actualizar({ variables: { id: usuario.id, input }, errorPolicy: 'all' })
+            const { estado, message } = data.actualizarUsuario;
             if (estado) {
                 Notification['success']({
-                    title: 'Insertar Usuario',
+                    title: 'Actualizar Usuario',
                     duration: 5000,
                     description: message
                 })
                 props.history.push(`/usuarios`);
             } else {
                 Notification['error']({
-                    title: 'Insertar Usuario',
+                    title: 'Actualizar Usuario',
                     duration: 5000,
                     description: message
                 })
             }
         } catch (error) {
             Notification['error']({
-                title: 'Insertar Usuario',
+                title: 'Actualizar Usuario',
                 duration: 5000,
                 description: "Hubo un error inesperado al guardar el cliente"
             })
@@ -129,7 +139,10 @@ const NuevoUsuario = ({ ...props }) => {
 
     return (
         <>
-            <h3 className="text-center">Registrar Usuario</h3>
+            <div>
+                <Boton name="Atras" onClick={e => props.history.push(`/usuarios`)} icon="arrow-left-line" tooltip="Ir a comisiones" size="xs" color="blue" />
+            </div>
+            <h3 className="text-center">Editar Usuario</h3>
             <div>
                 <div className="row border-bottom border-dark my-3">
                     <div className="col-md-11 float-left">
