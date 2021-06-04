@@ -90,8 +90,8 @@ export const OBTENER_USUARIO = gql`
 `;
 
 export const OBTENER_USUARIO_CODIGO = gql`
-    query obtenerUsuario($codigo:String){
-        obtenerUsuario(codigo:$codigo){
+    query obtenerUsuarioByCodigo($codigo:String){
+        obtenerUsuarioByCodigo(codigo:$codigo){
             id,
             correos{
                 email
@@ -140,6 +140,15 @@ export const DELETE_USER = gql`
     mutation desactivarUsuario($id:ID){
         desactivarUsuario(id:$id){
             estado
+            message
+        }
+    }
+`;
+
+export const RECUPERAR_CLAVE = gql`
+    mutation recuperarClave($id:ID, $nueva:String){
+        recuperarClave(id:$id, nueva:$nueva){
+            success
             message
         }
     }

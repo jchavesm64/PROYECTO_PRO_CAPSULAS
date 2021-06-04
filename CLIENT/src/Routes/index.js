@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Login from '../components/authentication/Login';
+import Clave from '../components/authentication/CambiarClave';
 import NavMenu from '../components/layout/NavMenu';
 import Session from '../components/Session';
 import Sidebar from '../components/layout/Sidebar';
@@ -35,6 +36,7 @@ const Router = ({ refetch, session }) => {
                         <div className="container">
                             <Switch>
                                 {!estado ? <Route exact path="/login" render={() => <Login refetch={refetch} />} /> : ''}
+                                {!estado ? <Route exact path="/olvido_clave" render={() => <Clave refetch={refetch}/>}/>: ''}
                                 <Route exact path="/perfil" render={() => <Perfil refetch={refetch} />} />
                                 <Route exact path="/config" render={() => <Configuracion session={data} refetch={refetch} />} />
                                 <Route exact path="/config/tipoproductos" render={() => <TipoProductos session={data} refetch={refetch}/>}/>

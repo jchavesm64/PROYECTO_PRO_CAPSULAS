@@ -23,51 +23,51 @@ const generarCodigo = (length) => {
 }
 
 const crearMensajeClave = (usuario, clave) => {
-    return "<!DOCTYPE html>"+
-    "<html lang='en'>"+
-    "<head>"+
-        "<meta charset='UTF-8'>"+
-        "<meta http-equiv='X-UA-Compatible' content='IE=edge'>"+
-        "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"+
-        "<title>Sistema ProCápsulas</title>"+
-    "</head>"+
-    "<body>"+
-        "<div style='height: 500px; width: 300px;margin-left: auto;margin-right: auto;margin-top: 5px; border-radius: 25px 25px 0px 0px; background-color: #ebe9e9;'>"+
-            "<img style='display: block; width: 90%; margin-left: auto; margin-right: auto; padding-top: 20px;' src='https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=3773&ssl=1%203773w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=300%2C56&ssl=1%20300w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1024%2C191&ssl=1%201024w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=768%2C144&ssl=1%20768w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1536%2C287&ssl=1%201536w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=2048%2C383&ssl=1%202048w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1568%2C293&ssl=1%201568w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=2400&ssl=1%202400w'>"+
-            "<h3 style='display: block; text-align: center;'>Bienvenido al Sistema ProCápsulas</h3>"+
-            "<h4 style='display: block; text-align: center;'>Usuario: "+usuario+"</h4>"+
-            "<p style='width: 90%; margin-left: auto; margin-right: auto;'>La siguiente es su contraseña de acceso al sistema, por favor no comparte esta contraseña con nadie</p>"+
-            "<span class='text-center'>contraseña: <strong>"+clave+"</strong></span>"+
-        "</div>"+
-        "<footer style='background-color: #d1d0d0; width: 300px; margin-left: auto; margin-right: auto; border-radius: 0px 0px 25px 25px;'>"+
-            "<span style='display: block; text-align: center;'>Sistema ProCápsulas</span>"+
-        "</footer>"+
-    "</body>"+
-    "</html>";
+    return "<!DOCTYPE html>" +
+        "<html lang='en'>" +
+        "<head>" +
+        "<meta charset='UTF-8'>" +
+        "<meta http-equiv='X-UA-Compatible' content='IE=edge'>" +
+        "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+        "<title>Sistema ProCápsulas</title>" +
+        "</head>" +
+        "<body>" +
+        "<div style='height: 500px; width: 300px;margin-left: auto;margin-right: auto;margin-top: 5px; border-radius: 25px 25px 0px 0px; background-color: #ebe9e9;'>" +
+        "<img style='display: block; width: 90%; margin-left: auto; margin-right: auto; padding-top: 20px;' src='https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=3773&ssl=1%203773w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=300%2C56&ssl=1%20300w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1024%2C191&ssl=1%201024w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=768%2C144&ssl=1%20768w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1536%2C287&ssl=1%201536w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=2048%2C383&ssl=1%202048w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1568%2C293&ssl=1%201568w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=2400&ssl=1%202400w'>" +
+        "<h3 style='display: block; text-align: center;'>Bienvenido al Sistema ProCápsulas</h3>" +
+        "<h4 style='display: block; text-align: center;'>Usuario: " + usuario + "</h4>" +
+        "<p style='width: 90%; margin-left: auto; margin-right: auto;'>La siguiente es su contraseña de acceso al sistema, por favor no comparte esta contraseña con nadie</p>" +
+        "<span class='text-center'>contraseña: <strong>" + clave + "</strong></span>" +
+        "</div>" +
+        "<footer style='background-color: #d1d0d0; width: 300px; margin-left: auto; margin-right: auto; border-radius: 0px 0px 25px 25px;'>" +
+        "<span style='display: block; text-align: center;'>Sistema ProCápsulas</span>" +
+        "</footer>" +
+        "</body>" +
+        "</html>";
 }
 
 const crearMensajeCodigo = (usuario, codigo) => {
-    return "<!DOCTYPE html>"+
-    "<html lang='en'>"+
-    "<head>"+
-        "<meta charset='UTF-8'>"+
-        "<meta http-equiv='X-UA-Compatible' content='IE=edge'>"+
-        "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"+
-        "<title>Sistema ProCápsulas</title>"+
-    "</head>"+
-    "<body>"+
-        "<div style='height: 500px; width: 300px;margin-left: auto;margin-right: auto;margin-top: 5px; border-radius: 25px 25px 0px 0px; background-color: #ebe9e9;'>"+
-            "<img style='display: block; width: 90%; margin-left: auto; margin-right: auto; padding-top: 20px;' src='https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=3773&ssl=1%203773w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=300%2C56&ssl=1%20300w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1024%2C191&ssl=1%201024w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=768%2C144&ssl=1%20768w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1536%2C287&ssl=1%201536w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=2048%2C383&ssl=1%202048w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1568%2C293&ssl=1%201568w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=2400&ssl=1%202400w'>"+
-            "<h3 style='display: block; text-align: center;'>Sistema ProCápsulas, cambio de clave</h3>"+
-            "<h4 style='display: block; text-align: center;'>Usuario: "+usuario+"</h4>"+
-            "<p style='width: 90%; margin-left: auto; margin-right: auto;'>El siguiente es su codigo de verificación para el cambio de clave del sistema, por favor no comparte este con nadie</p>"+
-            "<span class='text-center'>Codigo de verificación: <strong>"+clave+"</strong></span>"+
-        "</div>"+
-        "<footer style='background-color: #d1d0d0; width: 300px; margin-left: auto; margin-right: auto; border-radius: 0px 0px 25px 25px;'>"+
-            "<span style='display: block; text-align: center;'>Sistema ProCápsulas</span>"+
-        "</footer>"+
-    "</body>"+
-    "</html>";
+    return "<!DOCTYPE html>" +
+        "<html lang='en'>" +
+        "<head>" +
+        "<meta charset='UTF-8'>" +
+        "<meta http-equiv='X-UA-Compatible' content='IE=edge'>" +
+        "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+        "<title>Sistema ProCápsulas</title>" +
+        "</head>" +
+        "<body>" +
+        "<div style='height: 500px; width: 300px;margin-left: auto;margin-right: auto;margin-top: 5px; border-radius: 25px 25px 0px 0px; background-color: #ebe9e9;'>" +
+        "<img style='display: block; width: 90%; margin-left: auto; margin-right: auto; padding-top: 20px;' src='https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=3773&ssl=1%203773w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=300%2C56&ssl=1%20300w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1024%2C191&ssl=1%201024w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=768%2C144&ssl=1%20768w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1536%2C287&ssl=1%201536w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=2048%2C383&ssl=1%202048w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?resize=1568%2C293&ssl=1%201568w,%20https://i1.wp.com/procapsulas.com/wp-content/uploads/2021/02/Recurso-1.png?w=2400&ssl=1%202400w'>" +
+        "<h3 style='display: block; text-align: center;'>Sistema ProCápsulas, cambio de clave</h3>" +
+        "<h4 style='display: block; text-align: center;'>Usuario: " + usuario + "</h4>" +
+        "<p style='width: 90%; margin-left: auto; margin-right: auto;'>El siguiente es su codigo de verificación para el cambio de clave del sistema, por favor no comparte este con nadie</p>" +
+        "<span class='text-center'>Codigo de verificación: <strong>" + codigo + "</strong></span>" +
+        "</div>" +
+        "<footer style='background-color: #d1d0d0; width: 300px; margin-left: auto; margin-right: auto; border-radius: 0px 0px 25px 25px;'>" +
+        "<span style='display: block; text-align: center;'>Sistema ProCápsulas</span>" +
+        "</footer>" +
+        "</body>" +
+        "</html>";
 }
 
 export default {
@@ -105,69 +105,68 @@ export default {
         },
         obtenerUsuarioByCodigo: async (_, { codigo }) => {
             try {
-                const usuarios = await Usuario.find({ codigo }).populate({ path: 'roles', populate: [{ path: 'permisos' }] });
+                const usuarios = await Usuario.findOne({ cedula: codigo }).populate({ path: 'roles', populate: [{ path: 'permisos' }] });
                 return usuarios;
             } catch (error) {
                 return error;
             }
         },
-        enviarCodigoVerificacion: async(_, {id, correo}) => {
-            try{
+        enviarCodigoVerificacion: async (_, { id, correo }) => {
+            try {
                 const usuario = await Usuario.findById(id);
-                if(usuario){
+                if (usuario) {
                     var band = false;
                     usuario.correos.map(c => {
-                        if(c.email == correo){
+                        if (c.email == correo) {
                             band = true;
                         }
-                        if(band){
-                            var transporte = nodemailer.createTransport({
-                                host: "smtp.gmail.com",
-                                port: 465,
-                                secure: true,
-                                auth:{
-                                    user: "sistema.procapsulas@gmail.com",
-                                    pass: "udbkmyrslbxhtrgm"
-                                }
-                            })
-                            var codigo = generarCodigo(8);
-                            var mailOptions = {
-                                from: "sistema.procapsulas@gmail.com",
-                                to: "ivan.arias.astua@gmail.com",
-                                subject: "Bienvenida a Sistema ProCápsulas",
-                                html: crearMensajeCodigo(usuario.nombre, codigo)
-                            }
-                            transporte.sendMail(mailOptions, (error) => {
-                                if(error){
-                                    return {
-                                        estado: false,
-                                        codigo: null,
-                                        message: "El correo no puedo ser enviado"
-                                    }
-                                }else{
-                                    return {
-                                        estado: true,
-                                        codigo: codigo,
-                                        message: "El correo fue enviado con éxito"
-                                    }
-                                }
-                            });
-                        }else{
-                            return {
-                                estado: false,
-                                codigo: null,
-                                message: "El correo indicado no pertenece al usuario"
-                            }
-                        }
                     })
-                }else{
-                    return{
+                    if (band) {
+                        var transporte = nodemailer.createTransport({
+                            host: "smtp.gmail.com",
+                            port: 465,
+                            secure: true,
+                            auth: {
+                                user: "sistema.procapsulas@gmail.com",
+                                pass: "udbkmyrslbxhtrgm"
+                            }
+                        })
+                        var codigo = generarCodigo(8);
+                        var mailOptions = {
+                            from: "sistema.procapsulas@gmail.com",
+                            to: "ivan.arias.astua@gmail.com",
+                            subject: "Codigo de verificación de Sistema ProCápsulas",
+                            html: crearMensajeCodigo(usuario.nombre, codigo)
+                        }
+                        transporte.sendMail(mailOptions, (error) => {
+                            if (error) {
+                                return {
+                                    estado: false,
+                                    codigo: null,
+                                    message: "El correo no puedo ser enviado"
+                                }
+                            }
+                        });
+                        return {
+                            estado: true,
+                            codigo: codigo,
+                            message: "El correo fue enviado con éxito"
+                        }
+                    } else {
+                        return {
+                            estado: false,
+                            codigo: null,
+                            message: "El correo indicado no pertenece al usuario"
+                        }
+                    }
+                } else {
+                    return {
                         estado: false,
                         codigo: null,
                         message: "El usuario indicado no existe"
                     }
                 }
-            }catch(error){
+            } catch (error) {
                 return {
                     estado: false,
                     data: null,
@@ -228,7 +227,7 @@ export default {
                             host: "smtp.gmail.com",
                             port: 465,
                             secure: true,
-                            auth:{
+                            auth: {
                                 user: "sistema.procapsulas@gmail.com",
                                 pass: "udbkmyrslbxhtrgm"
                             }
@@ -240,7 +239,7 @@ export default {
                             text: crearMensajeClave(usuario.nombre, clave)
                         }
                         transporte.sendMail(mailOptions, (error) => {
-                            if(error){
+                            if (error) {
                                 console.log(error);
                             }
                         });

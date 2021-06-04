@@ -98,7 +98,7 @@ const Login = ({ ...props }) => {
                 <FormGroup>
                     <ButtonToolbar>
                         <Boton id="btnLogin" name="Iniciar sesion" tooltip="Iniciar sesion" color="green" icon="sign-in" size="sm" position="end" onClick={clickIniciarSesion} />
-                        <Link to="/login" style={{ color: 'blue' }}>¿Olvido su contraseña?</Link>
+                        <Link to="/olvido_clave" style={{ color: 'blue' }}>¿Olvido su contraseña?</Link>
                     </ButtonToolbar>
                 </FormGroup>
             </Form>
