@@ -16,6 +16,7 @@ const proveedor_type = gql`
 
     type Query{
         obtenerProveedores: [Proveedor]
+        obtenerProveedor(id:ID):Proveedor
     }
 
     input ProveedorInput{

@@ -40,7 +40,7 @@ const SideBar = ({ session }) => {
                                                 <Link to={`/usuarios`}><Icon icon="user"/>Usuarios</Link>
                                             </li>
                                             <li className="List">
-                                                <Link to={`/usuarios/nuevo`}><Icon icon="user"/>Nuevo Usuario</Link>
+                                                <Link to={`/usuarios/nuevo`}><Icon icon="plus"/>Nuevo Usuario</Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -58,7 +58,7 @@ const SideBar = ({ session }) => {
                                                 <Link to={`/clientes`}><Icon icon="male"/>Clientes</Link>
                                             </li>
                                             <li className="List">
-                                                <Link to={`/clientes/nuevo`}><Icon icon="male"/>Nuevo Cliente</Link>
+                                                <Link to={`/clientes/nuevo`}><Icon icon="plus"/>Nuevo Cliente</Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -76,7 +76,7 @@ const SideBar = ({ session }) => {
                                                 <Link to={`/proveedores`}><Icon icon="shopping-cart"/>Proveedores</Link>
                                             </li>
                                             <li className="List">
-                                                <Link to={`/proveedores/nuevo`}><Icon icon="shopping-cart"/>Nuevo Proveedor</Link>
+                                                <Link to={`/proveedores/nuevo`}><Icon icon="plus"/>Nuevo Proveedor</Link>
                                             </li>
                                         </ul>
                                     </li>

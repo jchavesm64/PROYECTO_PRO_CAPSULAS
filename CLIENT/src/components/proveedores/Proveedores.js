@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Redirect, withRouter } from 'react-router'
+import { withRouter } from 'react-router'
 import Boton from '../shared/Boton'
 import Action from '../shared/Action'
 import Confirmation from '../shared/Confirmation';
@@ -9,7 +9,7 @@ import { OBTENER_PROVEEDORES, DELETE_PROVEEDOR } from '../../services/ProveedorS
 import { Link } from "react-router-dom";
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
-const Clientes = ({ ...props }) => {
+const Proveedores = ({ ...props }) => {
     const [page, setPage] = useState(1);
     const [displayLength, setDisplayLength] = useState(10);
     const [filter, setFilter] = useState('')
@@ -29,7 +29,7 @@ const Clientes = ({ ...props }) => {
 
     const onDeleteUsuario = async (id) => {
         const { data } = await desactivar({ variables: { id } });
-        const { estado, message } = data.desactivarCliente;
+        const { estado, message } = data.desactivarProveedor;
         if (estado) {
             Notification['success']({
                 title: 'Eliminar Proveedor',
@@ -200,13 +200,13 @@ const Clientes = ({ ...props }) => {
                                     return (
                                         <>
                                             <div className="d-inline-block mx-2">
-                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].editar === true)) ? <Redirect to={`usuarios/editar/${rowData.id}`} /> : mostrarMsj() }} tooltip="Editar Proveedor" color="orange" icon="edit" size="xs" />
+                                                <Link to={`proveedores/editar/${rowData.id}`}><Action tooltip="Editar Proveedor" color="orange" icon="edit" size="xs" /></Link>
                                             </div>
                                             <div className="d-inline-block mx-2">
                                                 <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Proveedor" color="red" icon="trash" size="xs" />
                                             </div>
                                             <div className="d-inline-block mx-2">
-                                                <Action tooltip="Detalles" color="blue" icon="info" size="xs" />
+                                            <Link to={`proveedores/detalles/${rowData.id}`}><Action tooltip="Detalles" color="blue" icon="info" size="xs" /></Link>
                                             </div>
                                         </>
                                     );
@@ -237,4 +237,4 @@ const Clientes = ({ ...props }) => {
     )
 }
 
-export default withRouter(Clientes)
+export default withRouter(Proveedores)

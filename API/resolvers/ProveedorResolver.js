@@ -9,6 +9,14 @@ export default {
             } catch (error) {
                 return error;
             }
+        },
+        obtenerProveedor: async (_, {id}) => {
+            try{
+                const proveedor = await Proveedor.findById(id).populate('provedurias');
+                return proveedor;
+            }catch(error){
+                return error;
+            }
         }
     },
     Mutation: {

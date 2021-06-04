@@ -15,7 +15,9 @@ import Clientes from '../components/clientes/Clientes';
 import NuevoCliente from '../components/clientes/NuevoCliente';
 import EditarCliente from '../components/clientes/EditarCliente';
 import Proveedores from '../components/proveedores/Proveedores';
-import NuevoProveedor from '../components/proveedores/NuevoProveedor'
+import NuevoProveedor from '../components/proveedores/NuevoProveedor';
+import EditarProveedor from '../components/proveedores/EditarProveedor';
+
 const Router = ({ refetch, session }) => {
 
     const { obtenerUsuarioAutenticado } = session;
@@ -44,6 +46,8 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/clientes/editar/:id" render={(props) => <EditarCliente session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores" render={(props) => <Proveedores session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores/nuevo" render={(props) => <NuevoProveedor session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/proveedores/editar/:id" render={(props) => <EditarProveedor uso={false} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/proveedores/detalles/:id" render={(props) => <EditarProveedor uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

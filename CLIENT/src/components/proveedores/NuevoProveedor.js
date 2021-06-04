@@ -10,7 +10,7 @@ import { states } from '../../Json/states.json'
 import List from '../shared/List'
 import Action from '../shared/Action'
 
-const NuevoCliente = (props) => {
+const NuevoProveedor = (props) => {
     const [nombre, setNombre] = useState('');
     const [cedula, setCedula] = useState('');
     const [pais, setPais] = useState(null);
@@ -65,6 +65,7 @@ const NuevoCliente = (props) => {
             telefonos.push({
                 "telefono": telefono
             })
+            document.getElementById('telefono').value = "";
             setRefrescar(!refrescar);
         } else {
             Notification['info']({
@@ -76,10 +77,33 @@ const NuevoCliente = (props) => {
     }
 
     const agregarCorreo = (correo) => {
-        correos.push({
-            "email": correo
-        })
-        setRefrescar(!refrescar);
+        if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(correo)) {
+            var band = false;
+            correos.map(c => {
+                if(c.email === correo){
+                    band = true;
+                }
+            })
+            if(!band){
+                correos.push({
+                    "email": correo
+                })
+                document.getElementById('correo').value = "";
+                setRefrescar(!refrescar);
+            }else{
+                Notification['info']({
+                    title: 'Agregar Correo',
+                    duration: 5000,
+                    description: "Ya está agregado el correo"
+                })
+            }
+        }else{
+            Notification['info']({
+                title: 'Agregar Correo',
+                duration: 5000,
+                description: "El formato de correo no es valido"
+            })
+        }
     }
 
     const getProvedurias = () => {
@@ -172,7 +196,7 @@ const NuevoCliente = (props) => {
                 {contacto &&
                     <div className="row mt-2">
                         <div className="w-50 d-inline-block">
-                            <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} />
+                            <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar}/>
                             <div className="input-group mt-2 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
                                     <InputGroup.Addon>
@@ -184,7 +208,7 @@ const NuevoCliente = (props) => {
                             </div>
                         </div>
                         <div className="w-50 d-inline-block">
-                            <List data={correos} clave="email" header="Correos" edit={false} borrar={true} />
+                            <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-2 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
                                     <InputGroup.Addon>
@@ -237,4 +261,4 @@ const NuevoCliente = (props) => {
     );
 }
 
-export default withRouter(NuevoCliente);
+export default withRouter(NuevoProveedor);

@@ -16,6 +16,31 @@ export const OBTENER_PROVEEDORES = gql`
                 email
             }
             provedurias{
+                id
+                tipo
+                estado
+            }
+        }
+    }
+`;
+
+export const OBTENER_PROVEEDOR = gql`
+    query obtenerProveedor($id:ID){
+        obtenerProveedor(id:$id){
+            id
+            empresa
+            cedula
+            pais
+            ciudad
+            direccion
+            telefonos{
+                telefono
+            }
+            correos{
+                email
+            }
+            provedurias{
+                id
                 tipo
                 estado
             }

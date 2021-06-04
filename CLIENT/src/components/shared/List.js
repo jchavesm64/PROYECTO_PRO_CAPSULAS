@@ -17,6 +17,20 @@ const List = (props) => {
         setDisplayLength(dataKey);
     }
 
+    const onDelete = (correo) => {
+        var index = null;
+        for(var i = 0; i < data.length; i++){
+            if(data[i].email === correo.email){
+                index = i;
+                break;
+            }
+        }
+        if(index != null){
+            data.splice(index, 1);
+            props.setRefrescar(true);
+        }
+    }
+
     const { data, edit, borrar, estilos } = props;
     return (
         <div>
@@ -48,7 +62,7 @@ const List = (props) => {
                                         }
                                         {borrar &&
                                             <div className="d-inline-block">
-                                                <Action tooltip="Eliminar dato" color="red" icon="trash" size="xs" />
+                                                <Action onClick={() => onDelete(rowData)} tooltip="Eliminar dato" color="red" icon="trash" size="xs" />
                                             </div>
                                         }
                                     </>
