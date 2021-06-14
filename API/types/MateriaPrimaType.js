@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const materia_prima_type = gql`
     scalar Date
+    scalar Number
 
     type MateriaPrima{
         id: ID
