@@ -17,7 +17,6 @@ export const OBTENER_MATERIAS_PRIMAS = gql`
             codigo
             existencias
             estado
-            estado
         }
     }
 `;
@@ -38,7 +37,6 @@ export const OBTENER_MATERIA_PRIMA = gql`
             pais
             codigo
             existencias
-            estado
             estado
         }
     }

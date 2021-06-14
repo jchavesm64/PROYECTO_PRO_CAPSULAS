@@ -19,6 +19,7 @@ import EditarCliente from '../components/clientes/EditarCliente';
 import Proveedores from '../components/proveedores/Proveedores';
 import NuevoProveedor from '../components/proveedores/NuevoProveedor';
 import EditarProveedor from '../components/proveedores/EditarProveedor';
+import MateriasPrimas from '../components/materias_primas/MateriasPrimas';
 
 const Router = ({ refetch, session }) => {
 
@@ -52,6 +53,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/proveedores/nuevo" render={(props) => <NuevoProveedor session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores/editar/:id" render={(props) => <EditarProveedor uso={false} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores/detalles/:id" render={(props) => <EditarProveedor uso={true} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/materias_primas" render={(props) => <MateriasPrimas session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>
