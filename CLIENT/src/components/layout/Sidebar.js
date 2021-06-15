@@ -86,12 +86,12 @@ const SideBar = ({ session }) => {
                                     session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "INVENTARIOS"))) ?
                                     <li>
                                         <a href="#inventarios" data-bs-toggle="collapse" aria-expanded="false" >
-                                            <h6><Icon icon="shopping-cart"/>Inventarios</h6>
-                                            <strong><Icon icon="shopping-cart"/>Inventarios</strong>
+                                            <h6><Icon icon="list"/>Inventarios</h6>
+                                            <strong><Icon icon="list"/>Inventarios</strong>
                                         </a>
                                         <ul className="collapse list-unstyled" id="inventarios">
                                             <li className="List">
-                                                <Link to={`/materias_primas`}><Icon icon="shopping-cart"/>Materias Primas</Link>
+                                                <Link to={`/materias_primas`}><i className="fas fa-boxes"/>Materias Primas</Link>
                                             </li>
                                         </ul>
                                     </li>

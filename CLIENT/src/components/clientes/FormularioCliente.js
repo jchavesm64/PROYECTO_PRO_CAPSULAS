@@ -45,6 +45,17 @@ const FormularioCliente = ({ props, cliente }) => {
     const [contacto, setContacto] = useState(false);
     const [ubicacion, setUbicacion] = useState(false);
 
+    React.useEffect(() => {
+        setTipo(cliente.tipo)
+        setNombre(cliente.nombre)
+        setCodigo(cliente.codigo)
+        setPais(getPais(cliente.pais))
+        setCiudad(getCiudad(cliente.ciudad))
+        setDireccion(cliente.direccion)
+        setTelefonos(cliente.telefonos)
+        setCorreos(cliente.correos)
+    }, [cliente])
+
     const getPaises = () => {
         const paises = []
         countries.map(p => {

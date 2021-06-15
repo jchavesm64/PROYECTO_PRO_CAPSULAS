@@ -20,6 +20,9 @@ import Proveedores from '../components/proveedores/Proveedores';
 import NuevoProveedor from '../components/proveedores/NuevoProveedor';
 import EditarProveedor from '../components/proveedores/EditarProveedor';
 import MateriasPrimas from '../components/materias_primas/MateriasPrimas';
+import NuevaMateriaPrima from '../components/materias_primas/Nuevo';
+import EditarMateriaPrima from '../components/materias_primas/Editar';
+import Movimientos from '../components/materias_primas/Movimientos';
 
 const Router = ({ refetch, session }) => {
 
@@ -54,6 +57,9 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/proveedores/editar/:id" render={(props) => <EditarProveedor uso={false} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores/detalles/:id" render={(props) => <EditarProveedor uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/materias_primas" render={(props) => <MateriasPrimas session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/materias_primas/nuevo" render={(props) => <NuevaMateriaPrima session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/materias_primas/editar/:id" render={(props) => <EditarMateriaPrima session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/materias_primas/movimientos/:id" render={(props) => <Movimientos session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

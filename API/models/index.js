@@ -5,7 +5,8 @@ import TipoProducto from './TipoProducto';
 import TipoProveduria from './TipoProveduria';
 import Cliente from './Cliente';
 import Proveedor from './Proveedor';
-import MateriasPrimas from './MateriasPrimas'
+import MateriasPrimas from './MateriasPrimas';
+import Movimientos from './Movimientos';
 
 export {
     Rol,
@@ -15,5 +16,6 @@ export {
     TipoProveduria,
     Cliente,
     Proveedor,
-    MateriasPrimas
+    MateriasPrimas,
+    Movimientos
 }

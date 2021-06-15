@@ -6,7 +6,7 @@ import Confirmation from '../shared/Confirmation';
 import { Table, Loader, Notification, Popover, Whisper } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
-import { OBTENER_MATERIAS_PRIMAS, DELETE_MATERIA_PRIMA } from '../../services/MateriaPrimaSrvice'
+import { OBTENER_MATERIAS_PRIMAS, DELETE_MATERIA_PRIMA } from '../../services/MateriaPrimaService'
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
 const MateriaPrima = ({ ...props }) => {
@@ -108,10 +108,10 @@ const MateriaPrima = ({ ...props }) => {
                     <b>Pais:</b> {rowData.pais}{' '}
                 </p>
                 <p>
-                    <b>Fecha de Fabricación:</b> {rowData.fechaFabricacion}{' '}
+                    <b>Fecha de Fabricación:</b> {getFecha(rowData.fechaFabricacion)}{' '}
                 </p>
                 <p>
-                    <b>Fecha de Vencimiento:</b> {rowData.fechaVencimiento}{' '}
+                    <b>Fecha de Vencimiento:</b> {getFecha(rowData.fechaVencimiento)}{' '}
                 </p>
                 <p>
                     <b>Proveedor:</b> {rowData.proveedor.empresa}{' '}
@@ -130,6 +130,13 @@ const MateriaPrima = ({ ...props }) => {
         );
     };
 
+    function getFecha(fecha) {
+        var date = new Date(fecha);
+        var day = (date.getDate() < 9) ? '0' + (date.getDate() + 1) : date.getDate() + 1;
+        var mes = (date.getMonth() < 9) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+        return date.getFullYear() + ' / ' + mes + ' / ' + day;
+    }
+
     if (load_materia_prima) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error_materia_prima) {
         Notification['error']({
@@ -143,7 +150,7 @@ const MateriaPrima = ({ ...props }) => {
 
     return (
         <>
-            <h3 className="text-center">Gestión de Proveedores</h3>
+            <h3 className="text-center">Gestión de Materias Primas</h3>
             <div className="input-group mt-3 mb-3">
                 <div>
                     <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
@@ -175,11 +182,15 @@ const MateriaPrima = ({ ...props }) => {
                         </Column>
                         <Column width={200}>
                             <HeaderCell>Fecha de Fabricación</HeaderCell>
-                            <Cell dataKey='fechaFabricacion' />
+                            <Cell>{
+                                rowData => {return (<label>{getFecha(rowData.fechaFabricacion)}</label>)}
+                            }</Cell>
                         </Column>
                         <Column width={200}>
                             <HeaderCell>Fecha de Vencimiento</HeaderCell>
-                            <Cell dataKey='fechaVencimiento' />
+                            <Cell>{
+                                rowData => {return (<label>{getFecha(rowData.fechaVencimiento)}</label>)}
+                            }</Cell>
                         </Column>
                         <Column width={200}>
                             <HeaderCell>Proveedor</HeaderCell>
@@ -198,10 +209,13 @@ const MateriaPrima = ({ ...props }) => {
                                     return (
                                         <>
                                             <div className="d-inline-block mx-2">
-                                                <Link to={`materias_primas/editar/${rowData.id}`}><Action tooltip="Editar Proveedor" color="orange" icon="edit" size="xs" /></Link>
+                                                <Link to={`materias_primas/editar/${rowData.id}`}><Action tooltip="Editar Materia Prima" color="orange" icon="edit" size="xs" /></Link>
                                             </div>
                                             <div className="d-inline-block mx-2">
-                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Proveedor" color="red" icon="trash" size="xs" />
+                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Materia Prima" color="red" icon="trash" size="xs" />
+                                            </div>
+                                            <div className="d-inline-block mx-2">
+                                                <Link to={`materias_primas/movimientos/${rowData.id}`}><Action tooltip="Ver movimientos" color="blue" icon="eye" size="xs" /></Link>
                                             </div>
                                         </>
                                     );

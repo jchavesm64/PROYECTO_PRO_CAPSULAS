@@ -56,6 +56,17 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
     const [ubicacion, setUbicacion] = useState(false);
     const [prov, setProv] = useState(false)
 
+    React.useEffect(() => {
+        setNombre(proveedor.empresa)
+        setCedula(proveedor.cedula)
+        setPais(getPais(proveedor.pais))
+        setCiudad(getCiudad(proveedor.ciudad))
+        setDireccion(proveedor.direccion)
+        setTelefonos(proveedor.telefonos)
+        setCorreos(proveedor.correos)
+        setProvedurias(getSelectedProvedurias())
+    }, [proveedor])
+
     const getPaises = () => {
         const paises = []
         countries.map(p => {
