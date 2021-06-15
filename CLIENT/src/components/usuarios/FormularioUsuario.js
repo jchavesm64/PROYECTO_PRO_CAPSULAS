@@ -3,10 +3,11 @@ import { withRouter } from 'react-router'
 import Action from '../shared/Action'
 import List from '../shared/List'
 import Boton from '../shared/Boton'
-import { InputGroup, Icon, TagPicker, Loader, Notification } from 'rsuite'
+import { InputGroup, Icon, TagPicker, Loader, Notification, InputPicker } from 'rsuite'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { OBTENER_ROLES } from '../../services/RolService'
 import { UPDATE_USER } from '../../services/UsuarioService';
+import { countries2 } from '../../Json/countries2.json'
 
 const NuevoUsuario = ({ ...props }) => {
 
@@ -31,26 +32,47 @@ const NuevoUsuario = ({ ...props }) => {
     const [refrescar, setRefrescar] = useState(false);
     const { loading: load_roles, data: data_roles } = useQuery(OBTENER_ROLES, { pollInterval: 1000 });
     const [actualizar] = useMutation(UPDATE_USER);
+    const [code, setCode] = useState('')
 
     const agregarTelefono = (telefono) => {
-        var band = false;
-        telefonos.map(t => {
-            if (t.telefono === telefono) {
-                band = true;
-            }
-        })
-        if (!band) {
-            telefonos.push({
-                "telefono": telefono
+        if(code !== ""){
+            var band = false;
+            telefonos.map(t => {
+                if (code+' '+t.telefono === telefono) {
+                    band = true;
+                }
             })
-            setRefrescar(!refrescar);
-        } else {
+            if (!band) {
+                telefonos.push({
+                    "telefono": code+' '+telefono
+                })
+                document.getElementById('telefono').value = "";
+                setRefrescar(!refrescar);
+            } else {
+                Notification['info']({
+                    title: 'Agregar Telefono',
+                    duration: 5000,
+                    description: "Ya está agregado el telefono"
+                })
+            }
+        }else{
             Notification['info']({
                 title: 'Agregar Telefono',
                 duration: 5000,
-                description: "Ya está agregado el telefono"
+                description: "No ha seleccionado un código"
             })
         }
+    }
+
+    const getCodes = () => {
+        const codes = []
+        countries2.map(c => {
+            codes.push({
+                "label": c.dial_code,
+                "value": c.dial_code
+            })
+        })
+        return codes
     }
 
     const agregarCorreo = (correo) => {
@@ -185,6 +207,7 @@ const NuevoUsuario = ({ ...props }) => {
                                     <InputGroup.Addon>
                                         <Icon icon="phone" />
                                     </InputGroup.Addon>
+                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)}/>
                                     <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
                                     <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
                                 </InputGroup>

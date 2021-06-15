@@ -80,66 +80,76 @@ const Movimientos = ({ ...props }) => {
                 <Boton name="Atras" onClick={e => props.history.push(`/materias_primas`)} icon="arrow-left-line" tooltip="Ir a Materias Primas" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Movimientos de Materia Prima</h3>
-            <h5 className="text-center">{data[0].materia_prima.nombre}</h5>
-            <div className="input-group mt-3 mb-3">
-                <div>
-                    <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
-                        <option value="1"> Tipo de Entrada</option>
-                        <option value="2"> Nombre del Usuario</option>
-                    </select>
-                </div>
-                <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
-                <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
-            </div>
-            <div>
-                <Table height={500} id="table" data={data}>
-                    <Column width={200}>
-                        <HeaderCell>Tipo de Movimiento</HeaderCell>
-                        <Cell dataKey='tipo' />
-                    </Column>
-                    <Column width={200}>
-                        <HeaderCell>Fecha de Registro</HeaderCell>
-                        <Cell>{
-                            rowData => { return (<label>{getFecha(rowData.fecha)}</label>) }
-                        }</Cell>
-                    </Column>
-                    <Column width={200}>
-                        <HeaderCell>Cantidad</HeaderCell>
-                        <Cell dataKey='cantidad' />
-                    </Column>
-                    <Column width={200}>
-                        <HeaderCell>Unidad</HeaderCell>
-                        <Cell dataKey='unidad' />
-                    </Column>
-                    <Column width={200}>
-                        <HeaderCell>Precio</HeaderCell>
-                        <Cell dataKey='precio' />
-                    </Column>
-                    <Column width={200}>
-                        <HeaderCell>Precio por Unidad</HeaderCell>
-                        <Cell dataKey='precio_unidad' />
-                    </Column>
-                    <Column width={200}>
-                        <HeaderCell>Registrado por</HeaderCell>
-                        <Cell>{
-                            rowData => { return (<label>{rowData.usuario.nombre}</label>) }
-                        }</Cell>
-                    </Column>
-                </Table>
-            </div>
-            <Pagination
-                first={false}
-                last={false}
-                next={false}
-                prev={false}
-                showInfo={false}
-                showLengthMenu={false}
-                activePage={page}
-                displayLength={displayLength}
-                total={data_movimiento.obtenerMovimientos.length}
-                onChangePage={handleChangePage}
-                onChangeLength={handleChangeLength}
-            />
+            { data_movimiento.obtenerMovimientos.length > 0 &&
+                <>
+                    <h5 className="text-center">{data[0].materia_prima.nombre}</h5>
+                    <div className="input-group mt-3 mb-3">
+                        <div>
+                            <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
+                                <option value="1"> Tipo de Entrada</option>
+                                <option value="2"> Nombre del Usuario</option>
+                            </select>
+                        </div>
+                        <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
+                        <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                    </div>
+                    <div>
+                        <Table height={500} id="table" data={data}>
+                            <Column width={200}>
+                                <HeaderCell>Tipo de Movimiento</HeaderCell>
+                                <Cell dataKey='tipo' />
+                            </Column>
+                            <Column width={200}>
+                                <HeaderCell>Fecha de Registro</HeaderCell>
+                                <Cell>{
+                                    rowData => { return (<label>{getFecha(rowData.fecha)}</label>) }
+                                }</Cell>
+                            </Column>
+                            <Column width={200}>
+                                <HeaderCell>Cantidad</HeaderCell>
+                                <Cell dataKey='cantidad' />
+                            </Column>
+                            <Column width={200}>
+                                <HeaderCell>Unidad</HeaderCell>
+                                <Cell dataKey='unidad' />
+                            </Column>
+                            <Column width={200}>
+                                <HeaderCell>Precio</HeaderCell>
+                                <Cell dataKey='precio' />
+                            </Column>
+                            <Column width={200}>
+                                <HeaderCell>Precio por Unidad</HeaderCell>
+                                <Cell dataKey='precio_unidad' />
+                            </Column>
+                            <Column width={200}>
+                                <HeaderCell>Registrado por</HeaderCell>
+                                <Cell>{
+                                    rowData => { return (<label>{rowData.usuario.nombre}</label>) }
+                                }</Cell>
+                            </Column>
+                        </Table>
+                    </div>
+                    <Pagination
+                        first={false}
+                        last={false}
+                        next={false}
+                        prev={false}
+                        showInfo={false}
+                        showLengthMenu={false}
+                        activePage={page}
+                        displayLength={displayLength}
+                        total={data_movimiento.obtenerMovimientos.length}
+                        onChangePage={handleChangePage}
+                        onChangeLength={handleChangeLength}
+                    />
+                </>
+            }
+            {data_movimiento.obtenerMovimientos.length === 0 &&
+                <>
+                    <hr/>
+                    <h4 className="text-center">No existe movimientos</h4>
+                </>
+            }
         </>
     );
 }

@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { useMutation } from "@apollo/react-hooks";
 import { countries } from '../../Json/countries.json'
 import { states } from '../../Json/states.json'
+import { countries2 } from '../../Json/countries2.json'
 import { UPDATE_CLIENTE } from '../../services/ClienteService'
 import List from '../shared/List'
-import { Notification, SelectPicker, InputGroup, Icon } from 'rsuite'
+import { Notification, SelectPicker, InputGroup, Icon, InputPicker } from 'rsuite'
 import Boton from '../shared/Boton'
 import Action from '../shared/Action'
 import { withRouter } from 'react-router';
@@ -44,6 +45,7 @@ const FormularioCliente = ({ props, cliente }) => {
     const [datos, setDatos] = useState(true);
     const [contacto, setContacto] = useState(false);
     const [ubicacion, setUbicacion] = useState(false);
+    const [code, setCode] = useState('')
 
     React.useEffect(() => {
         setTipo(cliente.tipo)
@@ -55,6 +57,17 @@ const FormularioCliente = ({ props, cliente }) => {
         setTelefonos(cliente.telefonos)
         setCorreos(cliente.correos)
     }, [cliente])
+
+    const getCodes = () => {
+        const codes = []
+        countries2.map(c => {
+            codes.push({
+                "label": c.dial_code,
+                "value": c.dial_code
+            })
+        })
+        return codes
+    }
 
     const getPaises = () => {
         const paises = []
@@ -97,23 +110,31 @@ const FormularioCliente = ({ props, cliente }) => {
     }
 
     const agregarTelefono = (telefono) => {
-        var band = false;
-        telefonos.map(t => {
-            if (t.telefono === telefono) {
-                band = true;
-            }
-        })
-        if (!band) {
-            telefonos.push({
-                "telefono": telefono
+        if(code !== ""){
+            var band = false;
+            telefonos.map(t => {
+                if (code+' '+t.telefono === telefono) {
+                    band = true;
+                }
             })
-            document.getElementById('telefono').value = "";
-            setRefrescar(!refrescar);
-        } else {
+            if (!band) {
+                telefonos.push({
+                    "telefono": code+' '+telefono
+                })
+                document.getElementById('telefono').value = "";
+                setRefrescar(!refrescar);
+            } else {
+                Notification['info']({
+                    title: 'Agregar Telefono',
+                    duration: 5000,
+                    description: "Ya está agregado el telefono"
+                })
+            }
+        }else{
             Notification['info']({
                 title: 'Agregar Telefono',
                 duration: 5000,
-                description: "Ya está agregado el telefono"
+                description: "No ha seleccionado un código"
             })
         }
     }
@@ -239,6 +260,7 @@ const FormularioCliente = ({ props, cliente }) => {
                                     <InputGroup.Addon>
                                         <Icon icon="phone" />
                                     </InputGroup.Addon>
+                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)}/>
                                     <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
                                     <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
                                 </InputGroup>
