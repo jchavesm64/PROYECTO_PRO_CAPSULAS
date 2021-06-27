@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import Action from '../shared/Action'
 import List from '../shared/List'
 import Boton from '../shared/Boton'
-import { InputGroup, Icon, TagPicker, Loader, Notification, InputPicker } from 'rsuite'
+import { InputGroup, Icon, TagPicker, Loader, Notification, InputPicker, Input } from 'rsuite'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { OBTENER_ROLES } from '../../services/RolService'
 import { SAVE_USER } from '../../services/UsuarioService';
@@ -181,8 +181,8 @@ const NuevoUsuario = ({ ...props }) => {
                     </div>
                 </div>
                 {contacto &&
-                    <div className="row mt-3">
-                        <div className="w-50 d-inline-block">
+                    <div style={{margin: 0, padding: 0}} className="row mt-3">
+                        <div className="col-md-6 d-inline-block">
                             <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
@@ -190,19 +190,19 @@ const NuevoUsuario = ({ ...props }) => {
                                         <Icon icon="phone" />
                                     </InputGroup.Addon>
                                     <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)}/>
-                                    <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
+                                    <Input id="telefono" type="number" placeholder="Numero de telefono" />
                                     <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
                                 </InputGroup>
                             </div>
                         </div>
-                        <div className="w-50 d-inline-block">
+                        <div className="col-md-6 d-inline-block">
                             <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
                                     <InputGroup.Addon>
                                         <Icon icon="at" />
                                     </InputGroup.Addon>
-                                    <input id="correo" type="email" placeholder="Dirección de correo electronico" className="rounded-0 form-control" />
+                                    <Input id="correo" type="email" placeholder="Dirección de correo electronico" />
                                     <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarCorreo(document.getElementById('correo').value)} tooltip="Agregar Correo" />
                                 </InputGroup>
                             </div>

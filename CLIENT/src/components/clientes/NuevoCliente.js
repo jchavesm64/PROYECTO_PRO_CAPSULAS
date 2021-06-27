@@ -220,8 +220,8 @@ const NuevoCliente = (props) => {
                     </div>
                 </div>
                 {contacto &&
-                    <div className="row mt-3">
-                        <div className="w-50 d-inline-block">
+                    <div style={{margin: 0, padding: 0}} className="row mt-3">
+                        <div className="col-md-6 d-inline-block">
                             <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
@@ -234,7 +234,7 @@ const NuevoCliente = (props) => {
                                 </InputGroup>
                             </div>
                         </div>
-                        <div className="w-50 d-inline-block">
+                        <div className="col-md-6 d-inline-block">
                             <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
@@ -259,11 +259,11 @@ const NuevoCliente = (props) => {
                 {ubicacion &&
                     <>
                         <div className="row">
-                            <div className="col-md-6 float-left w-90">
+                            <div className="col-md-6 float-left">
                                 <h6>Paises</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Paises" data={getPaises()} onChange={(e) => setPais(e)} />
                             </div>
-                            <div className="justify-content-end col-md-6 float-right w-90">
+                            <div className="justify-content-end col-md-6 float-right">
                                 <h6 className>Ciudades</h6>
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Provincias o Estados" data={getCiudades()} onChange={(e) => setCiudad(e)} />
                             </div>

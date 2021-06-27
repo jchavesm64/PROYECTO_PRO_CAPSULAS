@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import Boton from '../shared/Boton'
-import { Icon, Panel, Form, FormGroup, FormControl, InputGroup, ButtonToolbar, ControlLabel, Notification, Loader } from 'rsuite';
+import { Icon, Panel, Form, FormGroup, FormControl, InputGroup, ControlLabel, Notification, Loader } from 'rsuite';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { LOGIN } from '../../services/UsuarioService';
@@ -28,7 +28,7 @@ const Login = ({ ...props }) => {
                         description: 'Usuario y/o contraseña incorrecta'
                     });
                 }
-            }else{
+            } else {
                 Notification['warning']({
                     title: 'Iniciar Sesión',
                     description: 'Rellene los campos de cedula y clave'
@@ -54,7 +54,7 @@ const Login = ({ ...props }) => {
                     description: 'Usuario y/o contraseña incorrecta'
                 });
             }
-        }else{
+        } else {
             Notification['warning']({
                 title: 'Iniciar Sesión',
                 description: 'Rellene los campos de cedula y clave'
@@ -95,12 +95,12 @@ const Login = ({ ...props }) => {
                         </InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup>
-                    <ButtonToolbar>
+                <div style={{ margin: 0, padding: 0 }} className="row">
+                    <div className="d-flex justify-content-center mb-2">
                         <Boton id="btnLogin" name="Iniciar sesion" tooltip="Iniciar sesion" color="green" icon="sign-in" size="sm" position="end" onClick={clickIniciarSesion} />
-                        <Link to="/olvido_clave" style={{ color: 'blue' }}>¿Olvido su contraseña?</Link>
-                    </ButtonToolbar>
-                </FormGroup>
+                    </div>
+                    <Link to="/olvido_clave" style={{ color: 'blue' }}>¿Olvido su contraseña?</Link>
+                </div>
             </Form>
         </Panel>
     )
