@@ -30,7 +30,7 @@ class NavMenu extends Component {
         const { nameIcon } = this.state;
 
         return (
-            <nav className="navbar navbar-expand-lg navbar-light  text-center">
+            <nav className="navbar navbar-expand-lg navbar-light text-center shadow">
                 <div className="container-fluid">
                     {(!this.props.session) ?
                         <h3 className="text-right">Sistema Pro Cápsulas</h3> : ''

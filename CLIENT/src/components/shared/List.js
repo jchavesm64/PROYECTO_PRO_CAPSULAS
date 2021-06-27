@@ -33,8 +33,8 @@ const List = (props) => {
 
     const { data, edit, borrar, estilos } = props;
     return (
-        <div>
-            <Table className={estilos} height={270} data={data}>
+        <div className="p-0">
+            <Table className={estilos} style={{maxHeight: 270, minHeight: 270}} data={data}>
                 {(edit && borrar) ?
                     (
                         <Column width={300}>

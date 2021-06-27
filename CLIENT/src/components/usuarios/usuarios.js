@@ -7,6 +7,8 @@ import { Table, Loader, Notification, Popover, Whisper } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { OBTENER_USUARIOS_ACTIVOS, DELETE_USER } from '../../services/UsuarioService';
 import { Link } from "react-router-dom";
+import Card from './Card';
+import DataGrid from '../shared/DataGrid';
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
 const Usuarios = ({ ...props }) => {
@@ -17,15 +19,6 @@ const Usuarios = ({ ...props }) => {
     const [confimation, setConfirmation] = useState(false);
     const { loading: load_usuarios, error: error_usuarios, data: data_usuarios } = useQuery(OBTENER_USUARIOS_ACTIVOS, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_USER);
-
-    const handleChangePage = (dataKey) => {
-        setPage(dataKey)
-    }
-
-    const handleChangeLength = (dataKey) => {
-        setPage(1);
-        setDisplayLength(dataKey);
-    }
 
     const onDeleteUsuario = async (id) => {
         const { data } = await desactivar({ variables: { id } });
@@ -143,62 +136,10 @@ const Usuarios = ({ ...props }) => {
                 <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
             </div>
             <div className="mt-3">
-                <div>
-                    <Table height={500} id="table" data={data}>
-                        <Column width={300}>
-                            <HeaderCell>Nombre del Usuario</HeaderCell>
-                            <NameCell dataKey='nombre' />
-                        </Column>
-                        <Column width={300}>
-                            <HeaderCell>Cédula del Usuario</HeaderCell>
-                            <Cell dataKey='cedula' />
-                        </Column>
-                        <Column width={300}>
-                            <HeaderCell>Correo del Usuario</HeaderCell>
-                            <Cell>
-                                {rowData => { return <label>{rowData.correos[0] ? rowData.correos[0].email : ''}</label> }}
-                            </Cell>
-                        </Column>
-                        <Column width={300}>
-                            <HeaderCell>Telefono del Usuario</HeaderCell>
-                            <Cell>
-                                {rowData => { return <label>{rowData.telefonos[0] ? rowData.telefonos[0].telefono : ''}</label> }}
-                            </Cell>
-                        </Column>
-                        <Column width={150} fixed="right">
-                            <HeaderCell>Acción</HeaderCell>
-                            <Cell>
-                                {rowData => {
-                                    return (
-                                        <>
-                                            <div className="d-inline-block mx-2">
-                                                <Link to={`usuarios/editar/${rowData.id}`}><Action tooltip="Editar Usuario" color="orange" icon="edit" size="xs"/></Link>
-                                            </div>
-                                            <div className="d-inline-block">
-                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({bool: true, id: rowData.id}) : mostrarMsj() }} tooltip="Eliminar Usuario" color="red" icon="trash" size="xs"/>
-                                            </div>
-                                        </>
-                                    );
-                                }}
-                            </Cell>
-                        </Column>
-                    </Table>
-                </div>
-                <Pagination
-                    first={false}
-                    last={false}
-                    next={false}
-                    prev={false}
-                    showInfo={false}
-                    showLengthMenu={false}
-                    activePage={page}
-                    displayLength={displayLength}
-                    total={data_usuarios.obtenerUsuariosActivos.length}
-                    onChangePage={handleChangePage}
-                    onChangeLength={handleChangeLength}
-                />
+                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="usuarios" displayLength={9} {...props} />
             </div>
-            <div className="d-flex justify-content-start">
+
+            <div className="d-flex justify-content-start my-2">
                 <Link to={`/usuarios/nuevo`}><Boton tooltip="Nueva comisión" name="Nuevo" icon="plus" color="green" /></Link>
             </div>
             {isConfirmation}

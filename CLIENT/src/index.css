@@ -2,11 +2,11 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;/*
+    sans-serif;
+  /*
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;*/
   background: #fafafa !important;
-  zoom: 80% !important;
 }
 
 code {
@@ -16,7 +16,7 @@ code {
 
 #content {
   width: 100%;
-  padding: 20px;
+  padding: 5px;
   min-height: 100vh;
   transition: all 0.3s;
 }
@@ -76,16 +76,14 @@ p {
   min-width: 275px;
   max-width: 275px;
   background: rgba(199, 199, 199, 0.137);
-  color: rgb(100, 94, 94);
   transition: all 0.3s;
-
+  background-image: url('images/sidebar.jpeg');
 }
 
 #sidebar.active {
   min-width: 100px;
   max-width: 100px;
   text-align: center;
-  background: rgba(70, 68, 68, 0.822);
   color: rgb(255, 255, 255);
 }
 
@@ -187,7 +185,7 @@ p {
   color: white;
 }
 
-#sidebar.active .List a{
+#sidebar.active .List a {
   color: rgb(92, 92, 92);
 }
 
@@ -268,7 +266,7 @@ a.article:hover {
   color: rgb(92, 92, 92);
 }
 
-.linkConfig:hover{
+.linkConfig:hover {
   color: #0CA3AE;
   text-decoration: none;
 }
@@ -282,7 +280,6 @@ a.article:hover {
   /*IPAD*/
   /*Ocultar el diminutivo del menu*/
   #sidebar ul li a h6 {
-
     display: none;
   }
 
@@ -433,8 +430,7 @@ a.article:hover {
     display: none;
   }
 
-  .w-90{
+  .w-90 {
     width: 90%;
   }
-
 }

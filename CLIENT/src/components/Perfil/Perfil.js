@@ -33,7 +33,7 @@ const Perfil = ({ ...props }) => {
     return (
         <>
             {!estado && <Redirect to="/login" />}
-            <div className="w-75 mx-auto">
+            <div className="w-90 mx-auto">
                 <div className="text-center mb-5">
                     <span style={{ color: '#0CA3AE', fontSize: 80 }}>
                         <Icon icon="user-circle-o" size="lg" />
