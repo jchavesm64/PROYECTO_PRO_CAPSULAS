@@ -45,8 +45,9 @@ const Proveedores = ({ ...props }) => {
         : ""
 
     function getFilteredByKey(modo, key, value) {
+        console.log(modo, key, value)
         if (modo === "1") {
-            const val = key.nombre.toLowerCase();
+            const val = key.empresa.toLowerCase();
             const val2 = value.toLowerCase();
             console.log(val, val2, val.includes(val2));
             if (val.includes(val2)) {
@@ -99,25 +100,29 @@ const Proveedores = ({ ...props }) => {
     }
 
     const data = getData();
-    
+
     return (
         <>
             <h3 className="text-center">Gestión de Proveedores</h3>
-            <div className="input-group mt-3 mb-3">
-                <div>
-                    <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
+            <div className="row" style={{ margin: 0, padding: 0 }}>
+                <div style={{ padding: 0 }} className="col-md-3">
+                    <select id="select_modo" className="h-100 rounded-0 btn btn-outline-secondary dropdown-toggle w-100" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
                         <option value="1"> Nombre del proveedor</option>
                         <option value="2"> Codigo del proveedor</option>
                         <option value="3"> País del proveedor</option>
                     </select>
                 </div>
-                <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
-                <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                <div style={{ padding: 0 }} className="col-md-9 h-100">
+                    <div className="input-group">
+                        <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
+                        <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                    </div>
+                </div>
             </div>
             <div className="mt-3">
-                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="proveedores" displayLength={9} {...props}/>
+                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="proveedores" displayLength={9} {...props} />
             </div>
-            <div className="d-flex justify-content-start">
+            <div className="d-flex justify-content-start my-2">
                 <Link to={`/proveedores/nuevo`}><Boton tooltip="Nueva comisión" name="Nuevo" icon="plus" color="green" /></Link>
             </div>
             {isConfirmation}

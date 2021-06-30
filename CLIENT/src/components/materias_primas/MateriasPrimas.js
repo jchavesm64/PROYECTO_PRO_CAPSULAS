@@ -16,7 +16,7 @@ const MateriaPrima = ({ ...props }) => {
     const [confimation, setConfirmation] = useState(false);
     const { loading: load_materia_prima, error: error_materia_prima, data: data_materia_prima } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_MATERIA_PRIMA);
-    
+
     const onDeleteUsuario = async (id) => {
         const { data } = await desactivar({ variables: { id } });
         const { estado, message } = data.desactivarMateriaPrima;
@@ -96,97 +96,24 @@ const MateriaPrima = ({ ...props }) => {
     return (
         <>
             <h3 className="text-center">Gestión de Materias Primas</h3>
-            <div className="input-group mt-3 mb-3">
-                <div>
-                    <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
+            <div className="row" style={{ margin: 0, padding: 0 }}>
+                <div style={{ padding: 0 }} className="col-md-3">
+                    <select id="select_modo" className="h-100 rounded-0 btn btn-outline-secondary dropdown-toggle w-100" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
                         <option value="1"> Nombre de la materia prima</option>
                         <option value="2"> Pais</option>
                     </select>
                 </div>
-                <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
-                <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                <div style={{ padding: 0 }} className="col-md-9 h-100">
+                    <div className="input-group">
+                        <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
+                        <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                    </div>
+                </div>
             </div>
             <div className="mt-3">
                 <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="materias" displayLength={9} {...props} />
-                {/* 
-                <div>
-                    <Table height={500} id="table" data={data}>
-                        <Column width={200}>
-                            <HeaderCell>Nombre</HeaderCell>
-                            <NameCell dataKey='nombre' />
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>Lote</HeaderCell>
-                            <Cell dataKey='lote' />
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>Código</HeaderCell>
-                            <Cell dataKey='codigo' />
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>País de origen</HeaderCell>
-                            <Cell dataKey='pais' />
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>Fecha de Fabricación</HeaderCell>
-                            <Cell>{
-                                rowData => {return (<label>{getFecha(rowData.fechaFabricacion)}</label>)}
-                            }</Cell>
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>Fecha de Vencimiento</HeaderCell>
-                            <Cell>{
-                                rowData => {return (<label>{getFecha(rowData.fechaVencimiento)}</label>)}
-                            }</Cell>
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>Proveedor</HeaderCell>
-                            <Cell>{
-                                rowData => { return (<label>{rowData.proveedor.empresa}</label>) }
-                            }</Cell>
-                        </Column>
-                        <Column width={200}>
-                            <HeaderCell>Existencia Real</HeaderCell>
-                            <Cell dataKey='existencias' />
-                        </Column>
-                        <Column width={150} fixed="right">
-                            <HeaderCell>Acción</HeaderCell>
-                            <Cell>
-                                {rowData => {
-                                    return (
-                                        <>
-                                            <div className="d-inline-block mx-2">
-                                                <Link to={`materias_primas/editar/${rowData.id}`}><Action tooltip="Editar Materia Prima" color="orange" icon="edit" size="xs" /></Link>
-                                            </div>
-                                            <div className="d-inline-block mx-2">
-                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Materia Prima" color="red" icon="trash" size="xs" />
-                                            </div>
-                                            <div className="d-inline-block mx-2">
-                                                <Link to={`materias_primas/movimientos/${rowData.id}`}><Action tooltip="Ver movimientos" color="blue" icon="eye" size="xs" /></Link>
-                                            </div>
-                                        </>
-                                    );
-                                }}
-                            </Cell>
-                        </Column>
-                    </Table>
-                </div>
-                <Pagination
-                    first={false}
-                    last={false}
-                    next={false}
-                    prev={false}
-                    showInfo={false}
-                    showLengthMenu={false}
-                    activePage={page}
-                    displayLength={displayLength}
-                    total={data_materia_prima.obtenerMateriasPrimas.length}
-                    onChangePage={handleChangePage}
-                    onChangeLength={handleChangeLength}
-                />
-                */}
             </div>
-            <div className="d-flex justify-content-start">
+            <div className="d-flex justify-content-start my-2">
                 <Link to={`/materias_primas/nuevo`}><Boton tooltip="Nueva Materia Prima" name="Nuevo" icon="plus" color="green" /></Link>
             </div>
             {isConfirmation}
