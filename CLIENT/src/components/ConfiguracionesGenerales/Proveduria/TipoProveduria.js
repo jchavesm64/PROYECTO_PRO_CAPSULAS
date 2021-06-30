@@ -77,7 +77,7 @@ const TipoProveduria = ({ ...props }) => {
     }
 
     function getFilteredByKey(value, key) {
-        const val = value.nombre.toLowerCase();
+        const val = value.tipo.toLowerCase();
         const val2 = key.toLowerCase();
         if (val.includes(val2)) {
             return key

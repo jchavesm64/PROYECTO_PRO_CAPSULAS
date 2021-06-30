@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import CardUsuarios from '../usuarios/Card'
+import CardClientes from '../clientes/Card'
+import CardProveedores from '../proveedores/Card'
+import CardMaterias from '../materias_primas/Card'
 import Pagination from '../shared/Pagination'
 
 const DataGrid = ({ ...props }) => {
@@ -13,7 +16,16 @@ const DataGrid = ({ ...props }) => {
             size = index + displayLength;
         }
         for (var i = index; i < size; i++) {
-            array.push(<CardUsuarios usuario={data[i]} {...props} />)
+            console.log(page, index, i)
+            if(type === 'usuarios'){
+                array.push(<CardUsuarios usuario={data[i]} {...props} />)
+            }else if(type === 'clientes'){
+                array.push(<CardClientes cliente={data[i]} {...props} />)
+            }else if(type === 'proveedores'){
+                array.push(<CardProveedores proveedor={data[i]} {...props} />)
+            }else if(type === 'materias'){
+                array.push(<CardMaterias materia={data[i]} {...props} />)
+            }
         }
         return array
     }
@@ -22,7 +34,7 @@ const DataGrid = ({ ...props }) => {
         if(page === 1){
             index = 0
         }else{
-            index = (((page - 1) * displayLength) + 1)
+            index = (((page - 1) * displayLength))
         }
     }
 

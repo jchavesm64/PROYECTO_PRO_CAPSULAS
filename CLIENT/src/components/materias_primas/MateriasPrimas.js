@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
 import Boton from '../shared/Boton'
-import Action from '../shared/Action'
 import Confirmation from '../shared/Confirmation';
-import { Table, Loader, Notification, Popover, Whisper } from 'rsuite';
+import { Loader, Notification, Popover, Whisper } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
 import { OBTENER_MATERIAS_PRIMAS, DELETE_MATERIA_PRIMA } from '../../services/MateriaPrimaService'
-const { Column, HeaderCell, Cell, Pagination } = Table;
+import DataGrid from '../shared/DataGrid'
 
 const MateriaPrima = ({ ...props }) => {
     const [page, setPage] = useState(1);
@@ -17,16 +16,7 @@ const MateriaPrima = ({ ...props }) => {
     const [confimation, setConfirmation] = useState(false);
     const { loading: load_materia_prima, error: error_materia_prima, data: data_materia_prima } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_MATERIA_PRIMA);
-
-    const handleChangePage = (dataKey) => {
-        setPage(dataKey)
-    }
-
-    const handleChangeLength = (dataKey) => {
-        setPage(1);
-        setDisplayLength(dataKey);
-    }
-
+    
     const onDeleteUsuario = async (id) => {
         const { data } = await desactivar({ variables: { id } });
         const { estado, message } = data.desactivarMateriaPrima;
@@ -92,51 +82,6 @@ const MateriaPrima = ({ ...props }) => {
         })
     }
 
-    const NameCell = ({ rowData, dataKey, ...props }) => {
-        const speaker = (
-            <Popover title="Descripción">
-                <p>
-                    <b>Nombre:</b> {rowData.nombre}{' '}
-                </p>
-                <p>
-                    <b>Lote:</b> {rowData.lote}{' '}
-                </p>
-                <p>
-                    <b>Código:</b> {rowData.codigo}{' '}
-                </p>
-                <p>
-                    <b>Pais:</b> {rowData.pais}{' '}
-                </p>
-                <p>
-                    <b>Fecha de Fabricación:</b> {getFecha(rowData.fechaFabricacion)}{' '}
-                </p>
-                <p>
-                    <b>Fecha de Vencimiento:</b> {getFecha(rowData.fechaVencimiento)}{' '}
-                </p>
-                <p>
-                    <b>Proveedor:</b> {rowData.proveedor.empresa}{' '}
-                </p>
-                <p>
-                    <b>Existencia Real:</b> {rowData.existencia}{' '}
-                </p>
-            </Popover>
-        );
-        return (
-            <Cell {...props}>
-                <Whisper placement="top" speaker={speaker}>
-                    <label>{rowData[dataKey]}</label>
-                </Whisper>
-            </Cell>
-        );
-    };
-
-    function getFecha(fecha) {
-        var date = new Date(fecha);
-        var day = (date.getDate() < 9) ? '0' + (date.getDate() + 1) : date.getDate() + 1;
-        var mes = (date.getMonth() < 9) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-        return date.getFullYear() + ' / ' + mes + ' / ' + day;
-    }
-
     if (load_materia_prima) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error_materia_prima) {
         Notification['error']({
@@ -162,6 +107,8 @@ const MateriaPrima = ({ ...props }) => {
                 <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
             </div>
             <div className="mt-3">
+                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="materias" displayLength={9} {...props} />
+                {/* 
                 <div>
                     <Table height={500} id="table" data={data}>
                         <Column width={200}>
@@ -237,6 +184,7 @@ const MateriaPrima = ({ ...props }) => {
                     onChangePage={handleChangePage}
                     onChangeLength={handleChangeLength}
                 />
+                */}
             </div>
             <div className="d-flex justify-content-start">
                 <Link to={`/materias_primas/nuevo`}><Boton tooltip="Nueva Materia Prima" name="Nuevo" icon="plus" color="green" /></Link>

@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { Redirect, withRouter } from 'react-router'
+import { withRouter } from 'react-router'
 import Boton from '../shared/Boton'
-import Action from '../shared/Action'
 import Confirmation from '../shared/Confirmation';
-import { Table, Loader, Notification, Popover, Whisper } from 'rsuite';
+import { Loader, Notification } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { OBTENER_CLIENTES, DELETE_CLIENTE } from '../../services/ClienteService';
 import { Link } from "react-router-dom";
-const { Column, HeaderCell, Cell, Pagination } = Table;
+import DataGrid from '../shared/DataGrid';
 
 const Clientes = ({ ...props }) => {
     const [page, setPage] = useState(1);
@@ -17,15 +16,6 @@ const Clientes = ({ ...props }) => {
     const [confimation, setConfirmation] = useState(false);
     const { loading: load_clientes, error: error_clientes, data: data_clientes } = useQuery(OBTENER_CLIENTES, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_CLIENTE);
-
-    const handleChangePage = (dataKey) => {
-        setPage(dataKey)
-    }
-
-    const handleChangeLength = (dataKey) => {
-        setPage(1);
-        setDisplayLength(dataKey);
-    }
 
     const onDeleteUsuario = async (id) => {
         const { data } = await desactivar({ variables: { id } });
@@ -91,44 +81,6 @@ const Clientes = ({ ...props }) => {
         });
     }
 
-    const NameCell = ({ rowData, dataKey, ...props }) => {
-        const speaker = (
-            <Popover title="Descripción">
-                <p>
-                    <b>Tipo:</b> {rowData.tipo}{' '}
-                </p>
-                <p>
-                    <b>Codigo:</b> {rowData.codigo}{' '}
-                </p>
-                <p>
-                    <b>Nombre:</b> {rowData.nombre}{' '}
-                </p>
-                <p>
-                    <b>Email:</b> {rowData.correos[0] ? rowData.correos[0].email : ''}{' '}
-                </p>
-                <p>
-                    <b>Telefono:</b> {rowData.telefonos[0] ? rowData.telefonos[0].telefono : ''}{' '}
-                </p>
-                <p>
-                    <b>Pais:</b> {rowData.pais}{' '}
-                </p>
-                <p>
-                    <b>Ciudad:</b> {rowData.ciudad}{' '}
-                </p>
-                <p>
-                    <b>Dirección:</b> {rowData.direccion}{' '}
-                </p>
-            </Popover>
-        );
-        return (
-            <Cell {...props}>
-                <Whisper placement="top" speaker={speaker}>
-                    <label>{rowData[dataKey].toLocaleString()}</label>
-                </Whisper>
-            </Cell>
-        );
-    };
-
     const mostrarMsj = () => {
         Notification['error']({
             title: 'Error',
@@ -162,72 +114,7 @@ const Clientes = ({ ...props }) => {
                 <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
             </div>
             <div className="mt-3">
-                <div>
-                    <Table height={500} id="table" data={data}>
-                        <Column width={100}>
-                            <HeaderCell>Tipo de Cliente</HeaderCell>
-                            <Cell dataKey='tipo' />
-                        </Column>
-                        <Column width={250}>
-                            <HeaderCell>Nombre del Cliente</HeaderCell>
-                            <NameCell dataKey='nombre' />
-                        </Column>
-                        <Column width={250}>
-                            <HeaderCell>Código del Cliente</HeaderCell>
-                            <Cell dataKey='codigo' />
-                        </Column>
-                        <Column width={250}>
-                            <HeaderCell>País del Cliente</HeaderCell>
-                            <Cell dataKey='pais' />
-                        </Column>
-                        <Column width={250}>
-                            <HeaderCell>Ciudad del Cliente</HeaderCell>
-                            <Cell dataKey='ciudad' />
-                        </Column>
-                        <Column width={250}>
-                            <HeaderCell>Correo del Cliente</HeaderCell>
-                            <Cell>
-                                {rowData => { return <label>{rowData.correos[0] ? rowData.correos[0].email : ''}</label> }}
-                            </Cell>
-                        </Column>
-                        <Column width={300}>
-                            <HeaderCell>Telefono del Cliente</HeaderCell>
-                            <Cell>
-                                {rowData => { return <label>{rowData.telefonos[0] ? rowData.telefonos[0].telefono : ''}</label> }}
-                            </Cell>
-                        </Column>
-                        <Column width={150} fixed="right">
-                            <HeaderCell>Acción</HeaderCell>
-                            <Cell>
-                                {rowData => {
-                                    return (
-                                        <>
-                                            <div className="d-inline-block mx-2">
-                                            <Link to={`clientes/editar/${rowData.id}`} ><Action tooltip="Editar Cliente" color="orange" icon="edit" size="xs" /></Link>
-                                            </div>
-                                            <div className="d-inline-block">
-                                                <Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Cliente" color="red" icon="trash" size="xs" />
-                                            </div>
-                                        </>
-                                    );
-                                }}
-                            </Cell>
-                        </Column>
-                    </Table>
-                </div>
-                <Pagination
-                    first={false}
-                    last={false}
-                    next={false}
-                    prev={false}
-                    showInfo={false}
-                    showLengthMenu={false}
-                    activePage={page}
-                    displayLength={displayLength}
-                    total={data_clientes.obtenerClientes.length}
-                    onChangePage={handleChangePage}
-                    onChangeLength={handleChangeLength}
-                />
+                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="clientes" displayLength={9} {...props}/>
             </div>
             <div className="d-flex justify-content-start">
                 <Link to={`/clientes/nuevo`}><Boton tooltip="Nueva comisión" name="Nuevo" icon="plus" color="green" /></Link>

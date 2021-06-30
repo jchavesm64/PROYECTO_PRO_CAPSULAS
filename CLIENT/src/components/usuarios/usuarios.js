@@ -1,15 +1,12 @@
 import React, { useState } from 'react'
-import { Redirect, withRouter } from 'react-router'
+import { withRouter } from 'react-router'
 import Boton from '../shared/Boton'
-import Action from '../shared/Action'
 import Confirmation from '../shared/Confirmation';
-import { Table, Loader, Notification, Popover, Whisper } from 'rsuite';
+import { Loader, Notification } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { OBTENER_USUARIOS_ACTIVOS, DELETE_USER } from '../../services/UsuarioService';
 import { Link } from "react-router-dom";
-import Card from './Card';
 import DataGrid from '../shared/DataGrid';
-const { Column, HeaderCell, Cell, Pagination } = Table;
 
 const Usuarios = ({ ...props }) => {
     const [page, setPage] = useState(1);
@@ -77,32 +74,6 @@ const Usuarios = ({ ...props }) => {
         });
     }
 
-    const NameCell = ({ rowData, dataKey, ...props }) => {
-        const speaker = (
-            <Popover title="Descripción">
-                <p>
-                    <b>Cedula:</b> {rowData.cedula}{' '}
-                </p>
-                <p>
-                    <b>Nombre:</b> {`${rowData.nombre}`}{' '}
-                </p>
-                <p>
-                    <b>Email:</b> {rowData.correos[0] ? rowData.correos[0].email : ''}{' '}
-                </p>
-                <p>
-                    <b>Telefono:</b> {rowData.telefonos[0] ? rowData.telefonos[0].telefono : ''}{' '}
-                </p>
-            </Popover>
-        );
-        return (
-            <Cell {...props}>
-                <Whisper placement="top" speaker={speaker}>
-                    <label>{rowData[dataKey].toLocaleString()}</label>
-                </Whisper>
-            </Cell>
-        );
-    };
-
     const mostrarMsj = () => {
         Notification['error']({
             title: 'Error',
@@ -125,15 +96,19 @@ const Usuarios = ({ ...props }) => {
     return (
         <>
             <h3 className="text-center">Gestión de Usuarios</h3>
-            <div className="input-group mt-3 mb-3">
-                <div>
-                    <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
+            <div className="row" style={{ margin: 0, padding: 0 }}>
+                <div style={{ padding: 0 }} className="col-md-3">
+                    <select id="select_modo" className="h-100 rounded-0 btn btn-outline-secondary dropdown-toggle w-100" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
                         <option value="1"> Nombre del usuario</option>
                         <option value="2"> Cédula del usuario</option>
                     </select>
                 </div>
-                <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
-                <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                <div style={{ padding: 0 }} className="col-md-9 h-100">
+                    <div className="input-group">
+                        <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
+                        <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                    </div>
+                </div>
             </div>
             <div className="mt-3">
                 <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="usuarios" displayLength={9} {...props} />
