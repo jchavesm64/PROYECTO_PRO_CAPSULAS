@@ -30,9 +30,9 @@ export const OBTENER_MOVIMIENTOS = gql`
 
 export const SAVE_MOVIMIENTO = gql`
     mutation insertarMovimiento($input:MovimientosInput){
-    insertarMovimiento(input:$input){
-        estado
-        message
-    }
+        insertarMovimiento(input:$input){
+            estado
+            message
+        }
     }
 `;

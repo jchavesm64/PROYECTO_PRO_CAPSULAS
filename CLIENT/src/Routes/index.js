@@ -61,7 +61,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/materias_primas/nuevo" render={(props) => <NuevaMateriaPrima session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/materias_primas/editar/:id" render={(props) => <EditarMateriaPrima session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/movimientos/:id/:nombre" render={(props) => <Movimientos session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/movimientos/nuevo/:id" render={(props) => <NuevoMovimiento session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimiento/nuevo/:id" render={(props) => <NuevoMovimiento session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

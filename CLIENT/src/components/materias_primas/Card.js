@@ -34,7 +34,7 @@ const CardMateria = ({ ...props }) => {
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
                 <div className="mx-1"><Link to={`movimientos/${materia.id}/${materia.nombre}`}><Action tooltip="Ver movimientos" color="blue" icon="info" size="xs" /></Link></div>
-                <div className="mx-1"><Link to={`movimientos/nuevo/${materia.id}`}><Action tooltip="Agregar Movimiento" color="green" icon="plus" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`movimiento/nuevo/${materia.id}`}><Action tooltip="Agregar Movimiento" color="green" icon="plus" size="xs" /></Link></div>
                 <div className="mx-1"><Link to={`materias_primas/editar/${materia.id}`}><Action tooltip="Editar Materia Prima" color="orange" icon="edit" size="xs" /></Link></div>
                 <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: materia.id }) : mostrarMsj() }} tooltip="Eliminar Materia Prima" color="red" icon="trash" size="xs" /></div>
             </div>

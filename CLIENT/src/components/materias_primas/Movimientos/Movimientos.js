@@ -88,7 +88,7 @@ const Movimientos = ({ ...props }) => {
                     <h4 className="text-center">No existe movimientos</h4>
                 </>
             }
-            <Link to={`/movimientos/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
+            <Link to={`/movimiento/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
         </>
     );
 }
