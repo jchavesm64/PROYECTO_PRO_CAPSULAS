@@ -1,30 +1,21 @@
 import React, { useState } from 'react'
-import { Table, Loader, Notification } from 'rsuite';
+import { Loader, Notification } from 'rsuite';
 import { useQuery } from "@apollo/react-hooks";
-import { OBTENER_MOVIMIENTOS } from '../../services/MovimientosService'
-import Boton from '../shared/Boton'
-import Action from '../shared/Action'
+import { OBTENER_MOVIMIENTOS } from '../../../services/MovimientosService'
+import Boton from '../../shared/Boton'
 import { withRouter } from 'react-router';
-const { Column, HeaderCell, Cell, Pagination } = Table;
+import DataGrid from '../../shared/DataGrid';
+import { Link } from 'react-router-dom';
 
 const Movimientos = ({ ...props }) => {
 
-    const { id } = props.match.params;
+    const { id, nombre } = props.match.params;
 
     const [page, setPage] = useState(1);
     const [displayLength, setDisplayLength] = useState(10);
     const [filter, setFilter] = useState('')
     const [modo, setModo] = useState('1')
     const { loading: load_movimiento, error: error_movimiento, data: data_movimiento } = useQuery(OBTENER_MOVIMIENTOS, { variables: { id: id }, pollInterval: 1000 })
-
-    const handleChangePage = (dataKey) => {
-        setPage(dataKey)
-    }
-
-    const handleChangeLength = (dataKey) => {
-        setPage(1);
-        setDisplayLength(dataKey);
-    }
 
     function getFilteredByKey(modo, key, value) {
         if (modo === "1") {
@@ -56,13 +47,6 @@ const Movimientos = ({ ...props }) => {
         });
     }
 
-    function getFecha(fecha) {
-        var date = new Date(fecha);
-        var day = (date.getDate() < 9) ? '0' + (date.getDate() + 1) : date.getDate() + 1;
-        var mes = (date.getMonth() < 9) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-        return date.getFullYear() + ' / ' + mes + ' / ' + day;
-    }
-
     if (load_movimiento) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error_movimiento) {
         Notification['error']({
@@ -82,7 +66,7 @@ const Movimientos = ({ ...props }) => {
             <h3 className="text-center">Movimientos de Materia Prima</h3>
             { data_movimiento.obtenerMovimientos.length > 0 &&
                 <>
-                    <h5 className="text-center">{data[0].materia_prima.nombre}</h5>
+                    <h5 className="text-center">{nombre}</h5>
                     <div className="input-group mt-3 mb-3">
                         <div>
                             <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
@@ -93,55 +77,9 @@ const Movimientos = ({ ...props }) => {
                         <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
                         <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
                     </div>
-                    <div>
-                        <Table height={500} id="table" data={data}>
-                            <Column width={200}>
-                                <HeaderCell>Tipo de Movimiento</HeaderCell>
-                                <Cell dataKey='tipo' />
-                            </Column>
-                            <Column width={200}>
-                                <HeaderCell>Fecha de Registro</HeaderCell>
-                                <Cell>{
-                                    rowData => { return (<label>{getFecha(rowData.fecha)}</label>) }
-                                }</Cell>
-                            </Column>
-                            <Column width={200}>
-                                <HeaderCell>Cantidad</HeaderCell>
-                                <Cell dataKey='cantidad' />
-                            </Column>
-                            <Column width={200}>
-                                <HeaderCell>Unidad</HeaderCell>
-                                <Cell dataKey='unidad' />
-                            </Column>
-                            <Column width={200}>
-                                <HeaderCell>Precio</HeaderCell>
-                                <Cell dataKey='precio' />
-                            </Column>
-                            <Column width={200}>
-                                <HeaderCell>Precio por Unidad</HeaderCell>
-                                <Cell dataKey='precio_unidad' />
-                            </Column>
-                            <Column width={200}>
-                                <HeaderCell>Registrado por</HeaderCell>
-                                <Cell>{
-                                    rowData => { return (<label>{rowData.usuario.nombre}</label>) }
-                                }</Cell>
-                            </Column>
-                        </Table>
+                    <div className="mt-3">
+                        <DataGrid data={data} type="movimientos" displayLength={9} {...props} />
                     </div>
-                    <Pagination
-                        first={false}
-                        last={false}
-                        next={false}
-                        prev={false}
-                        showInfo={false}
-                        showLengthMenu={false}
-                        activePage={page}
-                        displayLength={displayLength}
-                        total={data_movimiento.obtenerMovimientos.length}
-                        onChangePage={handleChangePage}
-                        onChangeLength={handleChangeLength}
-                    />
                 </>
             }
             {data_movimiento.obtenerMovimientos.length === 0 &&
@@ -150,6 +88,7 @@ const Movimientos = ({ ...props }) => {
                     <h4 className="text-center">No existe movimientos</h4>
                 </>
             }
+            <Link to={`/movimientos/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
         </>
     );
 }

@@ -5,16 +5,12 @@ export const OBTENER_MATERIAS_PRIMAS = gql`
         obtenerMateriasPrimas{
             id
             nombre
-            lote
-            fechaFabricacion
-            fechaVencimiento
             proveedor{
                 id
                 empresa
                 cedula
             }
             pais
-            codigo
             existencias
             estado
         }
@@ -26,16 +22,12 @@ export const OBTENER_MATERIA_PRIMA = gql`
         obtenerMateriaPrima(id:$id){
             id
             nombre
-            lote
-            fechaFabricacion
-            fechaVencimiento
             proveedor{
                 id
                 empresa
                 cedula
             }
             pais
-            codigo
             existencias
             estado
         }

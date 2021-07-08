@@ -6,12 +6,35 @@ const MovimientosSchema = new mongose.Schema({
         require: true,
         trim: true
     },
+    lote:{
+        type: String,
+        require: true,
+        trim: true
+    },
+    codigo:{
+        type: String,
+        require: true,
+        trim: true
+    },
+    fechaFabricacion:{
+        type: Date,
+        required: true,
+    },
+    fechaVencimiento:{
+        type: Date,
+        required: true,
+    },
     fecha:{
         type: Date,
         require: true,
         trim: true
     },
     cantidad:{
+        type: Number,
+        require: true,
+        trim: true
+    },
+    existencia:{
         type: Number,
         require: true,
         trim: true

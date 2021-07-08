@@ -4,17 +4,22 @@ export const OBTENER_MOVIMIENTOS = gql`
     query obtenerMovimientos($id:ID){
         obtenerMovimientos(id:$id){
             id
-            fecha
             tipo
+            lote
+            codigo
+            fechaFabricacion
+            fechaVencimiento
+            fecha
+            cantidad
+            existencia
+            unidad
+            precio
+            precio_unidad
             usuario{
                 id
                 nombre
                 cedula
             }
-            cantidad
-            unidad
-            precio
-            precio_unidad
             materia_prima{
                 id
                 nombre

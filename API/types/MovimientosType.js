@@ -16,14 +16,19 @@ const movimientos_type = gql`
 
     type MovimientosType{
         id: ID
-        fecha: Date
         tipo: Tipo
-        usuario: Usuario
-        materia_prima: MateriaPrima
+        lote: String
+        codigo: String
+        fechaFabricacion: Date
+        fechaVencimiento: Date
+        fecha: Date
         cantidad: Number
+        existencia: Number
         unidad: Unidad
         precio: Number
         precio_unidad: Number
+        usuario: Usuario
+        materia_prima: MateriaPrima
     }
 
     type RespuestaMovimientos{
@@ -33,14 +38,19 @@ const movimientos_type = gql`
     }
 
     input MovimientosInput{
-        fecha: Date
         tipo: Tipo
-        usuario: ID
-        materia_prima: ID
+        lote: String
+        codigo: String
+        fechaFabricacion: Date
+        fechaVencimiento: Date
+        fecha: Date
         cantidad: Number
+        existencia: Number
         unidad: Unidad
         precio: Number
         precio_unidad: Number
+        usuario: ID
+        materia_prima: ID
     }
 
     type Query{

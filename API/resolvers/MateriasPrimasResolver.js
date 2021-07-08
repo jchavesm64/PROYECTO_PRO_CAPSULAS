@@ -3,43 +3,33 @@ import { MateriasPrimas } from '../models'
 export default {
     Query: {
         obtenerMateriasPrimas: async (_, { }) => {
-            try{
-                const materias = await MateriasPrimas.find({estado: 'ACTIVO'}).populate('proveedor');
+            try {
+                const materias = await MateriasPrimas.find({ estado: 'ACTIVO' }).populate('proveedor');
                 return materias
-            }catch(error){
+            } catch (error) {
                 return error;
             }
         },
-        obtenerMateriaPrima: async (_, {id}) => {
-            try{
+        obtenerMateriaPrima: async (_, { id }) => {
+            try {
                 const materia = await MateriasPrimas.findById(id).populate('proveedor');
                 return materia;
-            }catch(error){
+            } catch (error) {
 
             }
         }
     },
-    Mutation:{
-        insertarMateriaPrima: async (_, {input}) => {
-            try{
-                const { codigo } = input;
-                const existe = await MateriasPrimas.findOne({codigo});
-                if(existe){
-                    return {
-                        estado: false,
-                        data: null,
-                        message: "La materia prima ya existe"
-                    };
-                }else{
-                    const materia = new MateriasPrimas(input);
-                    const result = await materia.save();
-                    return {
-                        estado: true,
-                        data: result,
-                        message: "La materia prima fue registrada con éxito"
-                    };
-                }
-            }catch(error){
+    Mutation: {
+        insertarMateriaPrima: async (_, { input }) => {
+            try {
+                const materia = new MateriasPrimas(input);
+                const result = await materia.save();
+                return {
+                    estado: true,
+                    data: result,
+                    message: "La materia prima fue registrada con éxito"
+                };
+            } catch (error) {
                 console.log(error)
                 return {
                     estado: false,
@@ -48,15 +38,15 @@ export default {
                 };
             }
         },
-        actualizarMateriaPrima: async (_, {id, input}) => {
-            try{
-                const materia = await MateriasPrimas.findOneAndUpdate({_id: id}, input, {new: true});
+        actualizarMateriaPrima: async (_, { id, input }) => {
+            try {
+                const materia = await MateriasPrimas.findOneAndUpdate({ _id: id }, input, { new: true });
                 return {
                     estado: true,
                     data: materia,
                     message: "La materia prima fue actualizada con éxito"
                 };
-            }catch(error){
+            } catch (error) {
                 return {
                     estado: false,
                     data: null,
@@ -64,23 +54,23 @@ export default {
                 };
             }
         },
-        desactivarMateriaPrima: async (_, {id}) => {
-            try{
-                const materia = await MateriasPrimas.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
-                if(MateriasPrimas){
+        desactivarMateriaPrima: async (_, { id }) => {
+            try {
+                const materia = await MateriasPrimas.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
+                if (MateriasPrimas) {
                     return {
                         estado: true,
                         data: null,
                         message: "Materia prima eliminada correctamente"
                     };
-                }else{
+                } else {
                     return {
                         estado: false,
                         data: null,
                         message: "No se pudo eliminar la materia prima"
                     };
                 }
-            }catch(error){
+            } catch (error) {
                 return {
                     estado: false,
                     data: null,

@@ -16,9 +16,13 @@ const CardUsuarios = ({ ...props }) => {
         >
             <h4 className="mt-4 text-center">{"Datos de Usuario"}</h4>
             <div className="mx-1">
+                <h6>Nombre</h6>
                 <Label icon="font" value={usuario.nombre}/>
+                <h6>Identificación</h6>
                 <Label icon="id-card-o" value={usuario.cedula}/>
+                <h6>Correo</h6>
                 <Label icon="at" value={usuario.correos[0].email}/> 
+                <h6>Telefono</h6>
                 <Label icon="phone" value={usuario.telefonos[0].telefono}/>
             </div> 
             <div className="d-flex justify-content-end mx-1 my-1">

@@ -16,11 +16,17 @@ const CardProveedores = ({ ...props }) => {
         >
             <h4 className="mt-4 text-center">{"Datos del Proveedor"}</h4>
             <div className="mx-1">
+                <h6>Nombre</h6>
                 <Label icon="font" value={proveedor.empresa} />
+                <h6>Identificación</h6>
                 <Label icon="id-card-o" value={proveedor.cedula} />
+                <h6>País</h6>
                 <Label icon="globe" value={proveedor.pais} />
+                <h6>Estado o Provincia</h6>
                 <Label icon="bank" value={proveedor.ciudad} />
+                <h6>Correo</h6>
                 <Label icon="at" value={proveedor.correos[0].email} />
+                <h6>Telefono</h6>
                 <Label icon="phone" value={proveedor.telefonos[0].telefono} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">

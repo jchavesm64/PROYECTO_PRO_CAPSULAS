@@ -6,29 +6,11 @@ const MateriasPrimasSchema = new mongose.Schema({
         require: true,
         trim: true,
     },
-    lote:{
-        type: String,
-        require: true,
-        trim: true
-    },
-    fechaFabricacion:{
-        type: Date,
-        required: true,
-    },
-    fechaVencimiento:{
-        type: Date,
-        required: true,
-    },
     proveedor:{
         type: mongose.Schema.Types.ObjectId,
         ref: 'proveedores'
     },
     pais:{
-        type: String,
-        require: true,
-        trim: true
-    },
-    codigo:{
         type: String,
         require: true,
         trim: true

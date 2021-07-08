@@ -7,12 +7,8 @@ const materia_prima_type = gql`
     type MateriaPrima{
         id: ID
         nombre: String
-        lote: String
-        fechaFabricacion: Date
-        fechaVencimiento: Date
         proveedor: Proveedor
         pais: String
-        codigo: String
         existencias: Number
         estado: Estado
     }
@@ -24,12 +20,8 @@ const materia_prima_type = gql`
 
     input MateriaPrimaInput{
         nombre: String
-        lote: String
-        fechaFabricacion: Date
-        fechaVencimiento: Date
         proveedor: ID
         pais: String
-        codigo: String
         existencias: Number
         estado: Estado
     }

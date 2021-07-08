@@ -16,12 +16,19 @@ const CardClientes = ({ ...props }) => {
         >
             <h4 className="mt-4 text-center">{"Datos del Cliente"}</h4>
             <div className="mx-1">
+                <h6>Tipo</h6>
                 <Label icon="user" value={cliente.tipo} />
+                <h6>Nombre</h6>
                 <Label icon="font" value={cliente.nombre} />
+                <h6>Identificación</h6>
                 <Label icon="id-card-o" value={cliente.codigo} />
+                <h6>País</h6>
                 <Label icon="globe" value={cliente.pais} />
+                <h6>Estado o Provincia</h6>
                 <Label icon="bank" value={cliente.ciudad} />
+                <h6>Correo</h6>
                 <Label icon="at" value={cliente.correos[0].email} />
+                <h6>Telefono</h6>
                 <Label icon="phone" value={cliente.telefonos[0].telefono} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">

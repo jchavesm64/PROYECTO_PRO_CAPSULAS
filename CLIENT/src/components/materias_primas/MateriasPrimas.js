@@ -64,14 +64,17 @@ const MateriaPrima = ({ ...props }) => {
     }
 
     const getData = () => {
-        return data_materia_prima.obtenerMateriasPrimas.filter((value, index) => {
-            if (filter !== "" && modo !== "") {
-                return getFilteredByKey(modo, value, filter);
-            }
-            const start = displayLength * (page - 1);
-            const end = start + displayLength;
-            return index >= start && index < end;
-        });
+        if(data_materia_prima){
+            return data_materia_prima.obtenerMateriasPrimas.filter((value, index) => {
+                if (filter !== "" && modo !== "") {
+                    return getFilteredByKey(modo, value, filter);
+                }
+                const start = displayLength * (page - 1);
+                const end = start + displayLength;
+                return index >= start && index < end;
+            });
+        }
+        return []
     }
 
     const mostrarMsj = () => {
@@ -99,7 +102,7 @@ const MateriaPrima = ({ ...props }) => {
             <div className="row" style={{ margin: 0, padding: 0 }}>
                 <div style={{ padding: 0 }} className="col-md-3">
                     <select id="select_modo" className="h-100 rounded-0 btn btn-outline-secondary dropdown-toggle w-100" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
-                        <option value="1"> Nombre de la materia prima</option>
+                        <option value="1"> Materia Prima</option>
                         <option value="2"> Pais</option>
                     </select>
                 </div>
