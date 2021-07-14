@@ -17,6 +17,44 @@ export const OBTENER_MATERIAS_PRIMAS = gql`
     }
 `;
 
+export const OBTENER_MATERIAS_PRIMAS_MOVIMIENTOS = gql`
+    query obtenerMateriasPrimasConMovimientos{
+        obtenerMateriasPrimasConMovimientos{
+            materia_prima{
+                id
+                nombre
+                proveedor{
+                    id
+                    empresa
+                    cedula
+                }
+                pais
+                existencias
+                estado
+            }
+            movimientos{
+                id
+                tipo
+                lote
+                codigo
+                fechaFabricacion
+                fechaVencimiento
+                fecha
+                cantidad
+                existencia
+                unidad
+                precio
+                precio_unidad
+                usuario{
+                    id
+                    nombre
+                    cedula
+                }
+            }
+        }
+    }
+`;
+
 export const OBTENER_MATERIA_PRIMA = gql`
     query obtenerMateriaPrima($id:ID){
         obtenerMateriaPrima(id:$id){

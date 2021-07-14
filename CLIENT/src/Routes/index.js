@@ -24,6 +24,7 @@ import NuevaMateriaPrima from '../components/materias_primas/Nuevo';
 import EditarMateriaPrima from '../components/materias_primas/Editar';
 import Movimientos from '../components/materias_primas/Movimientos/Movimientos';
 import NuevoMovimiento from '../components/materias_primas/Movimientos/Nuevo';
+import NuevaFormula from '../components/ConfiguracionesGenerales/Formula/nuevo';
 
 const Router = ({ refetch, session }) => {
 
@@ -62,6 +63,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/materias_primas/editar/:id" render={(props) => <EditarMateriaPrima session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/movimientos/:id/:nombre" render={(props) => <Movimientos session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/movimiento/nuevo/:id" render={(props) => <NuevoMovimiento session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulas/nuevo" render={(props) => <NuevaFormula session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

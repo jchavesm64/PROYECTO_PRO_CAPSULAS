@@ -75,7 +75,7 @@ const Login = ({ ...props }) => {
     }
 
     return (
-        <Panel header={<h3>Iniciar Sesión</h3>} bordered className="w-75 mx-auto">
+        <Panel header={<h3>Iniciar Sesión</h3>} bordered className="w-75 mx-auto shadow-lg">
             <Form fluid>
                 <FormGroup>
                     <ControlLabel style={{ fontSize: 22, textAlign: 'center', fontWeight: 700 }}>Identificación</ControlLabel>

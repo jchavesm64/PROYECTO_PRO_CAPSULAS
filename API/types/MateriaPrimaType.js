@@ -13,9 +13,15 @@ const materia_prima_type = gql`
         estado: Estado
     }
 
+    type MateriaPrimaMovimientos{
+        materia_prima: MateriaPrima
+        movimientos: [MovimientosType]
+    }
+
     type Query{
         obtenerMateriasPrimas: [MateriaPrima]
         obtenerMateriaPrima(id:ID): MateriaPrima
+        obtenerMateriasPrimasConMovimientos: [MateriaPrimaMovimientos]
     }
 
     input MateriaPrimaInput{

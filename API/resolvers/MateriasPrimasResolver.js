@@ -1,4 +1,5 @@
 import { MateriasPrimas } from '../models'
+import { Movimientos } from '../models';
 
 export default {
     Query: {
@@ -6,6 +7,22 @@ export default {
             try {
                 const materias = await MateriasPrimas.find({ estado: 'ACTIVO' }).populate('proveedor');
                 return materias
+            } catch (error) {
+                return error;
+            }
+        },
+        obtenerMateriasPrimasConMovimientos: async (_, { }) => {
+            try {
+                var materiasmovimientos = []
+                const materias = await MateriasPrimas.find({ estado: 'ACTIVO' }).populate('proveedor');
+                materias.map(item => {
+                    const result = Movimientos.find({materia_prima: item.id}).populate('usuario')
+                    materiasmovimientos.push({
+                        materia_prima: item,
+                        movimientos: result
+                    })
+                })
+                return materiasmovimientos
             } catch (error) {
                 return error;
             }
