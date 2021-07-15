@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const OBTENER_FORMULAS = gql`
     query obtenerFormulas{
         obtenerFormulas{
+            id
             nombre
             elementos{
                 id
@@ -17,6 +18,7 @@ export const OBTENER_FORMULAS = gql`
                 estado
             }
             porcentajes
+            estado
         }
     }
 `;
@@ -24,6 +26,7 @@ export const OBTENER_FORMULAS = gql`
 export const OBTENER_FORMULA = gql`
     query obtenerFormula($id:ID){
         obtenerFormula(id:$id){
+            id
             nombre
             elementos{
                 id
@@ -38,6 +41,7 @@ export const OBTENER_FORMULA = gql`
                 estado
             }
             porcentajes
+            estado
         }
     }   
 `;

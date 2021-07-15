@@ -14,7 +14,7 @@ const Login = ({ ...props }) => {
     const onEnter = async (e) => {
         if (e.key === 'Enter') {
             if (cedula !== "" && clave !== "") {
-                localStorage.removeItem('rol', '');
+                localStorage.removeItem('rol');
                 const { data } = await autenticarUsuario({ variables: { cedula, clave } });
                 if (data.autenticarUsuario.token !== '0') {
                     await localStorage.setItem('rol', null);

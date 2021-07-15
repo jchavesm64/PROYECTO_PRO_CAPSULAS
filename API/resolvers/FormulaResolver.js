@@ -1,10 +1,10 @@
-import { Formula } from "../models";
+import { Formulas } from "../models";
 
 export default{
     Query:{
         obtenerFormulas: async (_, {}) => {
             try{
-                const formulas = await Formula.find({estado: 'ACTIVO'}).populate('elementos')
+                const formulas = await Formulas.find({estado: 'ACTIVO'}).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
                 return formulas
             }catch(error){
                 return error
@@ -12,7 +12,7 @@ export default{
         },
         obtenerFormula: async (_, {id}) => {
             try{
-                const formula = await Formula.findById(id)
+                const formula = await Formulas.findById(id).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
                 return formula
             }catch(error){
                 return error
@@ -22,7 +22,7 @@ export default{
     Mutation: {
         insertarFormula: async (_, {input}) => {
             try{
-                const formula = new Formula(input);
+                const formula = new Formulas(input);
                     const result = await formula.save();
                     return {
                         estado: true,
@@ -39,7 +39,7 @@ export default{
         },
         actualizarFormula: async (_, {id, input}) => {
             try{
-                const formula = await Formula.findOneAndUpdate({_id: id}, input, {new: true});
+                const formula = await Formulas.findOneAndUpdate({_id: id}, input, {new: true});
                 return {
                     estado: true,
                     data: formula,
@@ -55,7 +55,7 @@ export default{
         },
         desactivarFormula: async (_, {id}) => {
             try{
-                const formula = await Formula.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
+                const formula = await Formulas.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
                 if(formula){
                     return {
                         estado: true,

@@ -7,7 +7,7 @@ import Cliente from './Cliente';
 import Proveedor from './Proveedor';
 import MateriasPrimas from './MateriasPrimas';
 import Movimientos from './Movimientos';
-import Formula from './Formula'
+import Formulas from './Formula'
 
 export {
     Rol,
@@ -19,5 +19,5 @@ export {
     Proveedor,
     MateriasPrimas,
     Movimientos,
-    Formula
+    Formulas
 }

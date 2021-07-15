@@ -17,6 +17,8 @@ const SideBar = ({ session }) => {
 
     if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
+    localStorage.setItem('rol', session.roles[0].tipo);
+
     return (
         <>
             {

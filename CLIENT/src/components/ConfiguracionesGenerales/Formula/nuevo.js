@@ -61,7 +61,8 @@ const NuevaFormula = ({ ...props }) => {
                 const input = {
                     nombre,
                     elementos,
-                    porcentajes
+                    porcentajes,
+                    estado: 'ACTIVO'
                 }
                 const { data } = await insertar({ variables: { input } })
                 const {estado, message} = data.insertarFormula;
@@ -134,14 +135,14 @@ const NuevaFormula = ({ ...props }) => {
     const agregarElemento = async (materia) => {
         const porcentaje = document.getElementById('txt_porcentaje_' + materia.id).value;
         if (validarAgregado(formula, materia)) {
-            if (validarPorcentajes(formula, parseInt(porcentaje))) {
+            if (validarPorcentajes(formula, parseFloat(porcentaje))) {
                 var newData = []
                 formula.map(item => {
                     newData.push(item);
                 })
                 newData.push({
                     materia_prima: materia,
-                    porcentaje: parseInt(porcentaje)
+                    porcentaje: parseFloat(porcentaje)
                 })
                 setFormula(newData)
             } else {
@@ -193,7 +194,7 @@ const NuevaFormula = ({ ...props }) => {
     return (
         <div>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/config`)} icon="arrow-left-line" tooltip="Ir a Configuraciones Generales" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/config/formulas`)} icon="arrow-left-line" tooltip="Ir a Fórmulas" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Gestión de formulas</h3>
             <hr />

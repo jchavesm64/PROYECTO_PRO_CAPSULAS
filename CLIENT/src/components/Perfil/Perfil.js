@@ -30,7 +30,6 @@ const Perfil = ({ ...props }) => {
     }
 
     const { estado, data } = usuario.obtenerUsuarioAutenticado;
-    console.log(localStorage.getItem('rol'))
     return (
         <>
             {(estado) ?

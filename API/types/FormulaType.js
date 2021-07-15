@@ -4,9 +4,11 @@ const formula_type = gql`
     scalar Number
 
     type formula{
+        id: ID
         nombre: String
         elementos: [MateriaPrima]
         porcentajes: [Number]
+        estado: Estado
     }
 
     type Query{
@@ -17,7 +19,8 @@ const formula_type = gql`
     input formulaInput{
         nombre: String
         elementos: [ID]
-        porcentajes: [Number]
+        porcentajes: [Number],
+        estado: Estado
     }
 
     type RespuestaFormula{
