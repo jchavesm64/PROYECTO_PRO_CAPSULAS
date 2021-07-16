@@ -115,10 +115,9 @@ const Formulas = ({ ...props }) => {
                                     rowData => {
                                         return (
                                             <>
-                                            {/*
                                                 <div className="d-inline-block mx-2">
                                                     <Link to={`/config/formulas/editar/` + rowData.id}><Action tooltip="Editar" icon="edit" color="orange" size="xs" /></Link>
-                                            </div>*/}
+                                                </div>
                                                 <div className="d-inline-block mx-2">
                                                     <Action tooltip="Eliminar" icon="trash" color="red" onClick={() => setConfirmation({ bool: true, id: rowData.id })} size="xs" />
                                                 </div>

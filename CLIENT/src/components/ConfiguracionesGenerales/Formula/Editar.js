@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { OBTENER_FORMULA } from '../../../services/FormulaService'
 import Formulario from './Formulario';
+import Detalles from './Detalles';
 import { withRouter } from 'react-router'
 import { Loader, Notification } from 'rsuite';
 
@@ -27,16 +28,17 @@ const Editar = ({ ...props }) => {
         })
     }
 
-    function crearFormula(formula){
+    function crearFormula(formula) {
         var newFormula = {}, elementos = []
         var aux = formula.elementos, aux2 = formula.porcentajes;
-        for(var i = 0; i < aux.length; i++){
+        for (var i = 0; i < aux.length; i++) {
             elementos.push({
                 materia_prima: aux[i],
                 porcentaje: aux2[i]
             })
         }
         newFormula = {
+            id: formula.id,
             nombre: formula.nombre,
             elementos: elementos
         }
@@ -45,7 +47,14 @@ const Editar = ({ ...props }) => {
 
     return (
         <>
-            <Formulario props={props} formula={crearFormula(data.obtenerFormula)} uso={uso} refetch={refetch} />
+            {(uso === true) ?
+                (
+                    <Formulario props={ props } formula = { crearFormula(data.obtenerFormula)} refetch={refetch} />
+                ):(
+                    <Detalles props={ props } formula = { crearFormula(data.obtenerFormula)} refetch={refetch} />
+                )
+            }
+
         </>
     )
 }

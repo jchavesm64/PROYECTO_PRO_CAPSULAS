@@ -73,7 +73,7 @@ const NuevaFormula = ({ ...props }) => {
                         duration: 5000,
                         description: message
                     })
-                    //Redireccionar al formulas
+                    props.history.push(`/config/formulas`);
                 } else {
                     Notification['error']({
                         title: 'Guardar Fórmula',
@@ -168,8 +168,8 @@ const NuevaFormula = ({ ...props }) => {
             newDatos.push(item)
         })
         for (var i = 0; i < newDatos.length; i++) {
-            if (newDatos[0].materia_prima.id === dato.id) {
-                index = 0;
+            if (newDatos[i].materia_prima.id === dato.materia_prima.id) {
+                index = i;
             }
         }
         newDatos.splice(index, 1);
@@ -185,7 +185,7 @@ const NuevaFormula = ({ ...props }) => {
         Notification['error']({
             title: 'Error',
             duration: 20000,
-            description: 'Error, no podemos obtener la información de tipos de proveduría, verificar tu conexión a internet'
+            description: 'Error, no podemos obtener la información de fórmulas, verificar tu conexión a internet'
         })
     }
 
