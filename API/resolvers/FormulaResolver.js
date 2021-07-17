@@ -29,7 +29,6 @@ export default {
                         porcentajes: item.porcentajes
                     })
                 })
-                console.log(retorno)
                 return retorno
             } catch (error) {
                 return error
