@@ -17,12 +17,10 @@ const MovimientosSchema = new mongose.Schema({
         trim: true
     },
     fechaFabricacion:{
-        type: Date,
-        required: true,
+        type: Date
     },
     fechaVencimiento:{
-        type: Date,
-        required: true,
+        type: Date
     },
     fecha:{
         type: Date,
@@ -35,9 +33,7 @@ const MovimientosSchema = new mongose.Schema({
         trim: true
     },
     existencia:{
-        type: Number,
-        require: true,
-        trim: true
+        type: Number
     },
     unidad:{
         type: String,
@@ -45,14 +41,10 @@ const MovimientosSchema = new mongose.Schema({
         trim: true
     },
     precio:{
-        type: Number,
-        require: true,
-        trim: true
+        type: Number
     },
     precio_unidad:{
-        type: Number,
-        require: true,
-        trim: true
+        type: Number
     },
     usuario:{
         type: mongose.Schema.Types.ObjectId,
