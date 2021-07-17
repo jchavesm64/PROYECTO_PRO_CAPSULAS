@@ -179,72 +179,90 @@ const Cotizador = ({ ...props }) => {
         }
     }
 
+    const verificarExistencias = () => {
+        cotizacion.map(item => {
+            if (item.lote.existencia < getKilos(item.miligramos)) {
+                return false
+            }
+        })
+        return true
+    }
+
     const onSaveCotizacion = async () => {
         console.log(cotizacion)
         if (cantidad > 0 && envases > 0 && venta > 0) {
-            var date = new Date();
-            var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
-            var input = {}, obj_cotizacion = {}
-            var ele = [], por = [], lot = [], miligramos = [], precio = [], lotes = [], salidas = []
-            cotizacion.map(item => {
-                ele.push(item.materia_prima.id)
-                por.push(item.porcentaje)
-                lot.push(item.lote.id)
-                miligramos.push(item.miligramos)
-                precio.push(item.precio_kilo)
-                lotes.push({
-                    id: item.lote.id,
-                    existencia: getKilos(item.miligramos)
-                })
-                salidas.push({
-                    tipo: 'SALIDA',
-                    lote: item.lote.lote,
-                    codigo: item.lote.codigo,
-                    fecha: fecha,
-                    cantidad: getKilos(item.miligramos),
-                    unidad: item.lote.unidad,
-                    usuario: session.id,
-                    materia_prima: item.materia_prima.id
-                })
-            })
-            obj_cotizacion = {
-                cantidad: cantidad,
-                envases: envases,
-                venta: venta,
-                elementos: ele,
-                porcentajes: por,
-                lotes: lot,
-                miligramos: miligramos,
-                precio_kilo: precio
-            }
-            input = {
-                objeto: obj_cotizacion,
-                lotes: lotes,
-                salidas: salidas
-            }
-            console.log(input)
-            try {
-                const {data} = await insertar({variables: {input}, errorPolicy: 'all'})
-                const { estado, message } = data.insertarCotizacion;
-                if (estado) {
-                    Notification['success']({
-                        title: 'Guardar Cotización',
-                        duration: 5000,
-                        description: message
+            if (verificarExistencias()) {
+                var date = new Date();
+                var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
+                var input = {}, obj_cotizacion = {}
+                var ele = [], por = [], lot = [], miligramos = [], precio = [], lotes = [], salidas = []
+                cotizacion.map(item => {
+                    ele.push(item.materia_prima.id)
+                    por.push(item.porcentaje)
+                    lot.push(item.lote.id)
+                    miligramos.push(item.miligramos)
+                    precio.push(item.precio_kilo)
+                    lotes.push({
+                        id: item.lote.id,
+                        existencia: getKilos(item.miligramos)
                     })
-                } else {
+                    salidas.push({
+                        tipo: 'SALIDA',
+                        lote: item.lote.lote,
+                        codigo: item.lote.codigo,
+                        fecha: fecha,
+                        cantidad: getKilos(item.miligramos),
+                        unidad: item.lote.unidad,
+                        usuario: session.id,
+                        materia_prima: item.materia_prima.id
+                    })
+                })
+                obj_cotizacion = {
+                    cantidad: cantidad,
+                    envases: envases,
+                    venta: venta,
+                    elementos: ele,
+                    porcentajes: por,
+                    lotes: lot,
+                    miligramos: miligramos,
+                    precio_kilo: precio
+                }
+                input = {
+                    objeto: obj_cotizacion,
+                    lotes: lotes,
+                    salidas: salidas
+                }
+                console.log(input)
+                try {
+                    const { data } = await insertar({ variables: { input }, errorPolicy: 'all' })
+                    const { estado, message } = data.insertarCotizacion;
+                    if (estado) {
+                        Notification['success']({
+                            title: 'Guardar Cotización',
+                            duration: 5000,
+                            description: message
+                        })
+                        crearCotizacion(null)
+                    } else {
+                        Notification['error']({
+                            title: 'Guardar Cotización',
+                            duration: 5000,
+                            description: message
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
                     Notification['error']({
                         title: 'Guardar Cotización',
                         duration: 5000,
-                        description: message
+                        description: "Hubo un error inesperado al guardar la cotización"
                     })
                 }
-            } catch (error) {
-                console.log(error)
-                Notification['error']({
+            }else{
+                Notification['warning']({
                     title: 'Guardar Cotización',
                     duration: 5000,
-                    description: "Hubo un error inesperado al guardar la cotización"
+                    description: "No hay suficiente existencias"
                 })
             }
         }

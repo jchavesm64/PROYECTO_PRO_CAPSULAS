@@ -15,7 +15,6 @@ export default{
                 //Actualizar Lotes
                 for(let i = 0; i < lotes.length; i++){
                     var item = lotes[i]
-                    console.log(item)
                     const mov = await Movimientos.findById({_id: item.id});
                     var newExistencia = mov.existencia - item.existencia;
                     await Movimientos.findOneAndUpdate({_id: item.id}, {existencia: newExistencia}, {new: true})

@@ -29,10 +29,14 @@ const CardMovimiento = ({ ...props }) => {
                     <Label icon="hashtag" value={movimiento.lote} />
                     <h6>Código</h6>
                     <Label icon="barcode" value={movimiento.codigo} />
-                    <h6>Fabricación</h6>
-                    <Label icon="calendar-o" value={getFecha(movimiento.fechaFabricacion)} />
-                    <h6>Vencimiento</h6>
-                    <Label icon="calendar-o" value={getFecha(movimiento.fechaVencimiento)} />
+                    {movimiento.tipo === 'ENTRADA' &&
+                        <>
+                            <h6>Fabricación</h6>
+                            <Label icon="calendar-o" value={getFecha(movimiento.fechaFabricacion)} />
+                            <h6>Vencimiento</h6>
+                            <Label icon="calendar-o" value={getFecha(movimiento.fechaVencimiento)} />
+                        </>
+                    }
                     <h6>Cantidad</h6>
                     <Label icon="hashtag" value={movimiento.cantidad} />
                 </div>
@@ -41,10 +45,14 @@ const CardMovimiento = ({ ...props }) => {
                     <Label icon="hashtag" value={movimiento.existencia} />
                     <h6>Unidad de medida</h6>
                     <Label icon="list" value={movimiento.unidad} />
-                    <h6>Precio unidad</h6>
-                    <Label icon="hashtag" value={movimiento.precio_unidad} />
-                    <h6>Total</h6>
-                    <Label icon="hashtag" value={movimiento.precio} />
+                    {movimiento.tipo === 'ENTRADA' &&
+                        <>
+                            <h6>Precio unidad</h6>
+                            <Label icon="hashtag" value={movimiento.precio_unidad} />
+                            <h6>Total</h6>
+                            <Label icon="hashtag" value={movimiento.precio} />
+                        </>
+                    }
                     <h6>Registrado por</h6>
                     <Label icon="user" value={movimiento.usuario.nombre} />
                     <h6>Fecha de registro</h6>
