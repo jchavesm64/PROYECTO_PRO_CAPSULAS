@@ -26,23 +26,24 @@ export const OBTENER_FORMULAS = gql`
 export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
     query obtenerFormulasConMovimiento{
         obtenerFormulasConMovimiento{
-        id 
-        nombre
-        elementos{
-        materia_prima{
-            id
+            id 
             nombre
+            elementos{
+                materia_prima{
+                    id
+                    nombre
+                }
+                movimientos{
+                    id
+                    tipo
+                    lote
+                    cantidad
+                    existencia
+                    unidad
+                }
+            }
+            porcentajes
         }
-        movimientos{
-            id
-            tipo
-            lote
-            cantidad
-            existencia
-        }
-        }
-        porcentajes
-    }
     }
 `;
 
