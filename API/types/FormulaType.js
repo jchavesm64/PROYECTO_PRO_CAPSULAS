@@ -11,9 +11,17 @@ const formula_type = gql`
         estado: Estado
     }
 
+    type formulaCompleta{
+        id: ID
+        nombre: String
+        elementos: [MateriaPrimaMovimientos]
+        porcentajes: [Number]
+    }
+
     type Query{
         obtenerFormulas: [formula]
         obtenerFormula(id: ID): formula
+        obtenerFormulasConMovimiento: [formulaCompleta]
     }
 
     input formulaInput{

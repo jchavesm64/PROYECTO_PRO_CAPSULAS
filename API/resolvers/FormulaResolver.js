@@ -1,35 +1,60 @@
-import { Formulas } from "../models";
+import { Formulas, Movimientos } from "../models";
 
-export default{
-    Query:{
-        obtenerFormulas: async (_, {}) => {
-            try{
-                const formulas = await Formulas.find({estado: 'ACTIVO'}).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
+export default {
+    Query: {
+        obtenerFormulas: async (_, { }) => {
+            try {
+                const formulas = await Formulas.find({ estado: 'ACTIVO' }).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
                 return formulas
-            }catch(error){
+            } catch (error) {
                 return error
             }
         },
-        obtenerFormula: async (_, {id}) => {
-            try{
+        obtenerFormulasConMovimiento: async (_, { }) => {
+            try {
+                var materiasmovimientos = [], retorno = []
+                const formulas = await Formulas.find({ estado: 'ACTIVO' }).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
+                formulas.map(item => {
+                    item.elementos.map(ele => {
+                        const result = Movimientos.find({ materia_prima: ele.id }).populate('usuario')
+                        materiasmovimientos.push({
+                            materia_prima: ele,
+                            movimientos: result
+                        })
+                    })
+                    retorno.push({
+                        id: item.id,
+                        nombre: item.nombre,
+                        elementos: materiasmovimientos,
+                        porcentajes: item.porcentajes
+                    })
+                })
+                console.log(retorno)
+                return retorno
+            } catch (error) {
+                return error
+            }
+        },
+        obtenerFormula: async (_, { id }) => {
+            try {
                 const formula = await Formulas.findById(id).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
                 return formula
-            }catch(error){
+            } catch (error) {
                 return error
             }
         }
     },
     Mutation: {
-        insertarFormula: async (_, {input}) => {
-            try{
+        insertarFormula: async (_, { input }) => {
+            try {
                 const formula = new Formulas(input);
-                    const result = await formula.save();
-                    return {
-                        estado: true,
-                        data: result,
-                        message: "La formula fue registrado con éxito"
-                    };
-            }catch(error){
+                const result = await formula.save();
+                return {
+                    estado: true,
+                    data: result,
+                    message: "La formula fue registrado con éxito"
+                };
+            } catch (error) {
                 return {
                     estado: false,
                     data: null,
@@ -37,15 +62,15 @@ export default{
                 };
             }
         },
-        actualizarFormula: async (_, {id, input}) => {
-            try{
-                const formula = await Formulas.findOneAndUpdate({_id: id}, input, {new: true});
+        actualizarFormula: async (_, { id, input }) => {
+            try {
+                const formula = await Formulas.findOneAndUpdate({ _id: id }, input, { new: true });
                 return {
                     estado: true,
                     data: formula,
                     message: "la formula fue actualizado con éxito"
                 };
-            }catch(error){
+            } catch (error) {
                 return {
                     estado: false,
                     data: null,
@@ -53,23 +78,23 @@ export default{
                 };
             }
         },
-        desactivarFormula: async (_, {id}) => {
-            try{
-                const formula = await Formulas.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
-                if(formula){
+        desactivarFormula: async (_, { id }) => {
+            try {
+                const formula = await Formulas.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
+                if (formula) {
                     return {
                         estado: true,
                         data: null,
                         message: "Formula eliminada correctamente"
                     };
-                }else{
+                } else {
                     return {
                         estado: false,
                         data: null,
                         message: "No se pudo eliminar la formula"
                     };
                 }
-            }catch(error){
+            } catch (error) {
                 return {
                     estado: false,
                     data: null,

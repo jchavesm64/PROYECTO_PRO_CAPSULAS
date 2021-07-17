@@ -21,6 +21,11 @@ const shared = gql`
     input TelefonoInput{
         telefono: String
     }
+
+    type MateriaPrimaMovimientos{
+        materia_prima: MateriaPrima
+        movimientos: [MovimientosType]
+    }
 `;
 
 module.exports = shared;
