@@ -99,6 +99,21 @@ const SideBar = ({ session }) => {
                                     </li>
                                     : ''
                                 }
+                                {
+                                    session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "COTIZAR"))) ?
+                                    <li>
+                                        <a href="#cotizar" data-bs-toggle="collapse" aria-expanded="false" >
+                                            <h6><Icon icon="money"/>Cotizaciones</h6>
+                                            <strong><Icon icon="money"/>Cotizaciones</strong>
+                                        </a>
+                                        <ul className="collapse list-unstyled" id="cotizar">
+                                            <li className="List">
+                                                <Link to={`/cotizaciones`}><Icon icon="money"/>Cotizaciones</Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    : ''
+                                }
                             </ul>
                             <ul className="list-unstyled components">
                                 <li className="link">

@@ -27,6 +27,7 @@ import NuevoMovimiento from '../components/materias_primas/Movimientos/Nuevo';
 import Formulas from '../components/ConfiguracionesGenerales/Formula/formulas';
 import NuevaFormula from '../components/ConfiguracionesGenerales/Formula/nuevo';
 import EditarFormula from '../components/ConfiguracionesGenerales/Formula/Editar';
+import Cotizador from '../components/Cotizaciones/Cotizador';
 
 const Router = ({ refetch, session }) => {
 
@@ -69,6 +70,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/formulas/editar/:id" render={(props) => <EditarFormula uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulas/detalles/:id" render={(props) => <EditarFormula uso={false} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulas/nuevo" render={(props) => <NuevaFormula session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/cotizaciones" render={(props) => <Cotizador session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

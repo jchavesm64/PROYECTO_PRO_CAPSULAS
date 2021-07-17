@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router'
 import Boton from '../shared/Boton'
 import Confirmation from '../shared/Confirmation';
-import { Loader, Notification, Popover, Whisper } from 'rsuite';
+import { Loader, Notification } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
-import { OBTENER_MATERIAS_PRIMAS, DELETE_MATERIA_PRIMA } from '../../services/MateriaPrimaService'
+import { OBTENER_MATERIAS_PRIMAS_MOVIMIENTOS, DELETE_MATERIA_PRIMA } from '../../services/MateriaPrimaService'
 import DataGrid from '../shared/DataGrid'
 
 const MateriaPrima = ({ ...props }) => {
@@ -14,7 +14,7 @@ const MateriaPrima = ({ ...props }) => {
     const [filter, setFilter] = useState('')
     const [modo, setModo] = useState('1')
     const [confimation, setConfirmation] = useState(false);
-    const { loading: load_materia_prima, error: error_materia_prima, data: data_materia_prima } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 })
+    const { loading: load_materia_prima, error: error_materia_prima, data: data_materia_prima } = useQuery(OBTENER_MATERIAS_PRIMAS_MOVIMIENTOS, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_MATERIA_PRIMA);
 
     const onDeleteUsuario = async (id) => {
@@ -65,7 +65,7 @@ const MateriaPrima = ({ ...props }) => {
 
     const getData = () => {
         if(data_materia_prima){
-            return data_materia_prima.obtenerMateriasPrimas.filter((value, index) => {
+            return data_materia_prima.obtenerMateriasPrimasConMovimientos.filter((value, index) => {
                 if (filter !== "" && modo !== "") {
                     return getFilteredByKey(modo, value, filter);
                 }
@@ -95,6 +95,7 @@ const MateriaPrima = ({ ...props }) => {
     }
 
     const data = getData();
+    console.log(data)
 
     return (
         <>
