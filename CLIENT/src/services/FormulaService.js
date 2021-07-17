@@ -37,6 +37,7 @@ export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
                     id
                     tipo
                     lote
+                    codigo
                     cantidad
                     existencia
                     unidad

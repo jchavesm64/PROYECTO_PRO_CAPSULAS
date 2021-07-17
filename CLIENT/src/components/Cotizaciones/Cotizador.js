@@ -2,16 +2,19 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { OBTENER_FORMULAS_MOVIMIENTOS } from '../../services/FormulaService'
+import { SAVE_COTIZACION } from '../../services/CotizacionService'
 import { Loader, Notification, Table, InputPicker, Input } from 'rsuite';
-const { Column, HeaderCell, Cell, Pagination } = Table;
+import Boton from '../shared/Boton';
+const { Column, HeaderCell, Cell } = Table;
 
 const Cotizador = ({ ...props }) => {
     const [cantidad, setCantidad] = useState(0)
     const [envases, setEnvases] = useState(0)
-    const [coste, setCoste] = useState(0)
     const [venta, setVenta] = useState(0)
     const [cotizacion, setCotizacion] = useState(null)
     const { loading: load_formulas, error: error_formulas, data: data_formulas } = useQuery(OBTENER_FORMULAS_MOVIMIENTOS, { pollInterval: 1000 })
+    const [insertar] = useMutation(SAVE_COTIZACION)
+    const { session } = props
 
     if (load_formulas) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error_formulas) {
@@ -171,9 +174,84 @@ const Cotizador = ({ ...props }) => {
                 total += item.precio_kilo * getKilos(item.miligramos)
             })
             return total;
-        }else{
+        } else {
             return 0;
         }
+    }
+
+    const onSaveCotizacion = async () => {
+        console.log(cotizacion)
+        if (cantidad > 0 && envases > 0 && venta > 0) {
+            var date = new Date();
+            var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
+            var input = {}, obj_cotizacion = {}
+            var ele = [], por = [], lot = [], miligramos = [], precio = [], lotes = [], salidas = []
+            cotizacion.map(item => {
+                ele.push(item.materia_prima.id)
+                por.push(item.porcentaje)
+                lot.push(item.lote.id)
+                miligramos.push(item.miligramos)
+                precio.push(item.precio_kilo)
+                lotes.push({
+                    id: item.lote.id,
+                    existencia: getKilos(item.miligramos)
+                })
+                salidas.push({
+                    tipo: 'SALIDA',
+                    lote: item.lote.lote,
+                    codigo: item.lote.codigo,
+                    fecha: fecha,
+                    cantidad: getKilos(item.miligramos),
+                    unidad: item.lote.unidad,
+                    usuario: session.id,
+                    materia_prima: item.materia_prima.id
+                })
+            })
+            obj_cotizacion = {
+                cantidad: cantidad,
+                envases: envases,
+                venta: venta,
+                elementos: ele,
+                porcentajes: por,
+                lotes: lot,
+                miligramos: miligramos,
+                precio_kilo: precio
+            }
+            input = {
+                objeto: obj_cotizacion,
+                lotes: lotes,
+                salidas: salidas
+            }
+            console.log(input)
+            try {
+                const {data} = await insertar({variables: {input}, errorPolicy: 'all'})
+                const { estado, message } = data.insertarCotizacion;
+                if (estado) {
+                    Notification['success']({
+                        title: 'Guardar Cotización',
+                        duration: 5000,
+                        description: message
+                    })
+                } else {
+                    Notification['error']({
+                        title: 'Guardar Cotización',
+                        duration: 5000,
+                        description: message
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+                Notification['error']({
+                    title: 'Guardar Cotización',
+                    duration: 5000,
+                    description: "Hubo un error inesperado al guardar la cotización"
+                })
+            }
+        }
+    }
+
+    const validarFormulario = () => {
+        return !cantidad || !envases || !venta || cantidad <= 0 || envases <= 0 || venta <= 0
     }
 
     return (
@@ -298,11 +376,14 @@ const Cotizador = ({ ...props }) => {
                     </div>
                     <div className="row my-2">
                         <h6>Coste de Fabricación por Envase</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{fontSize: 16, height: 40}}>{getTotal() / envases}</label></strong>
+                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{getTotal() / envases}</label></strong>
                         <h6>Venta al Cliente por envace</h6>
                         <Input type="number" min={1} value={venta} onChange={(e) => setVenta(e)} />
                         <h6>Ganancia</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{fontSize: 16, height: 40}}>{(venta < (getTotal() / envases)) ? '0' : venta - (getTotal() / envases)}</label></strong>
+                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(venta < (getTotal() / envases)) ? '0' : venta - (getTotal() / envases)}</label></strong>
+                    </div>
+                    <div className="d-flex justify-content-end my-2">
+                        <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />
                     </div>
                 </>
             }

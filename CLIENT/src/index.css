@@ -178,7 +178,7 @@ p {
 }
 
 #sidebar ul li a {
-  color: rgb(92, 92, 92);
+  color: rgb(0, 0, 0);
 }
 
 #sidebar.active ul a {
