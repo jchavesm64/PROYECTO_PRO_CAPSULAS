@@ -12,9 +12,11 @@ export default {
         },
         obtenerFormulasConMovimiento: async (_, { }) => {
             try {
-                var materiasmovimientos = [], retorno = []
+                var retorno = []
                 const formulas = await Formulas.find({ estado: 'ACTIVO' }).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
+                console.log(formulas)
                 formulas.map(item => {
+                    var materiasmovimientos = []
                     item.elementos.map(ele => {
                         const result = Movimientos.find({ materia_prima: ele.id }).populate('usuario')
                         materiasmovimientos.push({

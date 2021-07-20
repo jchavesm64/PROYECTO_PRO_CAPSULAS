@@ -35,7 +35,7 @@ const Formulas = ({ ...props }) => {
 
     const onDeletObjeto = async (id) => {
         const { data } = await desactivar({ variables: { id } });
-        const { estado, message } = data
+        const { estado, message } = data.desactivarFormula
         if (estado) {
             Notification['success']({
                 title: 'Eliminar Tipo de Proveduría',
@@ -149,6 +149,7 @@ const Formulas = ({ ...props }) => {
             <div className="d-flex justify-content-start">
                 <Link to="/config/formulas/nuevo"><Boton name="Nueva Fórmula" tooltip="Nueva Fórmula" color="green" icon="plus" size="sm" position="end" /></Link>
             </div>
+            {isConfirmation}
         </>
     )
 }

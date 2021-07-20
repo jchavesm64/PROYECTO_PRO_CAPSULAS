@@ -201,7 +201,7 @@ const NuevaFormula = ({ ...props }) => {
             <h5>Nombre de la fórmula</h5>
             <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
             <h5 className="my-2">Elementos de la fórmula</h5>
-            <Table className="shadow-lg" minHeight={300} data={formula}>
+            <Table className="shadow-lg" height={420} autoHeight data={formula}>
                 <Column flexGrow={1}>
                     <HeaderCell>Materia Prima</HeaderCell>
                     <Cell>

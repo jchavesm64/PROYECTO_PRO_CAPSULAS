@@ -198,7 +198,7 @@ const FormularioFormula = ({ props, formula }) => {
             <h3 className="text-center">Editar Fórmula</h3>
             <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
             <div className="my-2">
-                <Table className="shadow-lg" minHeight={300} data={datos}>
+                <Table className="shadow-lg" height={300} autoHeight data={datos}>
                     <Column flexGrow={1}>
                         <HeaderCell>Materia Prima</HeaderCell>
                         <Cell>

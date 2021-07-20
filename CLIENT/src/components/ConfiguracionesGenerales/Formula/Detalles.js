@@ -15,7 +15,7 @@ const DetalllesFormula = ({ props, formula }) => {
             </div>
             <h3 className="text-center">Detalles de la Fórmula</h3>
             <div className="my-2">
-                <Table className="shadow-lg" minHeight={300} data={formula.elementos}>
+                <Table className="shadow-lg" minHeight={300} autoHeight data={formula.elementos}>
                     <Column flexGrow={1}>
                         <HeaderCell>Materia Prima</HeaderCell>
                         <Cell>

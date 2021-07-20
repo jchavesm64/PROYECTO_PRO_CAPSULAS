@@ -103,8 +103,8 @@ const Cotizaciones = ({ ...props }) => {
                                         </div>
 
                                         <div>
-                                            <Table className="shadow my-3" data={getDatos(item)}>
-                                                <Column flexGrow={1}>
+                                            <Table className="shadow my-3" autoHeight data={getDatos(item)}>
+                                                <Column flexGrow={2}>
                                                     <HeaderCell>Materia Prima</HeaderCell>
                                                     <Cell dataKey="materia_prima" />
                                                 </Column>

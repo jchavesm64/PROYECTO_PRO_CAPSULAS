@@ -35,6 +35,7 @@ const Cotizador = ({ ...props }) => {
                 const data = data_formulas.obtenerFormulasConMovimiento;
                 var datos = [];
                 data.map(item => {
+                    console.log(item)
                     datos.push({
                         label: item.nombre,
                         value: item
@@ -282,8 +283,8 @@ const Cotizador = ({ ...props }) => {
                         </div>
                     </div>
                     <div>
-                        <Table className="shadow" data={cotizacion.data}>
-                            <Column flexGrow={1}>
+                        <Table className="shadow" autoHeight data={cotizacion.data}>
+                            <Column flexGrow={2}>
                                 <HeaderCell>Materia Prima</HeaderCell>
                                 <Cell>
                                     {
