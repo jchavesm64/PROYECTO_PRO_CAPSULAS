@@ -4,7 +4,20 @@ const cotizacion_type = gql`
 
     scalar Number,
 
+    type Cotizacion{
+        id: ID
+        formula: formula
+        cantidad: Number
+        envases: Number
+        venta: Number
+        elementos: [MateriaPrima]
+        porcentajes: [Number]
+        miligramos: [Number]
+        precio_kilo: [Number]
+    }
+
     input cotizacion{
+        formula: ID
         cantidad: Number
         envases: Number
         venta: Number
@@ -28,6 +41,11 @@ const cotizacion_type = gql`
     type Respuesta{
         estado: Boolean,
         message: String
+    }
+
+    type Query{
+        obtenerCotizaciones: [Cotizacion]
+        obtenerCotizacion(id:ID): Cotizacion
     }
 
     type Mutation{

@@ -56,7 +56,7 @@ const Cotizador = ({ ...props }) => {
                 })
                 index++;
             })
-            setCotizacion(data)
+            setCotizacion({ formula: formula.id, data: data })
         } else {
             setCotizacion(null)
         }
@@ -66,7 +66,7 @@ const Cotizador = ({ ...props }) => {
         if (miligramos !== "") {
             if (parseInt(miligramos) > 0) {
                 var newDatos = []
-                cotizacion.map(item => {
+                cotizacion.data.map(item => {
                     if (item.materia_prima.id === data.materia_prima.id) {
                         newDatos.push({
                             materia_prima: item.materia_prima,
@@ -79,7 +79,7 @@ const Cotizador = ({ ...props }) => {
                         newDatos.push(item)
                     }
                 })
-                setCotizacion(newDatos)
+                setCotizacion({ formula: cotizacion.formula, data: newDatos })
             }
         }
     }
@@ -88,7 +88,7 @@ const Cotizador = ({ ...props }) => {
         if (precio !== "") {
             if (parseFloat(precio) > 1) {
                 var newDatos = []
-                cotizacion.map(item => {
+                cotizacion.data.map(item => {
                     if (item.materia_prima.id === data.materia_prima.id) {
                         newDatos.push({
                             materia_prima: item.materia_prima,
@@ -101,7 +101,7 @@ const Cotizador = ({ ...props }) => {
                         newDatos.push(item)
                     }
                 })
-                setCotizacion(newDatos)
+                setCotizacion({ formula: cotizacion.formula, data: newDatos })
             }
         }
     }
@@ -137,7 +137,7 @@ const Cotizador = ({ ...props }) => {
     const getTotal = () => {
         if (cantidad > 0 && envases > 0) {
             var total = 0;
-            cotizacion.map(item => {
+            cotizacion.data.map(item => {
                 total += item.precio_kilo * getKilos(item.miligramos)
             })
             return total;
@@ -162,7 +162,7 @@ const Cotizador = ({ ...props }) => {
         if (cantidad > 0 && envases > 0 && venta > 0) {
             var input = {}, obj_cotizacion = {}, band = false;
             var ele = [], por = [], lot = [], miligramos = [], precio = [], mat = [];
-            cotizacion.map(item => {
+            cotizacion.data.map(item => {
                 if (verificarExistencias(item.movimientos, getKilos(item.miligramos))) {
                     ele.push(item.materia_prima.id)
                     por.push(item.porcentaje)
@@ -172,12 +172,13 @@ const Cotizador = ({ ...props }) => {
                         id: item.materia_prima.id,
                         total: getKilos(item.miligramos)
                     })
-                }else{
+                } else {
                     band = true
                 }
             })
             if (band === false) {
                 obj_cotizacion = {
+                    formula: cotizacion.formula,
                     cantidad: cantidad,
                     envases: envases,
                     venta: venta,
@@ -227,6 +228,9 @@ const Cotizador = ({ ...props }) => {
 
     return (
         <>
+            <div>
+                <Boton name="Atras" onClick={e => props.history.push(`/cotizaciones`)} icon="arrow-left-line" tooltip="Ir a Cotizaciones" size="xs" color="blue" />
+            </div>
             <h3 className="text-center">Cotizador</h3>
             <div className="my-2 w-75 mx-auto">
                 <h6>Seleccione Formula</h6>
@@ -245,7 +249,7 @@ const Cotizador = ({ ...props }) => {
                         </div>
                     </div>
                     <div>
-                        <Table className="shadow" data={cotizacion}>
+                        <Table className="shadow" data={cotizacion.data}>
                             <Column flexGrow={1}>
                                 <HeaderCell>Materia Prima</HeaderCell>
                                 <Cell>

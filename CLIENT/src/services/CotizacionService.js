@@ -8,3 +8,45 @@ export const SAVE_COTIZACION = gql`
         }
     }
 `;
+
+export const OBTENER_COTIZACIONES = gql`
+    query obtenerCotizaciones{
+        obtenerCotizaciones{
+            id
+            formula{
+            nombre
+            }
+            cantidad
+            envases
+            venta
+            elementos{
+            id
+            nombre
+            }
+            porcentajes
+            miligramos
+            precio_kilo
+        }
+    }
+`;
+
+export const OBTENER_COTIZACION = gql`
+    query obtenerCotizacion($id:ID){
+        obtenerCotizacion(id:$id){
+            id
+            formula{
+            nombre
+            }
+            cantidad
+            envases
+            venta
+            elementos{
+            id
+            nombre
+            }
+            porcentajes
+            miligramos
+            precio_kilo
+        }
+    }
+`;

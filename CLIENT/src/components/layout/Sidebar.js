@@ -110,6 +110,9 @@ const SideBar = ({ session }) => {
                                             <li className="List">
                                                 <Link to={`/cotizaciones`}><Icon icon="money"/>Cotizaciones</Link>
                                             </li>
+                                            <li className="List">
+                                                <Link to={`/cotizar`}><Icon icon="plus"/>Cotizar</Link>
+                                            </li>
                                         </ul>
                                     </li>
                                     : ''

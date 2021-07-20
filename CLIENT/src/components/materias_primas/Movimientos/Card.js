@@ -41,12 +41,12 @@ const CardMovimiento = ({ ...props }) => {
                     <Label icon="hashtag" value={movimiento.cantidad} />
                 </div>
                 <div className="col-md-6">
-                    <h6>Existencias</h6>
-                    <Label icon="hashtag" value={movimiento.existencia} />
                     <h6>Unidad de medida</h6>
                     <Label icon="list" value={movimiento.unidad} />
                     {movimiento.tipo === 'ENTRADA' &&
                         <>
+                            <h6>Existencias</h6>
+                            <Label icon="hashtag" value={movimiento.existencia} />
                             <h6>Precio unidad</h6>
                             <Label icon="hashtag" value={movimiento.precio_unidad} />
                             <h6>Total</h6>

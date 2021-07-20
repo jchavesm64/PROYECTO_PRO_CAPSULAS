@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const CotizacionSchema = mongoose.Schema({
+    formula:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'formulas'
+    },
     cantidad:{
         type: Number,
         require: true,
@@ -24,10 +28,6 @@ const CotizacionSchema = mongoose.Schema({
         type: Array,
         require: true
     },
-    lotes:[{
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Movimientos'
-    }],
     miligramos:{
         type: Array,
         require: true
