@@ -9,7 +9,11 @@ const { Column, HeaderCell, Cell } = Table;
 
 const Cotizador = ({ ...props }) => {
     const [cantidad, setCantidad] = useState(0)
+    const [costoCapsula, setCostoCapsula] = useState(0)
     const [envases, setEnvases] = useState(0)
+    const [costoEnvase, setCostoEnvase] = useState(0)
+    const [etiquetas, setEtiquetas] = useState(0)
+    const [costoEtiquetas, setCostoEtiqueta] = useState(0)
     const [venta, setVenta] = useState(0)
     const [cotizacion, setCotizacion] = useState(null)
     const { loading: load_formulas, error: error_formulas, data: data_formulas } = useQuery(OBTENER_FORMULAS_MOVIMIENTOS, { pollInterval: 1000 })
@@ -129,17 +133,26 @@ const Cotizador = ({ ...props }) => {
 
     const getTotalFila = (data) => {
         if (cantidad > 0 && envases > 0 && data.precio_kilo > 0) {
-            return getKilos(data.miligramos) * data.precio_kilo;
+            return parseFloat(getKilos(data.miligramos) * data.precio_kilo).toFixed(2);
         }
         return 0;
     }
 
     const getTotal = () => {
-        if (cantidad > 0 && envases > 0) {
+        if (cantidad > 0 && envases > 0 && etiquetas) {
             var total = 0;
             cotizacion.data.map(item => {
                 total += item.precio_kilo * getKilos(item.miligramos)
             })
+            if(cantidad > 0 && costoCapsula > 0){
+                total += cantidad * costoCapsula
+            }
+            if(envases > 0 && costoEnvase > 0){
+                total += envases * costoEnvase
+            }
+            if(etiquetas > 0 && costoEtiquetas > 0){
+                total += etiquetas * costoEtiquetas
+            }
             return total;
         } else {
             return 0;
@@ -161,7 +174,7 @@ const Cotizador = ({ ...props }) => {
     const onSaveCotizacion = async () => {
         if (cantidad > 0 && envases > 0 && venta > 0) {
             var input = {}, obj_cotizacion = {}, band = false;
-            var ele = [], por = [], lot = [], miligramos = [], precio = [], mat = [];
+            var ele = [], por = [], miligramos = [], precio = [], mat = [];
             cotizacion.data.map(item => {
                 if (verificarExistencias(item.movimientos, getKilos(item.miligramos))) {
                     ele.push(item.materia_prima.id)
@@ -180,7 +193,11 @@ const Cotizador = ({ ...props }) => {
                 obj_cotizacion = {
                     formula: cotizacion.formula,
                     cantidad: cantidad,
+                    costoCapsula: costoCapsula,
                     envases: envases,
+                    costoEnvase: costoEnvase,
+                    etiqueta: etiquetas,
+                    costoEtiqueta: costoEtiquetas,
                     venta: venta,
                     elementos: ele,
                     porcentajes: por,
@@ -202,7 +219,7 @@ const Cotizador = ({ ...props }) => {
                             duration: 5000,
                             description: message
                         })
-                        crearCotizacion(null)
+                        props.history.push('/cotizaciones')
                     } else {
                         Notification['error']({
                             title: 'Guardar Cotización',
@@ -223,7 +240,7 @@ const Cotizador = ({ ...props }) => {
     }
 
     const validarFormulario = () => {
-        return !cantidad || !envases || !venta || cantidad <= 0 || envases <= 0 || venta <= 0
+        return !cantidad || !envases || !etiquetas || !venta || !costoCapsula || !costoEnvase || !costoEtiquetas || cantidad <= 0 || envases <= 0 || etiquetas <= 0 || venta <= 0 || costoCapsula <= 0 || costoEnvase <= 0 || costoEtiquetas <= 0
     }
 
     return (
@@ -239,13 +256,29 @@ const Cotizador = ({ ...props }) => {
             {(cotizacion !== null) &&
                 <>
                     <div className="row my-2">
-                        <div className="col-md-6">
-                            <h6>Cantidad por envases</h6>
+                        <div className="col-md-5">
+                            <h6>Cápsulas por envases</h6>
                             <Input type="number" min={1} value={cantidad} onChange={(e) => setCantidad(e)} />
-                        </div>
-                        <div className="col-md-6">
                             <h6>Total de envases</h6>
                             <Input type="number" min={1} value={envases} onChange={(e) => setEnvases(e)} />
+                            <h6>Total de etiquetas</h6>
+                            <Input type="number" min={1} value={etiquetas} onChange={(e) => setEtiquetas(e)} />
+                        </div>
+                        <div className="col-md-5">
+                            <h6>Costo por Cápsula</h6>
+                            <Input type="number" min={1} value={costoCapsula} onChange={(e) => setCostoCapsula(e)} />
+                            <h6>Costo por envase</h6>
+                            <Input type="number" min={1} value={costoEnvase} onChange={(e) => setCostoEnvase(e)} />
+                            <h6>Costo por etiqueta</h6>
+                            <Input type="number" min={1} value={costoEtiquetas} onChange={(e) => setCostoEtiqueta(e)} />
+                        </div>
+                        <div className="col-md-2">
+                            <h6>Total Cápsulas</h6>
+                            <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(cantidad > 0 && costoCapsula > 0) ? parseFloat(cantidad * costoCapsula).toFixed(2) : 0}</label></strong>
+                            <h6>Total Envases</h6>
+                            <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(envases > 0 && costoEnvase > 0) ? parseFloat(envases * costoEnvase).toFixed(2) : 0}</label></strong>
+                            <h6>Total Etiquetas</h6>
+                            <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(etiquetas > 0 && costoEtiquetas > 0) ? parseFloat(etiquetas * costoEtiquetas).toFixed(2) : 0}</label></strong>
                         </div>
                     </div>
                     <div>
@@ -337,15 +370,15 @@ const Cotizador = ({ ...props }) => {
                         </Table>
                     </div>
                     <div className="d-flex justify-content-end mb-3 mt-1">
-                        <h6>Total: {getTotal()}</h6>
+                        <h6>Total: {parseFloat(getTotal()).toFixed(2)}</h6>
                     </div>
                     <div className="row my-2">
                         <h6>Coste de Fabricación por Envase</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{envases > 0 ? getTotal() / envases : 0}</label></strong>
+                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{envases > 0 ? parseFloat(getTotal() / envases).toFixed(2) : 0}</label></strong>
                         <h6>Venta al Cliente por envace</h6>
                         <Input type="number" min={1} value={venta} onChange={(e) => setVenta(e)} />
                         <h6>Ganancia</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(venta === 0 || envases === 0) ? 0 : (venta < (getTotal() / envases)) ? '0' : venta - (getTotal() / envases)}</label></strong>
+                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(venta === 0 || envases === 0) ? 0 : (venta < (getTotal() / envases)) ? '0' : parseFloat(venta - (getTotal() / envases)).toFixed(2)}</label></strong>
                     </div>
                     <div className="d-flex justify-content-end my-2">
                         <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />

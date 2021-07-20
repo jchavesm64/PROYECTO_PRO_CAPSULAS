@@ -17,7 +17,11 @@ export const OBTENER_COTIZACIONES = gql`
             nombre
             }
             cantidad
+            costoCapsula
             envases
+            costoEnvase
+            etiqueta
+          	costoEtiqueta
             venta
             elementos{
             id

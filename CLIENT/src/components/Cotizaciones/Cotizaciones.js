@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { OBTENER_COTIZACIONES } from '../../services/CotizacionService'
 import { Loader, Notification, Table } from 'rsuite';
 import Boton from '../shared/Boton';
+import { parse } from 'graphql';
 const { Column, HeaderCell, Cell } = Table;
 
 const Cotizaciones = ({ ...props }) => {
@@ -30,18 +31,32 @@ const Cotizaciones = ({ ...props }) => {
                 gramos_tot: (((item.miligramos[i] / 1000) * item.cantidad) * item.envases),
                 kilos: (((item.miligramos[i] / 1000) * item.cantidad) * item.envases) / 1000,
                 precio_kilo: item.precio_kilo[i],
-                total: item.precio_kilo[i] * ((((item.miligramos[i] / 1000) * item.cantidad) * item.envases) / 1000)
+                total: parseFloat(item.precio_kilo[i] * ((((item.miligramos[i] / 1000) * item.cantidad) * item.envases) / 1000)).toFixed(2)
             })
         }
         return data
     }
 
-    const getPrecioEnvase = (miligramos, precio_kilo, cantidad, envases) => {
+    const getPrecioEnvase = (item) => {
         var pe = 0
-        for(let i = 0; i < miligramos.length; i++){
-            pe += precio_kilo[i] * ((((miligramos[i] / 1000) * cantidad) * envases) / 1000)
+        for (let i = 0; i < item.miligramos.length; i++) {
+            pe += item.precio_kilo[i] * ((((item.miligramos[i] / 1000) * item.cantidad) * item.envases) / 1000)
         }
-        return pe / envases
+        pe += item.cantidad * item.costoCapsula
+        pe += item.costoEnvase * item.envases
+        pe += item.etiqueta * item.costoEtiqueta
+        return parseFloat(pe / item.envases).toFixed(2)
+    }
+
+    const getTotal = (item) => {
+        var pe = 0
+        for (let i = 0; i < item.miligramos.length; i++) {
+            pe += item.precio_kilo[i] * ((((item.miligramos[i] / 1000) * item.cantidad) * item.envases) / 1000)
+        }
+        pe += item.cantidad * item.costoCapsula
+        pe += item.costoEnvase * item.envases
+        pe += item.etiqueta * item.costoEtiqueta
+        return parseFloat(pe).toFixed(2)
     }
 
     console.log(data)
@@ -60,10 +75,33 @@ const Cotizaciones = ({ ...props }) => {
                                     <div className="bg-white p-2 m-2 shadow row">
                                         <h6>Fórmula</h6>
                                         <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.formula.nombre}</label></strong>
-                                        <h6>Cantidad de Cápsulas por Envase</h6>
-                                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.cantidad}</label></strong>
-                                        <h6>Cantidad de Envases</h6>
-                                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.envases}</label></strong>
+                                        <div className="row my-2">
+                                            <div className="col-md-5">
+                                                <h6>Cantidad de Cápsulas por Envase</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.cantidad}</label></strong>
+                                                <h6>Cantidad de Envases</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.envases}</label></strong>
+                                                <h6>Cantidad de Etiquetas</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.etiqueta}</label></strong>
+                                            </div>
+                                            <div className="col-md-5">
+                                                <h6>Costo por Cápsula</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.costoCapsula}</label></strong>
+                                                <h6>Costo de Envase</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.costoEnvase}</label></strong>
+                                                <h6>Costo de Etiqueta</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.costoEtiqueta}</label></strong>
+                                            </div>
+                                            <div className="col-md-2">
+                                                <h6>Total por Cápsula</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{parseFloat(item.cantidad * item.costoCapsula).toFixed(2)}</label></strong>
+                                                <h6>Total de Envase</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{parseFloat(item.costoEnvase * item.envases).toFixed(2)}</label></strong>
+                                                <h6>Total de Etiqueta</h6>
+                                                <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{parseFloat(item.etiqueta * item.costoEtiqueta).toFixed(2)}</label></strong>
+                                            </div>
+                                        </div>
+
                                         <div>
                                             <Table className="shadow my-3" data={getDatos(item)}>
                                                 <Column flexGrow={1}>
@@ -104,12 +142,15 @@ const Cotizaciones = ({ ...props }) => {
                                                 </Column>
                                             </Table>
                                         </div>
+                                        <div className="d-flex justify-content-end">
+                                            <h6>Total: {getTotal(item)}</h6>
+                                        </div>
                                         <h6>Precio por Envase</h6>
-                                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{getPrecioEnvase(item.miligramos, item.precio_kilo, item.cantidad, item.envases)}</label></strong>
+                                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{getPrecioEnvase(item)}</label></strong>
                                         <h6>Precio de Venta por Envase</h6>
                                         <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.venta}</label></strong>
                                         <h6>Ganancia por Envase</h6>
-                                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{item.venta - getPrecioEnvase(item.miligramos, item.precio_kilo, item.cantidad, item.envases)}</label></strong>
+                                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{parseFloat(item.venta - getPrecioEnvase(item)).toFixed(2)}</label></strong>
                                     </div>
                                 )
                             })

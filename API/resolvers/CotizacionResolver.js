@@ -25,6 +25,7 @@ export default{
             const session = await mongoose.startSession()
             session.startTransaction()
             try{
+                console.log("Hola 1")
                 var date = new Date();
                 var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
                 const opts = {session, new:true}
@@ -80,6 +81,7 @@ export default{
                     message: "Cotizacíon generada con éxito"
                 }
             }catch(error){
+                console.log('hola')
                 console.log(error)
                 await session.abortTransaction()
                 session.endSession();

@@ -1,38 +1,58 @@
 const mongoose = require('mongoose');
 
 const CotizacionSchema = mongoose.Schema({
-    formula:{
+    formula: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'formulas'
     },
-    cantidad:{
+    cantidad: {
         type: Number,
         require: true,
         trim: true
     },
-    envases:{
+    costoCapsula: {
         type: Number,
         require: true,
         trim: true
     },
-    venta:{
+    envases: {
         type: Number,
         require: true,
         trim: true
     },
-    elementos:[{
+    costoEnvase: {
+        type: Number,
+        require: true,
+        trim: true
+    },
+    etiqueta: {
+        type: Number,
+        require: true,
+        trim: true
+    },
+    costoEtiqueta: {
+        type: Number,
+        require: true,
+        trim: true
+    },
+    venta: {
+        type: Number,
+        require: true,
+        trim: true
+    },
+    elementos: [{
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'MateriasPrimas'
     }],
-    porcentajes:{
+    porcentajes: {
         type: Array,
         require: true
     },
-    miligramos:{
+    miligramos: {
         type: Array,
         require: true
     },
-    precio_kilo:{
+    precio_kilo: {
         type: Array,
         require: true
     }

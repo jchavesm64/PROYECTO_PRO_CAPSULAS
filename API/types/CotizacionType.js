@@ -8,7 +8,11 @@ const cotizacion_type = gql`
         id: ID
         formula: formula
         cantidad: Number
+        costoCapsula: Number
         envases: Number
+        costoEnvase: Number
+        etiqueta: Number
+        costoEtiqueta: Number
         venta: Number
         elementos: [MateriaPrima]
         porcentajes: [Number]
@@ -19,7 +23,11 @@ const cotizacion_type = gql`
     input cotizacion{
         formula: ID
         cantidad: Number
+        costoCapsula: Number
         envases: Number
+        costoEnvase: Number
+        etiqueta: Number
+        costoEtiqueta: Number
         venta: Number
         elementos: [ID]
         porcentajes: [Number]
