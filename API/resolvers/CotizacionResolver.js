@@ -7,23 +7,53 @@ export default{
             const session = await mongoose.startSession()
             session.startTransaction()
             try{
+                var date = new Date();
+                var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
                 const opts = {session, new:true}
-                const {objeto, lotes, salidas} = input
+                const {objeto, materias, usuario} = input
                 //Guardar cotizacion
                 const cotizacion = new Cotizacion(objeto);
                 await cotizacion.save()
                 //Actualizar Lotes
-                for(let i = 0; i < lotes.length; i++){
-                    var item = lotes[i]
-                    const mov = await Movimientos.findById({_id: item.id});
-                    var newExistencia = mov.existencia - item.existencia;
-                    await Movimientos.findOneAndUpdate({_id: item.id}, {existencia: newExistencia}, {new: true})
-                }
-                //Registrar Salidas
-                for(let i = 0; i < salidas.length; i++){
-                    var item = salidas[i]
-                    const salida = new Movimientos(item)
-                    await salida.save()
+                var reducir = 0
+                for(let i = 0; i < materias.length; i++){
+                    reducir = materias[i].total;
+                    const movimientos = await Movimientos.find({materia_prima: materias[i].id, tipo: 'ENTRADA'});
+                    for(let j = 0; j < movimientos.length; j++){
+                        if(movimientos[j].existencia > 0){
+                            if(movimientos[j].existencia < reducir){
+                                reducir -= movimientos[j].existencia
+                                const salida = {
+                                    tipo: 'SALIDA',
+                                    lote: movimientos[j].lote,
+                                    codigo: movimientos[j].codigo,
+                                    fecha: fecha,
+                                    cantidad: movimientos[j].existencia,
+                                    unidad: movimientos[j].unidad,
+                                    usuario: usuario,
+                                    materia_prima: materias[i].id
+                                }
+                                await Movimientos.findOneAndUpdate({_id: movimientos[j].id}, {existencia: 0}, {new: true})
+                                const saveSalida = new Movimientos(salida);
+                                await saveSalida.save()
+                            }else{
+                                const salida = {
+                                    tipo: 'SALIDA',
+                                    lote: movimientos[j].lote,
+                                    codigo: movimientos[j].codigo,
+                                    fecha: fecha,
+                                    cantidad: reducir,
+                                    unidad: movimientos[j].unidad,
+                                    usuario: usuario,
+                                    materia_prima: materias[i].id
+                                }
+                                var newExistencia = movimientos[j].existencia - reducir
+                                await Movimientos.findOneAndUpdate({_id: movimientos[j].id}, {existencia: newExistencia}, {new: true})
+                                const saveSalida = new Movimientos(salida);
+                                await saveSalida.save()
+                            }
+                        }
+                    }
                 }
                 await session.commitTransaction()
                 session.endSession();

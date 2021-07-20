@@ -10,14 +10,28 @@ const cotizacion_type = gql`
         venta: Number
         elementos: [ID]
         porcentajes: [Number]
-        lotes: [ID]
         miligramos: [Number]
         precio_kilo: [Number]
     }    
 
-    input lote{
+    input Materia{
         id: ID
-        existencia: Number
+        total: Number
+    }
+
+    input entradasCotizacion{
+        objeto: cotizacion
+        materias: [Materia]
+        usuario: ID
+    }
+
+    type Respuesta{
+        estado: Boolean,
+        message: String
+    }
+
+    type Mutation{
+        insertarCotizacion(input:entradasCotizacion):Respuesta
     }
 
     input salida{
@@ -31,20 +45,6 @@ const cotizacion_type = gql`
         materia_prima: ID
     }
 
-    input entradasCotizacion{
-        objeto: cotizacion
-        lotes: [lote]
-        salidas: [salida]
-    }
-
-    type Respuesta{
-        estado: Boolean,
-        message: String
-    }
-
-    type Mutation{
-        insertarCotizacion(input:entradasCotizacion):Respuesta
-    }
 `;
 
 module.exports = cotizacion_type;

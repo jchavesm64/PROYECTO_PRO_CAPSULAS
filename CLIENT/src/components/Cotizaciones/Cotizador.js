@@ -51,7 +51,6 @@ const Cotizador = ({ ...props }) => {
                     materia_prima: item.materia_prima,
                     movimientos: item.movimientos,
                     porcentaje: formula.porcentajes[index],
-                    lote: null,
                     miligramos: 0,
                     precio_kilo: 0
                 })
@@ -63,36 +62,6 @@ const Cotizador = ({ ...props }) => {
         }
     }
 
-    const getLotes = (materia) => {
-        var datos = []
-        materia.movimientos.map(item => {
-            datos.push({
-                label: 'Lote: ' + item.lote + ' - Existencia: ' + item.existencia + ' ' + item.unidad,
-                value: item
-            })
-        })
-        return datos
-    }
-
-    const seleccionarLote = (data, lote) => {
-        var newDatos = []
-        cotizacion.map(item => {
-            if (item.materia_prima.id === data.materia_prima.id) {
-                newDatos.push({
-                    materia_prima: item.materia_prima,
-                    movimientos: item.movimientos,
-                    lote: lote,
-                    miligramos: item.miligramos,
-                    porcentaje: item.porcentaje,
-                    precio_kilo: item.precio_kilo
-                })
-            } else {
-                newDatos.push(item)
-            }
-        })
-        setCotizacion(newDatos)
-    }
-
     const actualizarMiligramos = (data, miligramos) => {
         if (miligramos !== "") {
             if (parseInt(miligramos) > 0) {
@@ -102,7 +71,6 @@ const Cotizador = ({ ...props }) => {
                         newDatos.push({
                             materia_prima: item.materia_prima,
                             movimientos: item.movimientos,
-                            lote: item.lote,
                             miligramos: parseInt(miligramos),
                             porcentaje: item.porcentaje,
                             precio_kilo: item.precio_kilo
@@ -125,7 +93,6 @@ const Cotizador = ({ ...props }) => {
                         newDatos.push({
                             materia_prima: item.materia_prima,
                             movimientos: item.movimientos,
-                            lote: item.lote,
                             miligramos: item.miligramos,
                             porcentaje: item.porcentaje,
                             precio_kilo: parseFloat(precio)
@@ -179,58 +146,50 @@ const Cotizador = ({ ...props }) => {
         }
     }
 
-    const verificarExistencias = () => {
-        cotizacion.map(item => {
-            if (item.lote.existencia < getKilos(item.miligramos)) {
-                return false
+    const verificarExistencias = (mov, cantidad) => {
+        var existencias = 0
+        mov.map(item => {
+            if (item.tipo === 'ENTRADA') {
+                existencias += item.cantidad
+            } else {
+                existencias -= item.cantidad
             }
         })
-        return true
+        return existencias >= cantidad;
     }
 
     const onSaveCotizacion = async () => {
-        console.log(cotizacion)
         if (cantidad > 0 && envases > 0 && venta > 0) {
-            if (verificarExistencias()) {
-                var date = new Date();
-                var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
-                var input = {}, obj_cotizacion = {}
-                var ele = [], por = [], lot = [], miligramos = [], precio = [], lotes = [], salidas = []
-                cotizacion.map(item => {
+            var input = {}, obj_cotizacion = {}, band = false;
+            var ele = [], por = [], lot = [], miligramos = [], precio = [], mat = [];
+            cotizacion.map(item => {
+                if (verificarExistencias(item.movimientos, getKilos(item.miligramos))) {
                     ele.push(item.materia_prima.id)
                     por.push(item.porcentaje)
-                    lot.push(item.lote.id)
                     miligramos.push(item.miligramos)
                     precio.push(item.precio_kilo)
-                    lotes.push({
-                        id: item.lote.id,
-                        existencia: getKilos(item.miligramos)
+                    mat.push({
+                        id: item.materia_prima.id,
+                        total: getKilos(item.miligramos)
                     })
-                    salidas.push({
-                        tipo: 'SALIDA',
-                        lote: item.lote.lote,
-                        codigo: item.lote.codigo,
-                        fecha: fecha,
-                        cantidad: getKilos(item.miligramos),
-                        unidad: item.lote.unidad,
-                        usuario: session.id,
-                        materia_prima: item.materia_prima.id
-                    })
-                })
+                }else{
+                    band = true
+                }
+            })
+            if (band === false) {
                 obj_cotizacion = {
                     cantidad: cantidad,
                     envases: envases,
                     venta: venta,
                     elementos: ele,
                     porcentajes: por,
-                    lotes: lot,
                     miligramos: miligramos,
                     precio_kilo: precio
                 }
                 input = {
                     objeto: obj_cotizacion,
-                    lotes: lotes,
-                    salidas: salidas
+                    materias: mat,
+                    usuario: session.id
                 }
                 console.log(input)
                 try {
@@ -258,12 +217,6 @@ const Cotizador = ({ ...props }) => {
                         description: "Hubo un error inesperado al guardar la cotización"
                     })
                 }
-            }else{
-                Notification['warning']({
-                    title: 'Guardar Cotización',
-                    duration: 5000,
-                    description: "No hay suficiente existencias"
-                })
             }
         }
     }
@@ -306,16 +259,6 @@ const Cotizador = ({ ...props }) => {
                             <Column flexGrow={1}>
                                 <HeaderCell>Porcentaje</HeaderCell>
                                 <Cell dataKey="porcentaje" />
-                            </Column>
-                            <Column flexGrow={2}>
-                                <HeaderCell>Lote</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<InputPicker className="rounded-0" style={{ padding: 0, minHeight: 40, marginTop: -10 }} size="md" placeholder="Seleccionar Lote" data={getLotes(rowData)} searchable={true} onChange={(e) => seleccionarLote(rowData, e)} />)
-                                        }
-                                    }
-                                </Cell>
                             </Column>
                             <Column flexGrow={1}>
                                 <HeaderCell>MG / Cápsula</HeaderCell>
@@ -394,11 +337,11 @@ const Cotizador = ({ ...props }) => {
                     </div>
                     <div className="row my-2">
                         <h6>Coste de Fabricación por Envase</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{getTotal() / envases}</label></strong>
+                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{envases > 0 ? getTotal() / envases : 0}</label></strong>
                         <h6>Venta al Cliente por envace</h6>
                         <Input type="number" min={1} value={venta} onChange={(e) => setVenta(e)} />
                         <h6>Ganancia</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(venta < (getTotal() / envases)) ? '0' : venta - (getTotal() / envases)}</label></strong>
+                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(venta === 0 || envases === 0) ? 0 : (venta < (getTotal() / envases)) ? '0' : venta - (getTotal() / envases)}</label></strong>
                     </div>
                     <div className="d-flex justify-content-end my-2">
                         <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />
