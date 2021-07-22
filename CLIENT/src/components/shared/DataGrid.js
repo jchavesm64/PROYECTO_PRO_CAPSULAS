@@ -16,17 +16,17 @@ const DataGrid = ({ ...props }) => {
         if (index + displayLength <= data.length) {
             size = index + displayLength;
         }
-        for (var i = index; i < size; i++) {
+        for (let i = index; i < size; i++) {
             if(type === 'usuarios'){
-                array.push(<CardUsuarios key={data[i]} usuario={data[i]} {...props} />)
+                array.push(<CardUsuarios key={i} usuario={data[i]} {...props} />)
             }else if(type === 'clientes'){
-                array.push(<CardClientes key={data[i]} cliente={data[i]} {...props} />)
+                array.push(<CardClientes key={i} cliente={data[i]} {...props} />)
             }else if(type === 'proveedores'){
-                array.push(<CardProveedores key={data[i]} proveedor={data[i]} {...props} />)
+                array.push(<CardProveedores key={i} proveedor={data[i]} {...props} />)
             }else if(type === 'materias'){
-                array.push(<CardMaterias key={data[i]} materia={data[i]} {...props} />)
+                array.push(<CardMaterias key={i} materia={data[i]} {...props} />)
             }else if(type === 'movimientos'){
-                array.push(<CardMovimientos key={data[i]} movimiento={data[i]} {...props} />)
+                array.push(<CardMovimientos key={i} movimiento={data[i]} {...props} />)
             }
         }
         return array
