@@ -13,6 +13,7 @@ export const OBTENER_MATERIAS_PRIMAS = gql`
             pais
             unidad
             existencias
+            marca
             estado
         }
     }
@@ -32,6 +33,7 @@ export const OBTENER_MATERIAS_PRIMAS_MOVIMIENTOS = gql`
                 pais
                 unidad
                 existencias
+                marca
                 estado
             }
             movimientos{
@@ -69,6 +71,7 @@ export const OBTENER_MATERIA_PRIMA = gql`
             pais
             unidad
             existencias
+            marca
             estado
         }
     }

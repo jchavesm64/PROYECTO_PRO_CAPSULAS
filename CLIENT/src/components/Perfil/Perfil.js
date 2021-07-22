@@ -21,13 +21,6 @@ const Perfil = ({ ...props }) => {
             description: 'Servido no responde, por favor contactar con los administradores'
         })
     }
-    if (error) {
-        Notification['error']({
-            title: 'Error',
-            duration: 5000,
-            description: 'Error al cambiar foto de perfi.'
-        })
-    }
 
     const { estado, data } = usuario.obtenerUsuarioAutenticado;
     return (

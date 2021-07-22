@@ -113,8 +113,6 @@ const NuevoMovimiento = (props) => {
                     <h6 className="my-1">Cantidad</h6>
                     <Input type="number" min={0} placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e)} />
                 </div>
-            </div>
-            <div className="row justify-content-center">
                 <div className="col-md-6">
                     <h6 className="my-1">Precio Unidad</h6>
                     <Input type="number" placeholder="Precio Unidad" value={precio} onChange={(e) => setPrecio(e)} />

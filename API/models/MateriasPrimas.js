@@ -24,6 +24,11 @@ const MateriasPrimasSchema = new mongose.Schema({
         type: Number,
         require: true
     },
+    marca:{ //0 Nada, 1 Gelatina, 2 Agua 3 Glicerina
+        type: String,
+        require: true,
+        trim: true
+    },
     estado:{
         type: String,
         require: true,
