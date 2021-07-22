@@ -95,7 +95,6 @@ const MateriaPrima = ({ ...props }) => {
     }
 
     const data = getData();
-    console.log(data)
 
     return (
         <>

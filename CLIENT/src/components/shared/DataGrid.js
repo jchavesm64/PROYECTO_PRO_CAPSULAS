@@ -17,7 +17,6 @@ const DataGrid = ({ ...props }) => {
             size = index + displayLength;
         }
         for (var i = index; i < size; i++) {
-            console.log(page, index, i)
             if(type === 'usuarios'){
                 array.push(<CardUsuarios usuario={data[i]} {...props} />)
             }else if(type === 'clientes'){

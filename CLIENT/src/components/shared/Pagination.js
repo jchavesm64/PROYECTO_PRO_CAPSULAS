@@ -5,8 +5,11 @@ const Pagination = ({ ...props }) => {
     const { length, displayLength, activePage, setPage } = props
 
     const getItems = () => {
-        const pages = (length % displayLength === 0) ? (length / displayLength) : ((length / displayLength) + 0.5)
-        var array = [], size = pages;
+        var pages = parseInt(length / displayLength)
+        if(length % displayLength !== 0){
+            pages += 1;
+        }
+        var array = []
         array.push(<Button onClick={() => setPage(1)} className="list-group-item">1 <Icon icon="angle-double-left" /></Button>)
         if (pages <= 5) {
             for (let i = 1; i <= pages; i++) {

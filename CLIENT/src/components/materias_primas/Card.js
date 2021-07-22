@@ -20,8 +20,6 @@ const CardMateria = ({ ...props }) => {
         return cantidad;
     }
 
-    console.log(materia)
-
     return (
         <Panel shaded bordered bodyFill style={{ width: 300, maxWidth: 300 }}
             className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
