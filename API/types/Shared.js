@@ -6,6 +6,12 @@ const shared = gql`
         INACTIVO
     }
 
+    enum Moneda{
+        US_DOLLAR
+        COLON
+        YEN
+    }
+
     type Email{
         email: String
     }

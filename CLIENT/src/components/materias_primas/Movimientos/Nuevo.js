@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { Input, InputPicker, Notification } from 'rsuite'
+import { Input, InputPicker, Notification, Uploader } from 'rsuite'
 import { useMutation } from '@apollo/react-hooks'
 import { SAVE_MOVIMIENTO } from '../../../services/MovimientosService';
 import Boton from '../../shared/Boton';
@@ -12,6 +12,8 @@ const NuevoMovimiento = (props) => {
     const [fechaVencimiento, setFechaVencimiento] = useState('')
     const [cantidad, setCantidad] = useState('')
     const [precio, setPrecio] = useState('')
+    const [moneda, setMoneda] = useState('US Dollar')
+    const [cao, setCao] = useState('')
     const [insertar] = useMutation(SAVE_MOVIMIENTO);
 
     const { session } = props
@@ -21,7 +23,7 @@ const NuevoMovimiento = (props) => {
         var date = new Date();
         var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
         if (fechaFabricacion < fechaVencimiento && fechaFabricacion <= fecha) {
-            if(!(cantidad < 1 || precio < 1)){
+            if (!(cantidad < 1 || precio < 1)) {
                 try {
                     const input = {
                         tipo: 'ENTRADA',
@@ -34,6 +36,8 @@ const NuevoMovimiento = (props) => {
                         existencia: cantidad,
                         precio: cantidad * precio,
                         precio_unidad: precio,
+                        moneda,
+                        cao,
                         usuario: session.id,
                         materia_prima: id
                     }
@@ -62,7 +66,7 @@ const NuevoMovimiento = (props) => {
                         description: "Hubo un error inesperado al guardar la entrada"
                     })
                 }
-            }else{
+            } else {
                 Notification['error']({
                     title: 'Ingresar Entrada',
                     duration: 5000,
@@ -79,7 +83,12 @@ const NuevoMovimiento = (props) => {
     }
 
     const validarForm = () => {
-        return !lote || !codigo || !fechaFabricacion || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio;
+        return !lote || !codigo || !fechaFabricacion || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio || !moneda || !cao;
+    }
+
+    const selectArchivo = (file) => {
+        console.log(file)
+        setCao(file[0].name)
     }
 
     return (
@@ -115,8 +124,22 @@ const NuevoMovimiento = (props) => {
                 </div>
                 <div className="col-md-6">
                     <h6 className="my-1">Precio Unidad</h6>
-                    <Input type="number" placeholder="Precio Unidad" value={precio} onChange={(e) => setPrecio(e)} />
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Input type="number" placeholder="Precio Unidad" value={precio} onChange={(e) => setPrecio(e)} />
+                        </div>
+                        <div className="col-md-6">
+                            <InputPicker className="w-100" data={[{ label: 'US Dollar', value: 'US_DOLLAR' }, { label: 'Colón', value: 'COLON' }, { label: 'Yen', value: 'YEN' }]} placeholder="Moneda" value={moneda} onChange={(e) => setMoneda(e)} />
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+            <div className="w-100 mx-auto">
+                <h6>Seleccione el archivo CAO</h6>
+                <Uploader draggable removable fileList={[]} fileListVisible={false} multiple={false} autoUpload={false} onChange={selectArchivo} accept="application/*" className="text-center"> 
+                    <div style={{lineHeight: '100px'}}>{cao === "" ? "Seleccion o Arrastre el archivo a esta area": cao}</div>
+                </Uploader>
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
                 <Boton onClick={onSaveMovimiento} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />

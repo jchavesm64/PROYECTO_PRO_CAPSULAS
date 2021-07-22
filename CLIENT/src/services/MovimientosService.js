@@ -14,6 +14,8 @@ export const OBTENER_MOVIMIENTOS = gql`
             existencia
             precio
             precio_unidad
+            moneda
+            cao
             usuario{
                 id
                 nombre

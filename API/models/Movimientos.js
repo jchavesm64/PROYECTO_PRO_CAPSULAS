@@ -41,6 +41,15 @@ const MovimientosSchema = new mongose.Schema({
     precio_unidad:{
         type: Number
     },
+    moneda:{
+        type: String,
+        require: true,
+        trim: true
+    },
+    cao:{
+        type: String,
+        require: true,
+    },
     usuario:{
         type: mongose.Schema.Types.ObjectId,
         ref: 'usuarios'

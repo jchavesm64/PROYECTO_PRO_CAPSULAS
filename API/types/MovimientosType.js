@@ -21,6 +21,8 @@ const movimientos_type = gql`
         existencia: Number
         precio: Number
         precio_unidad: Number
+        moneda: Moneda
+        cao: String
         usuario: Usuario
         materia_prima: MateriaPrima
     }
@@ -42,6 +44,8 @@ const movimientos_type = gql`
         existencia: Number
         precio: Number
         precio_unidad: Number
+        moneda: Moneda
+        cao: String
         usuario: ID
         materia_prima: ID
     }

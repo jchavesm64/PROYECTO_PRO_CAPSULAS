@@ -13,6 +13,7 @@ export default {
     },
     Mutation: {
         insertarMovimiento: async (_, { input }) => {
+            console.log("Movimientos: ", input)
             try{
                 const mov = new Movimientos(input);
                 const result = await mov.save();
