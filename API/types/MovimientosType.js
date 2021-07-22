@@ -9,11 +9,6 @@ const movimientos_type = gql`
         SALIDA
     }    
 
-    enum Unidad {
-        Kilogramo
-        Litro
-    }
-
     type MovimientosType{
         id: ID
         tipo: Tipo
@@ -24,7 +19,6 @@ const movimientos_type = gql`
         fecha: Date
         cantidad: Number
         existencia: Number
-        unidad: Unidad
         precio: Number
         precio_unidad: Number
         usuario: Usuario
@@ -46,7 +40,6 @@ const movimientos_type = gql`
         fecha: Date
         cantidad: Number
         existencia: Number
-        unidad: Unidad
         precio: Number
         precio_unidad: Number
         usuario: ID

@@ -35,11 +35,6 @@ const MovimientosSchema = new mongose.Schema({
     existencia:{
         type: Number
     },
-    unidad:{
-        type: String,
-        require: true,
-        trim: true
-    },
     precio:{
         type: Number
     },

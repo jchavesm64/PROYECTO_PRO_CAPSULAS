@@ -11,6 +11,7 @@ export const OBTENER_MATERIAS_PRIMAS = gql`
                 cedula
             }
             pais
+            unidad
             existencias
             estado
         }
@@ -29,6 +30,7 @@ export const OBTENER_MATERIAS_PRIMAS_MOVIMIENTOS = gql`
                     cedula
                 }
                 pais
+                unidad
                 existencias
                 estado
             }
@@ -42,7 +44,6 @@ export const OBTENER_MATERIAS_PRIMAS_MOVIMIENTOS = gql`
                 fecha
                 cantidad
                 existencia
-                unidad
                 precio
                 precio_unidad
                 usuario{
@@ -66,6 +67,7 @@ export const OBTENER_MATERIA_PRIMA = gql`
                 cedula
             }
             pais
+            unidad
             existencias
             estado
         }

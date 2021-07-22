@@ -4,11 +4,17 @@ const materia_prima_type = gql`
     scalar Date
     scalar Number
 
+    enum Unidad {
+        Kilogramo
+        Litro
+    }
+
     type MateriaPrima{
         id: ID
         nombre: String
         proveedor: Proveedor
         pais: String
+        unidad: Unidad
         existencias: Number
         estado: Estado
     }
@@ -23,6 +29,7 @@ const materia_prima_type = gql`
         nombre: String
         proveedor: ID
         pais: String
+        unidad: Unidad
         existencias: Number
         estado: Estado
     }

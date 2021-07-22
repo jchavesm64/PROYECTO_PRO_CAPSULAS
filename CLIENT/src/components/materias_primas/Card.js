@@ -35,7 +35,7 @@ const CardMateria = ({ ...props }) => {
                 <h6>Proveedor</h6>
                 <Label icon="user" value={materia.materia_prima.proveedor.empresa} />
                 <h6>Existencias</h6>
-                <Label icon="hashtag" value={calcularMovimientos(materia.movimientos)} />
+                <Label icon="hashtag" value={calcularMovimientos(materia.movimientos) + ' ' + materia.materia_prima.unidad} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
                 <div className="mx-1"><Link to={`movimientos/${materia.materia_prima.id}/${materia.materia_prima.nombre}`}><Action tooltip="Ver movimientos" color="blue" icon="info" size="xs" /></Link></div>

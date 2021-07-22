@@ -12,7 +12,6 @@ export const OBTENER_MOVIMIENTOS = gql`
             fecha
             cantidad
             existencia
-            unidad
             precio
             precio_unidad
             usuario{

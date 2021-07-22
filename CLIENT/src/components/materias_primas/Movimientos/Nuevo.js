@@ -11,7 +11,6 @@ const NuevoMovimiento = (props) => {
     const [fechaFabricacion, setFechaFabricacion] = useState('')
     const [fechaVencimiento, setFechaVencimiento] = useState('')
     const [cantidad, setCantidad] = useState('')
-    const [unidad, setUnidad] = useState('')
     const [precio, setPrecio] = useState('')
     const [insertar] = useMutation(SAVE_MOVIMIENTO);
 
@@ -33,7 +32,6 @@ const NuevoMovimiento = (props) => {
                         fecha,
                         cantidad,
                         existencia: cantidad,
-                        unidad,
                         precio: cantidad * precio,
                         precio_unidad: precio,
                         usuario: session.id,
@@ -81,7 +79,7 @@ const NuevoMovimiento = (props) => {
     }
 
     const validarForm = () => {
-        return !lote || !codigo || !fechaFabricacion || !fechaFabricacion || !fechaVencimiento || !cantidad || !unidad || !precio;
+        return !lote || !codigo || !fechaFabricacion || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio;
     }
 
     return (
@@ -114,10 +112,6 @@ const NuevoMovimiento = (props) => {
                 <div className="col-md-6">
                     <h6 className="my-1">Cantidad</h6>
                     <Input type="number" min={0} placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e)} />
-                </div>
-                <div className="col-md-6">
-                    <h6 className="my-1">Unidad Métrica</h6>
-                    <InputPicker className="w-100" data={[{ label: 'Kilogramo', value: 'Kilogramo' }, { label: 'Litro', value: 'Litro' }]} placeholder="Unidad Métrica" value={unidad} onChange={(e) => setUnidad(e)} />
                 </div>
             </div>
             <div className="row justify-content-center">

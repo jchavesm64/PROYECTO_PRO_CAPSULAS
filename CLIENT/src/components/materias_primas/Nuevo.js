@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Notification, SelectPicker, Loader } from 'rsuite'
+import { Notification, SelectPicker, Loader, InputPicker } from 'rsuite'
 import Boton from '../shared/Boton'
 import { withRouter } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/react-hooks'
@@ -12,6 +12,7 @@ const NuevaMateriaPrima = ({ ...props }) => {
     const [proveedor, setProveedor] = useState('');
     const [pais, setPais] = useState('');
     const [insertar] = useMutation(SAVE_MATERIA_PRIMA);
+    const [unidad, setUnidad] = useState('')
     const { loading: load_prov, data: data_prov } = useQuery(OBTENER_PROVEEDORES, { pollInterval: 1000 });
 
     const getPaises = () => {
@@ -44,6 +45,7 @@ const NuevaMateriaPrima = ({ ...props }) => {
                 nombre,
                 proveedor,
                 pais: pais.name,
+                unidad: unidad,
                 existencias: 0,
                 estado: 'ACTIVO'
             }
@@ -97,6 +99,10 @@ const NuevaMateriaPrima = ({ ...props }) => {
                     <h6>Proveedor</h6>
                     <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Proveedor" data={getProveedores()} onChange={(e) => setProveedor(e)} searchable={true} />
                 </div>
+            </div>
+            <div className="mx-auto w-50 row">
+                <h6 className="my-1">Unidad Métrica</h6>
+                <InputPicker className="w-100" data={[{ label: 'Kilogramo', value: 'Kilogramo' }, { label: 'Litro', value: 'Litro' }]} placeholder="Unidad Métrica" value={unidad} onChange={(e) => setUnidad(e)} />
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
                 <Boton onClick={onSaveMateriaPrima} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />

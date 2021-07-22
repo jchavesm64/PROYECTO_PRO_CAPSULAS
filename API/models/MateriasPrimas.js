@@ -15,6 +15,11 @@ const MateriasPrimasSchema = new mongose.Schema({
         require: true,
         trim: true
     },
+    unidad:{
+        type: String,
+        require: true,
+        trim: true
+    },
     existencias:{
         type: Number,
         require: true
