@@ -3,8 +3,14 @@ const { gql } = require('apollo-server-express');
 const formula_type = gql`
     scalar Number
 
+    enum TipoCapsula{
+        POLVO
+        BLANDA
+    }
+
     type formula{
         id: ID
+        tipo: TipoCapsula
         nombre: String
         elementos: [MateriaPrima]
         porcentajes: [Number]
@@ -14,6 +20,7 @@ const formula_type = gql`
     type formulaCompleta{
         id: ID
         nombre: String
+        tipo: TipoCapsula
         elementos: [MateriaPrimaMovimientos]
         porcentajes: [Number]
     }
@@ -26,6 +33,7 @@ const formula_type = gql`
 
     input formulaInput{
         nombre: String
+        tipo: TipoCapsula
         elementos: [ID]
         porcentajes: [Number],
         estado: Estado

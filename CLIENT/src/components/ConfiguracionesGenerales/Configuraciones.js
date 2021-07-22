@@ -11,7 +11,7 @@ const Configuracion = ({session}) => {
                 <Card link={"/config/tipoproveduria"} name={"Tipo de Proveduría"} icon="list"/>
                 <Card link={"/config/tipoproductos"} name={"Tipo de Productos"} icon="list"/>
                 <Card link={"/config/roles"} name={"Gestionar Roles"} icon="peoples"/>
-                <Card link={"/config/formulas"} name="Gestionar Forlumas" icon="calculator"/>
+                <Card link={"/config/formulas"} name="Gestionar Formulas" icon="calculator"/>
             </div>
         </>
     )

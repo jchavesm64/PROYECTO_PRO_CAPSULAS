@@ -6,6 +6,7 @@ import {
     Table,
     Loader,
     Notification,
+    InputPicker
 } from 'rsuite';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { SAVE_FORMULA } from '../../../services/FormulaService'
@@ -18,8 +19,9 @@ const NuevaFormula = ({ ...props }) => {
     const [displayLength, setDisplayLength] = useState(10);
     const { loading, error, data: materias_primas } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 });
     const [formula, setFormula] = useState([])
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState('')
     const [nombre, setNombre] = useState("")
+    const [tipo, setTipo] = useState('')
     const [insertar] = useMutation(SAVE_FORMULA)
 
     const handleChangePage = (dataKey) => {
@@ -60,12 +62,13 @@ const NuevaFormula = ({ ...props }) => {
                 })
                 const input = {
                     nombre,
+                    tipo,
                     elementos,
                     porcentajes,
                     estado: 'ACTIVO'
                 }
                 const { data } = await insertar({ variables: { input } })
-                const {estado, message} = data.insertarFormula;
+                const { estado, message } = data.insertarFormula;
                 console.log(estado, message)
                 if (estado) {
                     Notification['success']({
@@ -81,7 +84,7 @@ const NuevaFormula = ({ ...props }) => {
                         description: message
                     })
                 }
-            }catch(error){
+            } catch (error) {
                 console.log(error)
                 Notification['error']({
                     title: 'Guardar Fórmula',
@@ -198,8 +201,16 @@ const NuevaFormula = ({ ...props }) => {
             </div>
             <h3 className="text-center">Gestión de formulas</h3>
             <hr />
-            <h5>Nombre de la fórmula</h5>
-            <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
+            <div class="row my-1">
+                <div className="col-md-4">
+                    <h6 className="my-1">Tipo de Cápsula</h6>
+                    <InputPicker className="w-100" data={[{ label: 'Polvo', value: 'POLVO' }, { label: 'Blanda', value: 'BLANDA' }]} placeholder="Tipo de Cápsula" value={tipo} onChange={(e) => setTipo(e)} />
+                </div>
+                <div className="col-md-8">
+                    <h5>Nombre de la fórmula</h5>
+                    <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
+                </div>
+            </div>
             <h5 className="my-2">Elementos de la fórmula</h5>
             <Table className="shadow-lg" height={420} autoHeight data={formula}>
                 <Column flexGrow={1}>

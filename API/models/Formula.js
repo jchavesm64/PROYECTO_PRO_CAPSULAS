@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const FormulaSchema = new mongoose.Schema({
+    tipo:{
+        type: String,
+        require: true,
+        trim: true
+    },
     nombre:{
         type: String,
         require: true,

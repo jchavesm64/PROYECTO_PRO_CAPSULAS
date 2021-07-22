@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Notification, Loader, Table } from 'rsuite'
+import { Notification, Loader, Table, InputPicker } from 'rsuite'
 import Boton from '../../shared/Boton'
 import { withRouter } from 'react-router-dom'
 import Action from '../../shared/Action'
@@ -12,6 +12,7 @@ const { Column, HeaderCell, Cell, Pagination } = Table;
 const FormularioFormula = ({ props, formula }) => {
     const [datos, setDatos] = useState(formula.elementos)
     const [nombre, setNombre] = useState(formula.nombre)
+    const [tipo, setTipo] = useState(formula.tipo)
     const [page, setPage] = useState(1);
     const [displayLength, setDisplayLength] = useState(10);
     const [filter, setFilter] = useState('');
@@ -22,6 +23,7 @@ const FormularioFormula = ({ props, formula }) => {
     useEffect(() => {
         setNombre(formula.nombre)
         setDatos(formula.elementos)
+        setTipo(formula.tipo)
     }, [formula])
 
     const handleChangePage = (dataKey) => {
@@ -135,6 +137,7 @@ const FormularioFormula = ({ props, formula }) => {
                 })
                 const input = {
                     nombre,
+                    tipo,
                     elementos,
                     porcentajes,
                     estado: 'ACTIVO'
@@ -195,8 +198,16 @@ const FormularioFormula = ({ props, formula }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/config/formulas`)} icon="arrow-left-line" tooltip="Ir a fórmulas" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Editar Fórmula</h3>
-            <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
+            <div class="row my-1">
+                <div className="col-md-4">
+                    <h6 className="my-1">Tipo de Cápsula</h6>
+                    <InputPicker className="w-100" data={[{ label: 'Polvo', value: 'POLVO' }, { label: 'Blanda', value: 'BLANDA' }]} placeholder="Tipo de Cápsula" value={tipo} onChange={(e) => setTipo(e)} />
+                </div>
+                <div className="col-md-8">
+                    <h5>Nombre de la fórmula</h5>
+                    <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
+                </div>
+            </div>
             <div className="my-2">
                 <Table className="shadow-lg" height={300} autoHeight data={datos}>
                     <Column flexGrow={1}>
