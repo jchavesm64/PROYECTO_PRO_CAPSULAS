@@ -112,6 +112,7 @@ const Cotizaciones = ({ ...props }) => {
     }
 
     const datos = getData()
+    console.log(datos)
 
     return (
         <>

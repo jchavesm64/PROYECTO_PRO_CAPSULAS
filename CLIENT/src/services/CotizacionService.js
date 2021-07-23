@@ -34,6 +34,13 @@ export const OBTENER_COTIZACIONES = gql`
                 id
                 nombre
             }
+            capsula{
+                id
+                nombre
+            }
+            precios_capsula
+            cantidad_capsula
+            agua_purificada
             porcentajes
             precio_kilo
         }
@@ -68,6 +75,13 @@ export const OBTENER_COTIZACION = gql`
                 id
                 nombre
             }
+            capsula{
+                id
+                nombre
+            }
+            precios_capsula
+            cantidad_capsula
+            agua_purificada
             porcentajes
             precio_kilo
         }
