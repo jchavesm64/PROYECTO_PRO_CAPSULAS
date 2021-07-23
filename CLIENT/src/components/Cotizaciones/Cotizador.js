@@ -1,41 +1,35 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { OBTENER_FORMULAS_MOVIMIENTOS } from '../../services/FormulaService'
-import { SAVE_COTIZACION } from '../../services/CotizacionService'
-import { Loader, Notification, Table, InputPicker, Input } from 'rsuite';
+import { OBTENER_CLIENTES } from '../../services/ClienteService'
+import { OBTENER_TIPO_PRODUCTOS } from '../../services/TipoProductoService'
+import { Loader, Notification, InputPicker, Input } from 'rsuite';
+import CapsulaPolvo from './capsulaPolvo'
 import Boton from '../shared/Boton';
-const { Column, HeaderCell, Cell } = Table;
 
 const Cotizador = ({ ...props }) => {
+    const [formula, setFomula] = useState('')
+    const [cliente, setCliente] = useState('')
+    const [producto, setProducto] = useState('')
+    const [peso, setPeso] = useState('')
     const [cantidad, setCantidad] = useState(0)
-    const [costoCapsula, setCostoCapsula] = useState(0)
     const [envases, setEnvases] = useState(0)
-    const [costoEnvase, setCostoEnvase] = useState(0)
     const [etiquetas, setEtiquetas] = useState(0)
-    const [costoEtiquetas, setCostoEtiqueta] = useState(0)
-    const [venta, setVenta] = useState(0)
-    const [cotizacion, setCotizacion] = useState(null)
+    const [costoCapsula, setCostoCapsula] = useState(0)
+    const [costoEnvase, setCostoEnvase] = useState(0)
+    const [costoEtiquetas, setCostoEtiquetas] = useState(0)
     const { loading: load_formulas, error: error_formulas, data: data_formulas } = useQuery(OBTENER_FORMULAS_MOVIMIENTOS, { pollInterval: 1000 })
-    const [insertar] = useMutation(SAVE_COTIZACION)
+    const { loading: load_clientes, error: error_clientes, data: data_clientes } = useQuery(OBTENER_CLIENTES, { pollInterval: 1000 })
+    const { loading: load_productos, error: error_productos, data: data_productos } = useQuery(OBTENER_TIPO_PRODUCTOS, { pollInterval: 1000 })
     const { session } = props
 
-    if (load_formulas) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
-    if (error_formulas) {
-        Notification['error']({
-            title: 'Error',
-            duration: 20000,
-            description: 'Error, no podemos obtener la información de fórmulas, verificar tu conexión a internet'
-        })
-    }
-
-    const getDataPicker = () => {
+    const getFormulas = () => {
         if (data_formulas !== null) {
             if (data_formulas.obtenerFormulasConMovimiento != null) {
                 const data = data_formulas.obtenerFormulasConMovimiento;
                 var datos = [];
                 data.map(item => {
-                    console.log(item)
                     datos.push({
                         label: item.nombre,
                         value: item
@@ -47,201 +41,61 @@ const Cotizador = ({ ...props }) => {
         return []
     }
 
-    const crearCotizacion = (formula) => {
-        if (formula !== null) {
-            var data = []
-            var index = 0;
-            formula.elementos.map(item => {
-                data.push({
-                    materia_prima: item.materia_prima,
-                    movimientos: item.movimientos,
-                    porcentaje: formula.porcentajes[index],
-                    miligramos: 0,
-                    precio_kilo: 0
+    const getClientes = () => {
+        if (data_clientes !== null) {
+            if (data_clientes.obtenerClientes != null) {
+                const data = data_clientes.obtenerClientes;
+                var datos = [];
+                data.map(item => {
+                    datos.push({
+                        label: item.nombre,
+                        value: item
+                    })
                 })
-                index++;
-            })
-            setCotizacion({ formula: formula.id, data: data })
-        } else {
-            setCotizacion(null)
+                return datos
+            }
         }
+        return []
     }
 
-    const actualizarMiligramos = (data, miligramos) => {
-        if (miligramos !== "") {
-            if (parseInt(miligramos) > 0) {
-                var newDatos = []
-                cotizacion.data.map(item => {
-                    if (item.materia_prima.id === data.materia_prima.id) {
-                        newDatos.push({
-                            materia_prima: item.materia_prima,
-                            movimientos: item.movimientos,
-                            miligramos: parseInt(miligramos),
-                            porcentaje: item.porcentaje,
-                            precio_kilo: item.precio_kilo
-                        })
-                    } else {
-                        newDatos.push(item)
-                    }
+    const getProducto = () => {
+        if (data_productos !== null) {
+            if (data_productos.obtenerTipoProductos != null) {
+                const data = data_productos.obtenerTipoProductos;
+                var datos = [];
+                data.map(item => {
+                    datos.push({
+                        label: item.tipo,
+                        value: item
+                    })
                 })
-                setCotizacion({ formula: cotizacion.formula, data: newDatos })
+                return datos
             }
         }
+        return []
     }
 
-    const actualizarPrecio = (data, precio) => {
-        if (precio !== "") {
-            if (parseFloat(precio) > 1) {
-                var newDatos = []
-                cotizacion.data.map(item => {
-                    if (item.materia_prima.id === data.materia_prima.id) {
-                        newDatos.push({
-                            materia_prima: item.materia_prima,
-                            movimientos: item.movimientos,
-                            miligramos: item.miligramos,
-                            porcentaje: item.porcentaje,
-                            precio_kilo: parseFloat(precio)
-                        })
-                    } else {
-                        newDatos.push(item)
-                    }
-                })
-                setCotizacion({ formula: cotizacion.formula, data: newDatos })
-            }
-        }
-    }
-
-    const getGramosEnvase = (miligramos) => {
-        if (cantidad > 0) {
-            return (miligramos / 1000) * cantidad
-        }
-        return 0
-    }
-
-    const getGramosTotal = (miligramos) => {
-        if (cantidad > 0 && envases > 0) {
-            return getGramosEnvase(miligramos) * envases
-        }
-        return 0
-    }
-
-    const getKilos = (miligramos) => {
-        if (cantidad > 0 && envases > 0) {
-            return getGramosTotal(miligramos) / 1000;
-        }
-        return 0
-    }
-
-    const getTotalFila = (data) => {
-        if (cantidad > 0 && envases > 0 && data.precio_kilo > 0) {
-            return parseFloat(getKilos(data.miligramos) * data.precio_kilo).toFixed(2);
-        }
-        return 0;
-    }
-
-    const getTotal = () => {
-        if (cantidad > 0 && envases > 0 && etiquetas) {
-            var total = 0;
-            cotizacion.data.map(item => {
-                total += item.precio_kilo * getKilos(item.miligramos)
-            })
-            if(cantidad > 0 && costoCapsula > 0){
-                total += cantidad * costoCapsula
-            }
-            if(envases > 0 && costoEnvase > 0){
-                total += envases * costoEnvase
-            }
-            if(etiquetas > 0 && costoEtiquetas > 0){
-                total += etiquetas * costoEtiquetas
-            }
-            return total;
-        } else {
-            return 0;
-        }
-    }
-
-    const verificarExistencias = (mov, cantidad) => {
-        var existencias = 0
-        mov.map(item => {
-            if (item.tipo === 'ENTRADA') {
-                existencias += item.cantidad
-            } else {
-                existencias -= item.cantidad
-            }
+    if (load_formulas || load_clientes || load_productos) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (error_formulas) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de fórmulas, verificar tu conexión a internet'
         })
-        return existencias >= cantidad;
     }
-
-    const onSaveCotizacion = async () => {
-        if (cantidad > 0 && envases > 0 && venta > 0) {
-            var input = {}, obj_cotizacion = {}, band = false;
-            var ele = [], por = [], miligramos = [], precio = [], mat = [];
-            cotizacion.data.map(item => {
-                if (verificarExistencias(item.movimientos, getKilos(item.miligramos))) {
-                    ele.push(item.materia_prima.id)
-                    por.push(item.porcentaje)
-                    miligramos.push(item.miligramos)
-                    precio.push(item.precio_kilo)
-                    mat.push({
-                        id: item.materia_prima.id,
-                        total: getKilos(item.miligramos)
-                    })
-                } else {
-                    band = true
-                }
-            })
-            if (band === false) {
-                obj_cotizacion = {
-                    formula: cotizacion.formula,
-                    cantidad: cantidad,
-                    costoCapsula: costoCapsula,
-                    envases: envases,
-                    costoEnvase: costoEnvase,
-                    etiqueta: etiquetas,
-                    costoEtiqueta: costoEtiquetas,
-                    venta: venta,
-                    elementos: ele,
-                    porcentajes: por,
-                    miligramos: miligramos,
-                    precio_kilo: precio
-                }
-                input = {
-                    objeto: obj_cotizacion,
-                    materias: mat,
-                    usuario: session.id
-                }
-                console.log(input)
-                try {
-                    const { data } = await insertar({ variables: { input }, errorPolicy: 'all' })
-                    const { estado, message } = data.insertarCotizacion;
-                    if (estado) {
-                        Notification['success']({
-                            title: 'Guardar Cotización',
-                            duration: 5000,
-                            description: message
-                        })
-                        props.history.push('/cotizaciones')
-                    } else {
-                        Notification['error']({
-                            title: 'Guardar Cotización',
-                            duration: 5000,
-                            description: message
-                        })
-                    }
-                } catch (error) {
-                    console.log(error)
-                    Notification['error']({
-                        title: 'Guardar Cotización',
-                        duration: 5000,
-                        description: "Hubo un error inesperado al guardar la cotización"
-                    })
-                }
-            }
-        }
+    if (error_clientes) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de clientes, verificar tu conexión a internet'
+        })
     }
-
-    const validarFormulario = () => {
-        return !cantidad || !envases || !etiquetas || !venta || !costoCapsula || !costoEnvase || !costoEtiquetas || cantidad <= 0 || envases <= 0 || etiquetas <= 0 || venta <= 0 || costoCapsula <= 0 || costoEnvase <= 0 || costoEtiquetas <= 0
+    if (error_productos) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de productos, verificar tu conexión a internet'
+        })
     }
 
     return (
@@ -250,142 +104,79 @@ const Cotizador = ({ ...props }) => {
                 <Boton name="Atras" onClick={e => props.history.push(`/cotizaciones`)} icon="arrow-left-line" tooltip="Ir a Cotizaciones" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Cotizador</h3>
-            <div className="my-2 w-75 mx-auto">
-                <h6>Seleccione Formula</h6>
-                <InputPicker className="h-100 rounded-0 w-100" size="md" placeholder="Fórmula" data={getDataPicker()} searchable={true} onChange={(e) => crearCotizacion(e)} />
+            <div className="bg-white p-2 shadow rounded">
+                <h5>Parametros de la cotización</h5>
+                <div className="row my-2">
+                    <div className="col-md-6">
+                        <h6>Seleccione la Formula</h6>
+                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Fórmula" data={getFormulas()} searchable={true} onChange={(e) => setFomula(e)} />
+                        <h6>Seleccione el Producto</h6>
+                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Producto" data={getProducto()} searchable={true} onChange={(e) => setProducto(e)} />
+                    </div>
+                    <div className="col-md-6">
+                        <h6>Seleccione el Cliente</h6>
+                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Cliente" data={getClientes()} searchable={true} onChange={(e) => setCliente(e)} />
+                        <h6>Seleccione el Peso de la Cápsula</h6>
+                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Peso" data={[{ label: '250 mg', value: '250' }, { label: '500 mg', value: '500' }, { label: '1000 mg', value: '1000' }]} searchable={true} onChange={(e) => setPeso(e)} />
+                    </div>
+                </div>
             </div>
-            {(cotizacion !== null) &&
-                <>
-                    <div className="row my-2">
-                        <div className="col-md-5">
-                            <h6>Cápsulas por envases</h6>
-                            <Input type="number" min={1} value={cantidad} onChange={(e) => setCantidad(e)} />
-                            <h6>Total de envases</h6>
-                            <Input type="number" min={1} value={envases} onChange={(e) => setEnvases(e)} />
-                            <h6>Total de etiquetas</h6>
-                            <Input type="number" min={1} value={etiquetas} onChange={(e) => setEtiquetas(e)} />
-                        </div>
-                        <div className="col-md-5">
-                            <h6>Costo por Cápsula</h6>
-                            <Input type="number" min={1} value={costoCapsula} onChange={(e) => setCostoCapsula(e)} />
-                            <h6>Costo por envase</h6>
-                            <Input type="number" min={1} value={costoEnvase} onChange={(e) => setCostoEnvase(e)} />
-                            <h6>Costo por etiqueta</h6>
-                            <Input type="number" min={1} value={costoEtiquetas} onChange={(e) => setCostoEtiqueta(e)} />
-                        </div>
-                        <div className="col-md-2">
-                            <h6>Total Cápsulas</h6>
-                            <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(cantidad > 0 && costoCapsula > 0) ? parseFloat(cantidad * costoCapsula).toFixed(2) : 0}</label></strong>
-                            <h6>Total Envases</h6>
-                            <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(envases > 0 && costoEnvase > 0) ? parseFloat(envases * costoEnvase).toFixed(2) : 0}</label></strong>
-                            <h6>Total Etiquetas</h6>
-                            <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(etiquetas > 0 && costoEtiquetas > 0) ? parseFloat(etiquetas * costoEtiquetas).toFixed(2) : 0}</label></strong>
-                        </div>
+            <div className="bg-white p-2 shadow rounded my-2">
+                <h5>Parametros de la cotización</h5>
+                <div className="row my-2">
+                    <div className="col-md-5">
+                        <h6>Cápsulas por envases</h6>
+                        <Input type="number" min={1} value={cantidad} onChange={(e) => setCantidad(e)} />
+                        <h6>Total de envases</h6>
+                        <Input type="number" min={1} value={envases} onChange={(e) => setEnvases(e)} />
+                        <h6>Total de etiquetas</h6>
+                        <Input type="number" min={1} value={etiquetas} onChange={(e) => setEtiquetas(e)} />
                     </div>
-                    <div>
-                        <Table className="shadow" autoHeight data={cotizacion.data}>
-                            <Column flexGrow={2}>
-                                <HeaderCell>Materia Prima</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<label>{rowData.materia_prima.nombre}</label>)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>Porcentaje</HeaderCell>
-                                <Cell dataKey="porcentaje" />
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>MG / Cápsula</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<Input type="number" style={{ padding: 0, minHeight: 40, marginTop: -10 }} className="form-control text-center" defaultValue={rowData.miligramos} onChange={(e) => actualizarMiligramos(rowData, e)} disabled={rowData.lote === null} />)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>GR / Cápsula</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<label>{rowData.miligramos / 1000}</label>)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>GR / Envase</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<label>{getGramosEnvase(rowData.miligramos)}</label>)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>GR / Total</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<label>{getGramosTotal(rowData.miligramos)}</label>)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>KG / Total</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<label>{getKilos(rowData.miligramos)}</label>)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>Precio / KG</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<Input type="number" style={{ padding: 0, minHeight: 40, marginTop: -10 }} className="form-control text-center" defaultValue={rowData.precio_kilo} onChange={(e) => actualizarPrecio(rowData, e)} disabled={rowData.lote === null} />)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                            <Column flexGrow={1}>
-                                <HeaderCell>Total</HeaderCell>
-                                <Cell>
-                                    {
-                                        rowData => {
-                                            return (<label>{getTotalFila(rowData)}</label>)
-                                        }
-                                    }
-                                </Cell>
-                            </Column>
-                        </Table>
+                    <div className="col-md-5">
+                        {formula.tipo === 'POLVO' ?
+                            (
+                                <>
+                                    <h6> Costo por Cápsula</h6>
+                                    <Input type="number" min={1} value={costoCapsula} onChange={(e) => setCostoCapsula(e)} />
+                                </>
+                            ) : (
+                                <div style={{ height: 60 }}></div>
+                            )
+                        }
+                        <h6>Costo por envase</h6>
+                        <Input type="number" min={1} value={costoEnvase} onChange={(e) => setCostoEnvase(e)} />
+                        <h6>Costo por etiqueta</h6>
+                        <Input type="number" min={1} value={costoEtiquetas} onChange={(e) => setCostoEtiquetas(e)} />
                     </div>
-                    <div className="d-flex justify-content-end mb-3 mt-1">
-                        <h6>Total: {parseFloat(getTotal()).toFixed(2)}</h6>
+                    <div className="col-md-2">
+                        {formula.tipo === 'POLVO' ?
+                            (
+                                <>
+                                    <h6>Total Cápsulas</h6>
+                                    <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(cantidad > 0 && costoCapsula > 0) ? parseFloat(cantidad * costoCapsula).toFixed(2) : 0}</label></strong>
+                                </>
+                            ) : (
+                                <div style={{ height: 60 }}></div>
+                            )
+                        }
+                        <h6>Total Envases</h6>
+                        <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(envases > 0 && costoEnvase > 0) ? parseFloat(envases * costoEnvase).toFixed(2) : 0}</label></strong>
+                        <h6>Total Etiquetas</h6>
+                        <strong className="d-block text-center bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 35 }}>{(etiquetas > 0 && costoEtiquetas > 0) ? parseFloat(etiquetas * costoEtiquetas).toFixed(2) : 0}</label></strong>
                     </div>
-                    <div className="row my-2">
-                        <h6>Coste de Fabricación por Envase</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{envases > 0 ? parseFloat(getTotal() / envases).toFixed(2) : 0}</label></strong>
-                        <h6>Venta al Cliente por envace</h6>
-                        <Input type="number" min={1} value={venta} onChange={(e) => setVenta(e)} />
-                        <h6>Ganancia</h6>
-                        <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(venta === 0 || envases === 0) ? 0 : (venta < (getTotal() / envases)) ? '0' : parseFloat(venta - (getTotal() / envases)).toFixed(2)}</label></strong>
-                    </div>
-                    <div className="d-flex justify-content-end my-2">
-                        <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />
-                    </div>
-                </>
-            }
+                </div>
+            </div>
+            <div className="bg-white p-2 shadow rounded my-2">
+                {formula.tipo === 'POLVO' ?
+                    (
+                        <CapsulaPolvo formula={formula} cliente={cliente} producto={producto} peso={peso} capsulas={cantidad} costoCapsulas={costoCapsula} envases={envases} costoEnvases={costoEnvase} etiquetas={etiquetas} costoEtiquetas={costoEtiquetas}/>
+                    ) : (
+                        <>
+                        </>
+                    )
+
+                }
+            </div>
         </>
     )
 }

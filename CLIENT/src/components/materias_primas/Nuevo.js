@@ -122,8 +122,7 @@ const NuevaMateriaPrima = ({ ...props }) => {
             {marca &&
                 <RadioGroup name="radioList" inline value={valor}>
                     <Radio value={'1'} onClick={() => setValor('1')}>Gelatina</Radio>
-                    <Radio value={'2'} onClick={() => setValor('2')}>Agua Purificada</Radio>
-                    <Radio value={'3'} onClick={() => setValor('3')}>Glicerina</Radio>
+                    <Radio value={'2'} onClick={() => setValor('2')}>Glicerina</Radio>
                 </RadioGroup>
             }
             <div className="d-flex justify-content-end float-rigth mt-2">

@@ -14,7 +14,6 @@ export default {
             try {
                 var retorno = []
                 const formulas = await Formulas.find({ estado: 'ACTIVO' }).populate({ path: 'elementos', populate: [{ path: 'proveedor' }] });
-                console.log(formulas)
                 formulas.map(item => {
                     var materiasmovimientos = []
                     item.elementos.map(ele => {
@@ -27,6 +26,7 @@ export default {
                     retorno.push({
                         id: item.id,
                         nombre: item.nombre,
+                        tipo: item.tipo,
                         elementos: materiasmovimientos,
                         porcentajes: item.porcentajes
                     })

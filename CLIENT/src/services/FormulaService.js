@@ -30,7 +30,6 @@ export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
             id 
             nombre
             tipo
-            tipo
             elementos{
                 materia_prima{
                     id
@@ -43,7 +42,6 @@ export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
                     codigo
                     cantidad
                     existencia
-                    unidad
                 }
             }
             porcentajes

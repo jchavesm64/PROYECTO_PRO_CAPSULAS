@@ -5,6 +5,19 @@ const CotizacionSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'formulas'
     },
+    tipoProducto:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'tipoProductos'
+    },
+    cliente:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'clientes'
+    },
+    pesoCapsula: {
+        type: String,
+        require: true,
+        trim: true
+    },
     cantidad: {
         type: Number,
         require: true,
@@ -48,14 +61,17 @@ const CotizacionSchema = mongoose.Schema({
         type: Array,
         require: true
     },
-    miligramos: {
-        type: Array,
-        require: true
-    },
     precio_kilo: {
         type: Array,
         require: true
-    }
+    },
+    capsula: [{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'MateriasPrimas'
+    }],
+    precios_capsula: {
+        type: Array
+    },
 })
 
 module.exports = mongoose.model('Cotizaciones', CotizacionSchema);
