@@ -6,11 +6,12 @@ import {
     Table,
     Loader,
     Notification,
-    InputPicker
+    InputPicker,
 } from 'rsuite';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { SAVE_FORMULA } from '../../../services/FormulaService'
 import { OBTENER_MATERIAS_PRIMAS } from '../../../services/MateriaPrimaService'
+import { OBTENER_FORMULAS_BASE } from '../../../services/FormulaBaseService'
 import { Input } from 'rsuite';
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -18,10 +19,12 @@ const NuevaFormula = ({ ...props }) => {
     const [page, setPage] = useState(1);
     const [displayLength, setDisplayLength] = useState(10);
     const { loading, error, data: materias_primas } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 });
+    const { loading: load_formulas, error: error_formulas, data: formulas } = useQuery(OBTENER_FORMULAS_BASE, { pollInterval: 1000 });
     const [formula, setFormula] = useState([])
     const [filter, setFilter] = useState('')
     const [nombre, setNombre] = useState("")
     const [tipo, setTipo] = useState('')
+    const [base, setBase] = useState('')
     const [insertar] = useMutation(SAVE_FORMULA)
 
     const handleChangePage = (dataKey) => {
@@ -60,12 +63,24 @@ const NuevaFormula = ({ ...props }) => {
                     elementos.push(item.materia_prima.id)
                     porcentajes.push(item.porcentaje)
                 })
-                const input = {
-                    nombre,
-                    tipo,
-                    elementos,
-                    porcentajes,
-                    estado: 'ACTIVO'
+                var input = {}
+                if(!base){
+                    input = {
+                        nombre,
+                        tipo,
+                        elementos,
+                        porcentajes,
+                        estado: 'ACTIVO'
+                    }
+                }else{
+                    input = {
+                        nombre,
+                        tipo,
+                        elementos,
+                        porcentajes,
+                        formulaBase: base.id,
+                        estado: 'ACTIVO'
+                    }
                 }
                 const { data } = await insertar({ variables: { input } })
                 const { estado, message } = data.insertarFormula;
@@ -180,11 +195,37 @@ const NuevaFormula = ({ ...props }) => {
     }
 
     const validarFormula = () => {
+        if(tipo === 'BLANDA'){
+            return formula.length === 0 || !nombre || !base;
+        }
         return formula.length === 0 || !nombre;
     }
 
-    if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    const getFormulasBase = () => {
+        if(formulas !== null){
+            if(formulas.obtenerFormulasBase){
+                var datos = []
+                formulas.obtenerFormulasBase.map(item => {
+                    datos.push({
+                        label: item.nombre,
+                        value: item
+                    })
+                })
+                return datos
+            }
+        }
+        return []
+    }
+
+    if (loading || load_formulas) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de materias primas, verificar tu conexión a internet'
+        })
+    }
+    if (error_formulas) {
         Notification['error']({
             title: 'Error',
             duration: 20000,
@@ -211,6 +252,12 @@ const NuevaFormula = ({ ...props }) => {
                     <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
                 </div>
             </div>
+            {tipo === 'BLANDA' &&
+                <div className="row my-1 p-2">
+                    <h6>Fórmula Base</h6>
+                    <InputPicker data={getFormulasBase()} placeholder="Fórmula Base" value={base} onChange={(e) => setBase(e)} />
+                </div>
+            }
             <h5 className="my-2">Elementos de la fórmula</h5>
             <Table className="shadow-lg" height={420} autoHeight data={formula}>
                 <Column flexGrow={1}>

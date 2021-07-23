@@ -6,6 +6,7 @@ import Action from '../../shared/Action'
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { UPDATE_FORMULA } from '../../../services/FormulaService'
 import { OBTENER_MATERIAS_PRIMAS } from '../../../services/MateriaPrimaService'
+import { OBTENER_FORMULAS_BASE } from '../../../services/FormulaBaseService'
 import { Input } from 'rsuite';
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -13,10 +14,12 @@ const FormularioFormula = ({ props, formula }) => {
     const [datos, setDatos] = useState(formula.elementos)
     const [nombre, setNombre] = useState(formula.nombre)
     const [tipo, setTipo] = useState(formula.tipo)
+    const [base, setBase] = useState(formula.base === undefined ? '' : formula.base.id)
     const [page, setPage] = useState(1);
     const [displayLength, setDisplayLength] = useState(10);
     const [filter, setFilter] = useState('');
     const { loading, error, data: materias_primas } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 });
+    const { loading: load_formulas, error: error_formulas, data: formulas } = useQuery(OBTENER_FORMULAS_BASE, { pollInterval: 1000 });
     const [actualizar] = useMutation(UPDATE_FORMULA)
     const [editar, setEditar] = useState({ dato: null, bool: false, porcentaje: 0 });
 
@@ -24,6 +27,7 @@ const FormularioFormula = ({ props, formula }) => {
         setNombre(formula.nombre)
         setDatos(formula.elementos)
         setTipo(formula.tipo)
+        setBase(formula.base === undefined ? '' : formula.base.id)
     }, [formula])
 
     const handleChangePage = (dataKey) => {
@@ -135,14 +139,25 @@ const FormularioFormula = ({ props, formula }) => {
                     elementos.push(item.materia_prima.id)
                     porcentajes.push(item.porcentaje)
                 })
-                const input = {
-                    nombre,
-                    tipo,
-                    elementos,
-                    porcentajes,
-                    estado: 'ACTIVO'
+                var input = {}
+                if(!base){
+                    input = {
+                        nombre,
+                        tipo,
+                        elementos,
+                        porcentajes,
+                        estado: 'ACTIVO'
+                    }
+                }else{
+                    input = {
+                        nombre,
+                        tipo,
+                        elementos,
+                        porcentajes,
+                        formulaBase: base.id,
+                        estado: 'ACTIVO'
+                    }
                 }
-                console.log(formula.id, input)
                 const { data } = await actualizar({ variables: { id: formula.id, input } })
                 const { estado, message } = data.actualizarFormula;
                 console.log(estado, message)
@@ -181,8 +196,31 @@ const FormularioFormula = ({ props, formula }) => {
         return datos.length === 0 || !nombre;
     }
 
-    if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    const getFormulasBase = () => {
+        if(formulas !== null){
+            if(formulas.obtenerFormulasBase){
+                var datos = []
+                formulas.obtenerFormulasBase.map(item => {
+                    datos.push({
+                        label: item.nombre,
+                        value: item.id
+                    })
+                })
+                return datos
+            }
+        }
+        return []
+    }
+
+    if (loading || load_formulas) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de fórmulas, verificar tu conexión a internet'
+        })
+    }
+    if (error_formulas) {
         Notification['error']({
             title: 'Error',
             duration: 20000,
@@ -191,7 +229,7 @@ const FormularioFormula = ({ props, formula }) => {
     }
 
     const data = getData()
-    console.log(editar)
+    console.log(base)
 
     return (
         <>
@@ -208,6 +246,12 @@ const FormularioFormula = ({ props, formula }) => {
                     <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
                 </div>
             </div>
+            {tipo === 'BLANDA' &&
+                <div className="row my-1 p-2">
+                    <h6>Fórmula Base</h6>
+                    <InputPicker data={getFormulasBase()} placeholder="Fórmula Base" value={base} onChange={(e) => setBase(e)} />
+                </div>
+            }
             <div className="my-2">
                 <Table className="shadow-lg" height={300} autoHeight data={datos}>
                     <Column flexGrow={1}>

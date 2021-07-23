@@ -19,6 +19,10 @@ const FormulaSchema = new mongoose.Schema({
         type: Array,
         require: true
     },
+    formulaBase:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'FormulasBase'
+    },
     estado:{
         type: String,
         require: true,

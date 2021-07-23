@@ -9,6 +9,7 @@ import MateriasPrimas from './MateriasPrimas';
 import Movimientos from './Movimientos';
 import Formulas from './Formula'
 import Cotizacion from './Cotizacion';
+import FormulaBase from './FormulaBase';
 
 export {
     Rol,
@@ -21,5 +22,6 @@ export {
     MateriasPrimas,
     Movimientos,
     Formulas,
-    Cotizacion
+    Cotizacion,
+    FormulaBase
 }

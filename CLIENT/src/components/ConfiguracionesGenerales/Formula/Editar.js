@@ -37,11 +37,23 @@ const Editar = ({ ...props }) => {
                 porcentaje: aux2[i]
             })
         }
-        newFormula = {
-            id: formula.id,
-            nombre: formula.nombre,
-            elementos: elementos
+        if (formula.formulaBase === null || formula.formulaBase === undefined) {
+            newFormula = {
+                id: formula.id,
+                tipo: formula.tipo,
+                nombre: formula.nombre,
+                elementos: elementos
+            }
+        } else {
+            newFormula = {
+                id: formula.id,
+                tipo: formula.tipo,
+                nombre: formula.nombre,
+                elementos: elementos,
+                base: formula.formulaBase
+            }
         }
+
         return newFormula
     }
 
@@ -49,9 +61,9 @@ const Editar = ({ ...props }) => {
         <>
             {(uso === true) ?
                 (
-                    <Formulario props={ props } formula = { crearFormula(data.obtenerFormula)} refetch={refetch} />
-                ):(
-                    <Detalles props={ props } formula = { crearFormula(data.obtenerFormula)} refetch={refetch} />
+                    <Formulario props={props} formula={crearFormula(data.obtenerFormula)} refetch={refetch} />
+                ) : (
+                    <Detalles props={props} formula={crearFormula(data.obtenerFormula)} refetch={refetch} />
                 )
             }
 

@@ -19,6 +19,14 @@ export const OBTENER_FORMULAS = gql`
                 estado
             }
             porcentajes
+            formulaBase{
+                id
+                nombre
+                elementos{
+                    id
+                    nombre
+                }
+            }
             estado
         }
     }
@@ -44,6 +52,14 @@ export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
                     existencia
                 }
             }
+            formulaBase{
+                id
+                nombre
+                elementos{
+                    id
+                    nombre
+                }
+            }
             porcentajes
         }
     }
@@ -66,6 +82,14 @@ export const OBTENER_FORMULA = gql`
                 pais
                 existencias
                 estado
+            }
+            formulaBase{
+                id
+                nombre
+                elementos{
+                    id
+                    nombre
+                }
             }
             porcentajes
             estado

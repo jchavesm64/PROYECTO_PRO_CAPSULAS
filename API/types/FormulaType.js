@@ -13,6 +13,7 @@ const formula_type = gql`
         tipo: TipoCapsula
         nombre: String
         elementos: [MateriaPrima]
+        formulaBase: formula_base
         porcentajes: [Number]
         estado: Estado
     }
@@ -35,6 +36,7 @@ const formula_type = gql`
         nombre: String
         tipo: TipoCapsula
         elementos: [ID]
+        formulaBase: ID
         porcentajes: [Number],
         estado: Estado
     }

@@ -38,13 +38,13 @@ const Formulas = ({ ...props }) => {
         const { estado, message } = data.desactivarFormula
         if (estado) {
             Notification['success']({
-                title: 'Eliminar Tipo de Proveduría',
+                title: 'Eliminar Fórmula',
                 duration: 5000,
                 description: message
             })
         } else {
             Notification['error']({
-                title: 'Eliminar Tipo de Proveduría',
+                title: 'Eliminar Fórmula',
                 duration: 5000,
                 description: message
             })

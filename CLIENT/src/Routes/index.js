@@ -29,6 +29,9 @@ import NuevaFormula from '../components/ConfiguracionesGenerales/Formula/nuevo';
 import EditarFormula from '../components/ConfiguracionesGenerales/Formula/Editar';
 import Cotizaciones from '../components/Cotizaciones/Cotizaciones';
 import Cotizador from '../components/Cotizaciones/Cotizador';
+import FormulasBase from '../components/ConfiguracionesGenerales/FormulaBase/Bases';
+import NuevaFormulaBase from '../components/ConfiguracionesGenerales/FormulaBase/nuevo';
+import EditarFormulaBase from '../components/ConfiguracionesGenerales/FormulaBase/Editar';
 
 const Router = ({ refetch, session }) => {
 
@@ -73,6 +76,10 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/formulas/nuevo" render={(props) => <NuevaFormula session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/cotizar" render={(props) => <Cotizador session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/cotizaciones" render={(props) => <Cotizaciones session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase" render={(props) => <FormulasBase session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase/nuevo" render={(props) => <NuevaFormulaBase session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase/editar/:id" render={(props) => <EditarFormulaBase uso={true} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase/detalles/:id" render={(props) => <EditarFormulaBase uso={false} session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>
