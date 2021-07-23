@@ -32,6 +32,8 @@ const cotizacion_type = gql`
         precio_kilo: [Number]
         capsula: [MateriaPrima]
         precios_capsula: [Number]
+        cantidad_capsula: [Number]
+        agua_purificada: Number
         estado: EstadoCotizacion
     }
 
@@ -52,6 +54,8 @@ const cotizacion_type = gql`
         precio_kilo: [Number]
         capsula: [ID]
         precios_capsula: [Number]
+        cantidad_capsula: [Number]
+        agua_purificada: Number
         estado: EstadoCotizacion
     }    
 

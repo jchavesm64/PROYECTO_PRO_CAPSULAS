@@ -27,6 +27,7 @@ export default {
                         id: item.id,
                         nombre: item.nombre,
                         tipo: item.tipo,
+                        formulaBase: item.formulaBase,
                         elementos: materiasmovimientos,
                         porcentajes: item.porcentajes
                     })

@@ -69,6 +69,12 @@ const CotizacionSchema = mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'MateriasPrimas'
     }],
+    cantidad_capsula:{
+        type: Array
+    },
+    agua_purificada:{
+        type: Number,
+    },
     precios_capsula: {
         type: Array
     },

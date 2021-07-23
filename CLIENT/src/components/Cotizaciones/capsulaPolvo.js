@@ -198,8 +198,6 @@ const CapsulaPolvo = ({ ...props }) => {
         return 0
     }
 
-    console.log("Hola")
-
     return (
         <>
             <h5>Elementos de la formula</h5>

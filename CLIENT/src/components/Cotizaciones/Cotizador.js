@@ -6,6 +6,7 @@ import { OBTENER_CLIENTES } from '../../services/ClienteService'
 import { OBTENER_TIPO_PRODUCTOS } from '../../services/TipoProductoService'
 import { Loader, Notification, InputPicker, Input } from 'rsuite';
 import CapsulaPolvo from './capsulaPolvo'
+import CapsulaBlanda from './capsulaBlanda'
 import Boton from '../shared/Boton';
 
 const Cotizador = ({ ...props }) => {
@@ -167,14 +168,11 @@ const Cotizador = ({ ...props }) => {
                 </div>
             </div>
             <div className="bg-white p-2 shadow rounded my-2">
-                {formula.tipo === 'POLVO' ?
-                    (
-                        <CapsulaPolvo formula={formula} cliente={cliente} producto={producto} peso={peso} capsulas={cantidad} costoCapsulas={costoCapsula} envases={envases} costoEnvases={costoEnvase} etiquetas={etiquetas} costoEtiquetas={costoEtiquetas}/>
-                    ) : (
-                        <>
-                        </>
-                    )
-
+                {formula.tipo === 'POLVO' &&
+                    <CapsulaPolvo formula={formula} cliente={cliente} producto={producto} peso={peso} capsulas={cantidad} costoCapsulas={costoCapsula} envases={envases} costoEnvases={costoEnvase} etiquetas={etiquetas} costoEtiquetas={costoEtiquetas} />
+                }
+                {formula.tipo === 'BLANDA' &&
+                    <CapsulaBlanda formula={formula} cliente={cliente} producto={producto} peso={peso} capsulas={cantidad} envases={envases} costoEnvases={costoEnvase} etiquetas={etiquetas} costoEtiquetas={costoEtiquetas} />
                 }
             </div>
         </>
