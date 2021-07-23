@@ -1,13 +1,212 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { useQuery } from '@apollo/react-hooks'
-import { OBTENER_COTIZACIONES } from '../../services/CotizacionService'
-import { Loader, Notification, Table } from 'rsuite';
+import { Link } from 'react-router-dom';
+import { OBTENER_COTIZACIONES, DELETE_COTIZACION } from '../../services/CotizacionService'
+import { Loader, Notification, Table, Pagination } from 'rsuite';
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import Confirmation from '../shared/Confirmation';
 import Boton from '../shared/Boton';
-import { parse } from 'graphql';
+import Action from '../shared/Action';
 const { Column, HeaderCell, Cell } = Table;
 
 const Cotizaciones = ({ ...props }) => {
+    const [confimation, setConfirmation] = useState(false);
+    const [filter, setFilter] = useState('')
+    const [modo, setModo] = useState('1')
+    const [page, setPage] = useState(1);
+    const [displayLength, setDisplayLength] = useState(10);
+    const { loading, error, data } = useQuery(OBTENER_COTIZACIONES, { pollInterval: 1000 })
+    const [desactivar] = useMutation(DELETE_COTIZACION);
+
+    const handleChangePage = (dataKey) => {
+        setPage(dataKey)
+    }
+
+    const handleChangeLength = (dataKey) => {
+        setPage(1);
+        setDisplayLength(dataKey);
+    }
+
+    const onDeleteCotizacion = async (id) => {
+        const { data } = await desactivar({ variables: { id } });
+        const { estado, message } = data.desactivarCotizacion;
+        if (estado) {
+            Notification['success']({
+                title: 'Eliminar Cotización',
+                duration: 20000,
+                description: message
+            })
+        } else {
+            Notification['error']({
+                title: 'Eliminar Cotización',
+                duration: 20000,
+                description: message
+            })
+        }
+    }
+
+    const isConfirmation = (confimation.bool) ?
+        <Confirmation
+            message="¿Estás seguro/a de eliminar?"
+            onDeletObjeto={onDeleteCotizacion}
+            setConfirmation={setConfirmation}
+            idDelete={confimation.id}
+        />
+        : ""
+
+    function getFilteredByKey(modo, key, value) {
+        if (modo === "1") {
+            const val = key.formula.nombre.toLowerCase();
+            const val2 = value.toLowerCase();
+            console.log(val, val2, val.includes(val2));
+            if (val.includes(val2)) {
+                return key
+            }
+        } else if (modo === "2") {
+            const val = key.tipoProducto.tipo.toLowerCase();
+            const val2 = value.toLowerCase();
+            console.log(val, val2, val.includes(val2));
+            if (val.includes(val2)) {
+                return key
+            }
+        } else {
+            const val = key.cliente.nombre.toLowerCase();
+            const val2 = value.toLowerCase();
+            console.log(val, val2, val.includes(val2));
+            if (val.includes(val2)) {
+                return key
+            }
+        }
+        return null;
+    }
+
+    const getData = () => {
+        if (data) {
+            return data.obtenerCotizaciones.filter((value, index) => {
+                if (filter !== "" && modo !== "") {
+                    return getFilteredByKey(modo, value, filter);
+                }
+                const start = displayLength * (page - 1);
+                const end = start + displayLength;
+                return index >= start && index < end;
+            });
+        }
+        return []
+    }
+
+    const mostrarMsj = () => {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'No tienes el rol necesario para realizar esta acción.'
+        })
+    }
+
+    if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (error) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de cotizaciones, verificar tu conexión a internet'
+        })
+    }
+
+    const datos = getData()
+
+    return (
+        <>
+            <h3 className="text-center">Gestión de Cotizaciones</h3>
+            <div className="row" style={{ margin: 0, padding: 0 }}>
+                <div style={{ padding: 0 }} className="col-md-3">
+                    <select id="select_modo" className="h-100 rounded-0 btn btn-outline-secondary dropdown-toggle w-100" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
+                        <option value="1"> Fórmula</option>
+                        <option value="2"> Producto</option>
+                        <option value="3"> Cliente</option>
+                    </select>
+                </div>
+                <div style={{ padding: 0 }} className="col-md-9 h-100">
+                    <div className="input-group">
+                        <input id="filter" type="text" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
+                        <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
+                    </div>
+                </div>
+            </div>
+            <div className="my-2">
+                <Table className="shadow my-3" height={500} data={datos}>
+                    <Column flexGrow={2}>
+                        <HeaderCell>Formula</HeaderCell>
+                        <Cell>
+                            {
+                                rowData => {
+                                    return (<label>{rowData.formula.nombre}</label>)
+                                }
+                            }
+                        </Cell>
+                    </Column>
+                    <Column flexGrow={1}>
+                        <HeaderCell>Producto</HeaderCell>
+                        <Cell>
+                            {
+                                rowData => {
+                                    return (<label>{rowData.tipoProducto.tipo}</label>)
+                                }
+                            }
+                        </Cell>
+                    </Column>
+                    <Column flexGrow={2}>
+                        <HeaderCell>Cliente</HeaderCell>
+                        <Cell>
+                            {
+                                rowData => {
+                                    return (<label>{rowData.cliente.nombre}</label>)
+                                }
+                            }
+                        </Cell>
+                    </Column>
+                    <Column width={150}>
+                        <HeaderCell>Acciones</HeaderCell>
+                        <Cell>
+                            {
+                                rowData => {
+                                    return (
+                                        <div className="d-flex justify-content-end mx-1 my-1">
+                                            <div className="mx-1"><Link to={``}><Action tooltip="Verificar Existencias" color="blue" icon="info" size="xs" /></Link></div>
+                                            <div className="mx-1"><Link to={``}><Action tooltip="Editar Cotización" color="orange" icon="edit" size="xs" /></Link></div>
+                                            <div className="mx-1"><Link to={``}><Action tooltip="Enviar a Producción" color="green" icon="send" size="xs" /></Link></div>
+                                            <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Cotización" color="red" icon="trash" size="xs" /></div>
+                                        </div>
+                                    )
+                                }
+                            }
+                        </Cell>
+                    </Column>
+                </Table>
+            </div>
+            <div className="d-flex justify-content-end">
+                <Pagination
+                    first={false}
+                    last={false}
+                    next={false}
+                    prev={false}
+                    showInfo={false}
+                    showLengthMenu={false}
+                    activePage={page}
+                    displayLength={displayLength}
+                    total={data.obtenerCotizaciones.length}
+                    onChangePage={handleChangePage}
+                    onChangeLength={handleChangeLength}
+                />
+            </div>
+            <div className="d-flex justify-content-start my-2">
+                <Link to={`/cotizar`}><Boton tooltip="Nueva Cotización" name="Nuevo" icon="plus" color="green" /></Link>
+            </div>
+        </>
+    )
+}
+
+export default withRouter(Cotizaciones)
+
+/*
     const { loading, error, data } = useQuery(OBTENER_COTIZACIONES, { pollInterval: 1000 })
 
     if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
@@ -15,7 +214,7 @@ const Cotizaciones = ({ ...props }) => {
         Notification['error']({
             title: 'Error',
             duration: 20000,
-            description: 'Error, no podemos obtener la información de fórmulas, verificar tu conexión a internet'
+            description: 'Error, no podemos obtener la información de cotizaciones, verificar tu conexión a internet'
         })
     }
 
@@ -161,6 +360,4 @@ const Cotizaciones = ({ ...props }) => {
             }
         </>
     )
-}
-
-export default withRouter(Cotizaciones)
+    */

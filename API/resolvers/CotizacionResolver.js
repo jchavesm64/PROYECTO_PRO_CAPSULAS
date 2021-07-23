@@ -5,7 +5,7 @@ export default{
     Query:{
         obtenerCotizaciones: async (_, {}) => {
             try{
-                const result = await Cotizacion.find().populate('formula').populate('elementos');
+                const result = await Cotizacion.find().populate('formula').populate('tipoProducto').populate('cliente').populate('elementos');
                 return result;
             }catch(error){
                 return error
@@ -13,7 +13,7 @@ export default{
         },
         obtenerCotizacion: async (_, {id}) => {
             try{
-                const result = await Cotizacion.findById(id).populate('formula').populate('elementos');
+                const result = await Cotizacion.findById(id).populate('formula').populate('tipoProducto').populate('cliente').populate('elementos');
                 return result;
             }catch(error){
                 return error
@@ -35,6 +35,46 @@ export default{
                     estado: false,
                     message: "Ocurrio un error al generar la cotizacíon"
                 }
+            }
+        },
+        actualizarCotizacion: async (_, {id, input}) => {
+            try{
+                const cliente = await Cliente.findOneAndUpdate({_id: id}, input, {new: true});
+                return {
+                    estado: true,
+                    data: cliente,
+                    message: "La cotización fue actualizado con éxito"
+                };
+            }catch(error){
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error al actualizar la cotización"
+                };
+            }
+        },
+        desactivarCotizacion: async (_, {id}) => {
+            try{
+                const cliente = await Cliente.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
+                if(cliente){
+                    return {
+                        estado: true,
+                        data: null,
+                        message: "Cotización eliminada correctamente"
+                    };
+                }else{
+                    return {
+                        estado: false,
+                        data: null,
+                        message: "No se pudo eliminar la cotización"
+                    };
+                }
+            }catch(error){
+                return {
+                    estado: false,
+                    data: null,
+                    message: "Ocurrio un error al eliminar el cliente"
+                };
             }
         }
     }

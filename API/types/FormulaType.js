@@ -24,6 +24,7 @@ const formula_type = gql`
         tipo: TipoCapsula
         elementos: [MateriaPrimaMovimientos]
         porcentajes: [Number]
+        formulaBase: formula_base
     }
 
     type Query{

@@ -14,8 +14,15 @@ export const OBTENER_COTIZACIONES = gql`
         obtenerCotizaciones{
             id
             formula{
-            nombre
+                nombre
             }
+            tipoProducto{
+                tipo
+            }
+            cliente{
+                nombre
+            }
+            pesoCapsula
             cantidad
             costoCapsula
             envases
@@ -24,11 +31,10 @@ export const OBTENER_COTIZACIONES = gql`
           	costoEtiqueta
             venta
             elementos{
-            id
-            nombre
+                id
+                nombre
             }
             porcentajes
-            miligramos
             precio_kilo
         }
     }
@@ -39,18 +45,40 @@ export const OBTENER_COTIZACION = gql`
         obtenerCotizacion(id:$id){
             id
             formula{
-            nombre
+                id
+                nombre
             }
+            tipoProducto{
+                id
+                tipo
+            }
+            cliente{
+                id
+                nombre
+            }
+            pesoCapsula
             cantidad
+            costoCapsula
             envases
+            costoEnvase
+            etiqueta
+          	costoEtiqueta
             venta
             elementos{
-            id
-            nombre
+                id
+                nombre
             }
             porcentajes
-            miligramos
             precio_kilo
+        }
+    }
+`;
+
+export const DELETE_COTIZACION = gql`
+    mutation desactivarCotizacion($id:ID){
+        desactivarCotizacion(id:$id){
+            estado
+            message
         }
     }
 `;

@@ -4,6 +4,11 @@ const cotizacion_type = gql`
 
     scalar Number,
 
+    enum EstadoCotizacion{
+        REGISTRADA
+        ENVIADA
+    }
+
     type Capsula{
         materia_prima: MateriaPrima
         precio_kilo: Number
@@ -27,6 +32,7 @@ const cotizacion_type = gql`
         precio_kilo: [Number]
         capsula: [MateriaPrima]
         precios_capsula: [Number]
+        estado: EstadoCotizacion
     }
 
     input cotizacion{
@@ -46,6 +52,7 @@ const cotizacion_type = gql`
         precio_kilo: [Number]
         capsula: [ID]
         precios_capsula: [Number]
+        estado: EstadoCotizacion
     }    
 
     input Materia{
@@ -65,6 +72,8 @@ const cotizacion_type = gql`
 
     type Mutation{
         insertarCotizacion(input:cotizacion):Respuesta
+        actualizarCotizacion(input:cotizacion):Respuesta
+        desactivarCotizacion(id:ID):Respuesta
     }
 
     input salida{

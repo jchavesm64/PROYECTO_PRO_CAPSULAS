@@ -72,6 +72,11 @@ const CotizacionSchema = mongoose.Schema({
     precios_capsula: {
         type: Array
     },
+    estado:{
+        type: String,
+        require: true,
+        trim: true
+    }
 })
 
 module.exports = mongoose.model('Cotizaciones', CotizacionSchema);
