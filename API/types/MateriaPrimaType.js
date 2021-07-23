@@ -16,7 +16,6 @@ const materia_prima_type = gql`
         pais: String
         unidad: Unidad
         existencias: Number
-        marca: String
         estado: Estado
     }
 
@@ -32,7 +31,6 @@ const materia_prima_type = gql`
         pais: String
         unidad: Unidad
         existencias: Number
-        marca: String
         estado: Estado
     }
 

@@ -23,8 +23,6 @@ const FormularioMateriaPrima = ({ props, materia }) => {
     const [pais, setPais] = useState(getPais(materia.pais));
     const [unidad, setUnidad] = useState(materia.unidad)
     const [actualizar] = useMutation(UPDATE_MATERIA_PRIMA);
-    const [marca, setMarca] = useState(materia.marca !== '0')
-    const [valor, setValor] = useState('0')
     const { loading: load_prov, data: data_prov } = useQuery(OBTENER_PROVEEDORES, { pollInterval: 1000 });
 
     React.useEffect(() => {
@@ -32,8 +30,6 @@ const FormularioMateriaPrima = ({ props, materia }) => {
         setProveedor(materia.proveedor.id)
         setPais(getPais(materia.pais))
         setUnidad(materia.unidad)
-        setValor(materia.marca)
-        setMarca(materia.marca !== '0')
     }, [materia])
 
     const getPaises = () => {
@@ -97,19 +93,8 @@ const FormularioMateriaPrima = ({ props, materia }) => {
         }
     }
 
-    const onCheck = () => {
-        setMarca(!marca)
-        if(!marca){
-            setValor('0')
-        }
-    }
-
     const validarForm = () => {
-        if(marca){
-            return !nombre || !proveedor || !pais || !unidad || valor === '0';
-        }else{
-            return !nombre || !proveedor || !pais || !unidad;
-        }
+        return !nombre || !proveedor || !pais || !unidad;
     }
 
     if (load_prov) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
@@ -136,14 +121,6 @@ const FormularioMateriaPrima = ({ props, materia }) => {
                 <h6 className="my-1">Unidad Métrica</h6>
                 <InputPicker className="w-100" data={[{ label: 'Kilogramo', value: 'Kilogramo' }, { label: 'Litro', value: 'Litro' }]} placeholder="Unidad Métrica" value={unidad} onChange={(e) => setUnidad(e)} />
             </div>
-            <Checkbox defaultChecked={marca} onChange={() => onCheck()}> Marque si esta materia prima, materia base en las capsulas blandas</Checkbox>
-            {marca &&
-                <RadioGroup name="radioList" inline value={valor}>
-                    <Radio value={'1'} onClick={() => setValor('1')}>Gelatina</Radio>
-                    <Radio value={'2'} onClick={() => setValor('2')}>Agua Purificada</Radio>
-                    <Radio value={'3'} onClick={() => setValor('3')}>Glicerina</Radio>
-                </RadioGroup>
-            }
             <div className="d-flex justify-content-end float-rigth mt-2">
                 <Boton onClick={onSaveMateriaPrima} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
