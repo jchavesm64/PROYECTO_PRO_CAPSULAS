@@ -35,6 +35,7 @@ const cotizacion_type = gql`
         cantidad_capsula: [Number]
         agua_purificada: Number
         estado: EstadoCotizacion
+        status: Estado
     }
 
     input cotizacion{
@@ -57,6 +58,7 @@ const cotizacion_type = gql`
         cantidad_capsula: [Number]
         agua_purificada: Number
         estado: EstadoCotizacion
+        status: Estado
     }    
 
     input Materia{

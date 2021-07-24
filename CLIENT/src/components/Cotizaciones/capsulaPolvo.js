@@ -157,7 +157,8 @@ const CapsulaPolvo = ({ ...props }) => {
             elementos: ele,
             porcentajes: por,
             precio_kilo: precio,
-            estado: 'REGISTRADA'
+            estado: 'REGISTRADA',
+            status: 'ACTIVO'
         }
         console.log(input)
         try{

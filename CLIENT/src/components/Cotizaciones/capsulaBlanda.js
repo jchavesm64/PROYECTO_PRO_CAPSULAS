@@ -289,7 +289,8 @@ const CapsulaBlanda = ({ ...props }) => {
             cantidad_capsula: cancap,
             agua_purificada: agua,
             precios_capsula: precap,
-            estado: 'REGISTRADA'
+            estado: 'REGISTRADA',
+            status: 'ACTIVO'
         }
         console.log(input)
         try {

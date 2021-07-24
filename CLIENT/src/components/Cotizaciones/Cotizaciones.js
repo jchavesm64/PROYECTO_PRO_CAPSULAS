@@ -201,6 +201,7 @@ const Cotizaciones = ({ ...props }) => {
             <div className="d-flex justify-content-start my-2">
                 <Link to={`/cotizar`}><Boton tooltip="Nueva Cotización" name="Nuevo" icon="plus" color="green" /></Link>
             </div>
+            {isConfirmation}
         </>
     )
 }

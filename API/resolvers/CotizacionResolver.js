@@ -5,7 +5,7 @@ export default{
     Query:{
         obtenerCotizaciones: async (_, {}) => {
             try{
-                const result = await Cotizacion.find().populate('formula').populate('tipoProducto').populate('cliente').populate('elementos').populate('capsula');
+                const result = await Cotizacion.find({status: 'ACTIVO'}).populate('formula').populate('tipoProducto').populate('cliente').populate('elementos').populate('capsula');
                 return result;
             }catch(error){
                 return error
@@ -39,10 +39,10 @@ export default{
         },
         actualizarCotizacion: async (_, {id, input}) => {
             try{
-                const cliente = await Cliente.findOneAndUpdate({_id: id}, input, {new: true});
+                const cotizacion = await Cotizacion.findOneAndUpdate({_id: id}, input, {new: true});
                 return {
                     estado: true,
-                    data: cliente,
+                    data: cotizacion,
                     message: "La cotización fue actualizado con éxito"
                 };
             }catch(error){
@@ -55,7 +55,7 @@ export default{
         },
         desactivarCotizacion: async (_, {id}) => {
             try{
-                const cliente = await Cliente.findOneAndUpdate({_id: id}, {estado: "INACTIVO"}, {new: true});
+                const cliente = await Cotizacion.findOneAndUpdate({_id: id}, {status: "INACTIVO"}, {new: true});
                 if(cliente){
                     return {
                         estado: true,
@@ -70,10 +70,11 @@ export default{
                     };
                 }
             }catch(error){
+                console.log(error)
                 return {
                     estado: false,
                     data: null,
-                    message: "Ocurrio un error al eliminar el cliente"
+                    message: "Ocurrio un error al eliminar la cotización"
                 };
             }
         }

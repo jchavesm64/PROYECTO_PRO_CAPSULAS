@@ -82,6 +82,11 @@ const CotizacionSchema = mongoose.Schema({
         type: String,
         require: true,
         trim: true
+    },
+    status:{
+        type: String,
+        require: true,
+        trim: true
     }
 })
 
