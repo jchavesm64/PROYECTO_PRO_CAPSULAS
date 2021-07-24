@@ -7,6 +7,7 @@ import { OBTENER_TIPO_PRODUCTOS } from '../../services/TipoProductoService'
 import { Loader, Notification, InputPicker, Input } from 'rsuite';
 import Boton from '../shared/Boton';
 import EditarPolvo from './EditarPolvo'
+import EditarBlanda from './EditarBlanda'
 
 const EditarCotizacion = ({ props, cotizacion }) => {
     const [formula, setFomula] = useState(cotizacion.formula.id)
@@ -110,6 +111,8 @@ const EditarCotizacion = ({ props, cotizacion }) => {
         })
     }
 
+    console.log(cotizacion)
+
     return (
         <>
             <div>
@@ -121,7 +124,7 @@ const EditarCotizacion = ({ props, cotizacion }) => {
                 <div className="row my-2">
                     <div className="col-md-6">
                         <h6>Fórmula Seleccionada</h6>
-                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Fórmula" value={formula} data={getFormulas()} searchable={true} onChange={(e) => setFomula(e)} disabled/>
+                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Fórmula" value={formula} data={getFormulas()} searchable={true} onChange={(e) => setFomula(e)} disabled />
                         <h6>Seleccione el Producto</h6>
                         <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Producto" value={producto} data={getProducto()} searchable={true} onChange={(e) => setProducto(e)} />
                     </div>
@@ -180,20 +183,41 @@ const EditarCotizacion = ({ props, cotizacion }) => {
             </div>
             <div className="bg-white p-2 shadow rounded my-2">
                 {cotizacion.formula.tipo === 'POLVO' &&
-                    <EditarPolvo formula={formula} 
-                                 cliente={cliente} 
-                                 producto={producto}
-                                 peso={peso}
-                                 capsulas={cantidad}
-                                 costoCapsulas={costoCapsula}
-                                 envases={envases}
-                                 costoEnvases={costoEnvase}
-                                 etiquetas={etiquetas}
-                                 costoEtiquetas={costoEtiquetas}
-                                 elementos={cotizacion.elementos}
-                                 porcentajes={cotizacion.porcentajes}
-                                 precios={cotizacion.precio_kilo}
-                                 valor_venta={cotizacion.venta}
+                    <EditarPolvo formula={formula}
+                        cliente={cliente}
+                        producto={producto}
+                        peso={peso}
+                        capsulas={cantidad}
+                        costoCapsulas={costoCapsula}
+                        envases={envases}
+                        costoEnvases={costoEnvase}
+                        etiquetas={etiquetas}
+                        costoEtiquetas={costoEtiquetas}
+                        elementos={cotizacion.elementos}
+                        porcentajes={cotizacion.porcentajes}
+                        precios={cotizacion.precio_kilo}
+                        valor_venta={cotizacion.venta}
+                    />
+                }
+                {cotizacion.formula.tipo === 'BLANDA' &&
+                    <EditarBlanda formula={formula}
+                        cliente={cliente}
+                        producto={producto}
+                        peso={peso}
+                        capsulas={cantidad}
+                        costoCapsulas={costoCapsula}
+                        envases={envases}
+                        costoEnvases={costoEnvase}
+                        etiquetas={etiquetas}
+                        costoEtiquetas={costoEtiquetas}
+                        elementos={cotizacion.elementos}
+                        porcentajes={cotizacion.porcentajes}
+                        precios={cotizacion.precio_kilo}
+                        valor_venta={cotizacion.venta}
+                        capsula_ele={cotizacion.capsula}
+                        cantidad_capsula={cotizacion.cantidad_capsula}
+                        precios_cap={cotizacion.precios_capsula}
+                        agua_purificada={cotizacion.agua_purificada}
                     />
                 }
             </div>
