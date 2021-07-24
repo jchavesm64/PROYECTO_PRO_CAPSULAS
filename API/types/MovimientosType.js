@@ -33,6 +33,28 @@ const movimientos_type = gql`
         message: String
     }
 
+    type RespuestaVerificar{
+        estado: Number
+        message: String
+    }
+
+    input item{
+        id: ID
+        nombre: String
+        cantidad: Number
+    }
+
+    input salida{
+        id: ID,
+        cantidad: Number
+    }
+
+    input salidas{
+        usuario: ID
+        cotizacion: ID
+        elementos: [salida]
+    }
+
     input MovimientosInput{
         tipo: Tipo
         lote: String
@@ -50,12 +72,18 @@ const movimientos_type = gql`
         materia_prima: ID
     }
 
+    input Items{
+        items: [item]
+    }
+
     type Query{
         obtenerMovimientos(id:ID): [MovimientosType]
     }
 
     type Mutation{
         insertarMovimiento(input:MovimientosInput):RespuestaMovimientos
+        verificarExistencias(input:Items):RespuestaVerificar
+        enviarProduccion(input:salidas):RespuestaMovimientos
     }
 `;
 

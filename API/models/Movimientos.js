@@ -48,7 +48,6 @@ const MovimientosSchema = new mongose.Schema({
     },
     cao:{
         type: String,
-        require: true,
     },
     usuario:{
         type: mongose.Schema.Types.ObjectId,

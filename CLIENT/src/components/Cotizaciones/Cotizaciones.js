@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom';
 import { OBTENER_COTIZACIONES, DELETE_COTIZACION } from '../../services/CotizacionService'
-import { Loader, Notification, Table, Pagination } from 'rsuite';
+import { VERIFICAR, PRODUCCION } from '../../services/MovimientosService'
+import { Loader, Notification, Table } from 'rsuite';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Confirmation from '../shared/Confirmation';
 import Boton from '../shared/Boton';
 import Action from '../shared/Action';
-const { Column, HeaderCell, Cell } = Table;
+const { Column, HeaderCell, Cell, Pagination } = Table;
 
 const Cotizaciones = ({ ...props }) => {
     const [confimation, setConfirmation] = useState(false);
@@ -17,6 +18,9 @@ const Cotizaciones = ({ ...props }) => {
     const [displayLength, setDisplayLength] = useState(10);
     const { loading, error, data } = useQuery(OBTENER_COTIZACIONES, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_COTIZACION);
+    const [verificar] = useMutation(VERIFICAR);
+    const [produccion] = useMutation(PRODUCCION)
+    const { session } = props
 
     const handleChangePage = (dataKey) => {
         setPage(dataKey)
@@ -102,6 +106,103 @@ const Cotizaciones = ({ ...props }) => {
         })
     }
 
+    function crearItems(datos) {
+        var items = []
+        for (let i = 0; i < datos.elementos.length; i++) {
+            items.push({
+                id: datos.elementos[i].id,
+                nombre: datos.elementos[i].nombre,
+                cantidad: ((((((parseFloat(datos.pesoCapsula) * datos.porcentajes[i]) / 100) / 1000) * parseFloat(datos.cantidad)) * parseFloat(datos.envases)) / 1000)
+            })
+        }
+        for (let i = 0; i < datos.capsula.length; i++) {
+            items.push({
+                id: datos.capsula[i].id,
+                nombre: datos.capsula[i].nombre,
+                cantidad: datos.cantidad_capsula[i]
+            })
+        }
+        return items
+    }
+
+    const verificarExistencias = async (datos, show) => {
+        var items = crearItems(datos);
+        const input = {
+            items
+        }
+        const { data } = await verificar({ variables: { input }, errorPolicy: 'all' })
+        const { estado, message } = data.verificarExistencias
+        if (estado === 1) {
+            if (show) {
+                Notification['info']({
+                    title: 'Verificar Cotizaciones',
+                    duration: 20000,
+                    description: message
+                })
+            }
+            return true
+        } else if (estado === 2) {
+            Notification['warning']({
+                title: 'Verificar Cotizaciones',
+                duration: 20000,
+                description: message
+            })
+        } else {
+            Notification['error']({
+                title: 'Verificar Cotizaciones',
+                duration: 20000,
+                description: message
+            })
+        }
+        return false
+    }
+
+    const enviarProduccion = async (datos) => {
+        if(datos.estado !== 'ENVIADA'){
+            if (verificarExistencias(datos, false)) {
+                var items = []
+                for (let i = 0; i < datos.elementos.length; i++) {
+                    items.push({
+                        id: datos.elementos[i].id,
+                        cantidad: ((((((parseFloat(datos.pesoCapsula) * datos.porcentajes[i]) / 100) / 1000) * parseFloat(datos.cantidad)) * parseFloat(datos.envases)) / 1000)
+                    })
+                }
+                for (let i = 0; i < datos.capsula.length; i++) {
+                    items.push({
+                        id: datos.capsula[i].id,
+                        cantidad: datos.cantidad_capsula[i]
+                    })
+                }
+                const input = {
+                    usuario: session.id,
+                    cotizacion: datos.id,
+                    elementos: items
+                }
+                const {data} = await produccion({variables: {input}, errorPolicy: 'all'})
+                const {estado, message} = data.enviarProduccion
+                if (estado) {
+                    Notification['success']({
+                        title: 'Enviar a Producción la Cotización',
+                        duration: 20000,
+                        description: message
+                    })
+                } else {
+                    Notification['error']({
+                        title: 'Enviar a Producción la Cotización',
+                        duration: 20000,
+                        description: message
+                    })
+                }
+            }else{
+                Notification['info']({
+                    title: 'Enviar a Producción la Cotización',
+                    duration: 20000,
+                    description: "La cotización ya fue enviada a producción"
+                })
+            }
+        }
+    }
+
     if (loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error) {
         Notification['error']({
@@ -112,7 +213,6 @@ const Cotizaciones = ({ ...props }) => {
     }
 
     const datos = getData()
-    console.log(datos)
 
     return (
         <>
@@ -171,9 +271,9 @@ const Cotizaciones = ({ ...props }) => {
                                 rowData => {
                                     return (
                                         <div className="d-flex justify-content-end mx-1 my-1">
-                                            <div className="mx-1"><Link to={``}><Action tooltip="Verificar Existencias" color="blue" icon="info" size="xs" /></Link></div>
+                                            <div className="mx-1"><Action tooltip="Verificar Existencias" color="blue" icon="info" size="xs" onClick={() => verificarExistencias(rowData, true)} /></div>
                                             <div className="mx-1"><Link to={`cotizaciones/editar/${rowData.id}`}><Action tooltip="Editar Cotización" color="orange" icon="edit" size="xs" /></Link></div>
-                                            <div className="mx-1"><Link to={``}><Action tooltip="Enviar a Producción" color="green" icon="send" size="xs" /></Link></div>
+                                            <div className="mx-1"><Action tooltip="Enviar a Producción" color="green" icon="send" size="xs" onClick={() => enviarProduccion(rowData)} /></div>
                                             <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Cotización" color="red" icon="trash" size="xs" /></div>
                                         </div>
                                     )

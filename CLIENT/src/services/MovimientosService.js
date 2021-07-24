@@ -37,3 +37,21 @@ export const SAVE_MOVIMIENTO = gql`
         }
     }
 `;
+
+export const VERIFICAR = gql`
+    mutation verificarExistencias($input:Items){
+        verificarExistencias(input:$input){
+            estado
+            message
+        }
+    }
+`;
+
+export const PRODUCCION = gql`
+    mutation enviarProduccion($input:salidas){
+        enviarProduccion(input:$input){
+            estado
+            message
+        }
+    }
+`;

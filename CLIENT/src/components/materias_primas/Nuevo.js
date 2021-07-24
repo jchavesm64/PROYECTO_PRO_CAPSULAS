@@ -105,7 +105,7 @@ const NuevaMateriaPrima = ({ ...props }) => {
                 <InputPicker className="w-100" data={[{ label: 'Kilogramo', value: 'Kilogramo' }, { label: 'Litro', value: 'Litro' }]} placeholder="Unidad Métrica" value={unidad} onChange={(e) => setUnidad(e)} />
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={onSaveMateriaPrima} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />
+                <Boton onClick={onSaveMateriaPrima} tooltip="Guardar Entrada" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
         </>
     )
