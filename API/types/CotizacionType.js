@@ -78,7 +78,7 @@ const cotizacion_type = gql`
 
     type Mutation{
         insertarCotizacion(input:cotizacion):Respuesta
-        actualizarCotizacion(input:cotizacion):Respuesta
+        actualizarCotizacion(id:ID, input:cotizacion):Respuesta
         desactivarCotizacion(id:ID):Respuesta
     }
 

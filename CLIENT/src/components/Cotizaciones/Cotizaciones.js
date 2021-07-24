@@ -172,7 +172,7 @@ const Cotizaciones = ({ ...props }) => {
                                     return (
                                         <div className="d-flex justify-content-end mx-1 my-1">
                                             <div className="mx-1"><Link to={``}><Action tooltip="Verificar Existencias" color="blue" icon="info" size="xs" /></Link></div>
-                                            <div className="mx-1"><Link to={``}><Action tooltip="Editar Cotización" color="orange" icon="edit" size="xs" /></Link></div>
+                                            <div className="mx-1"><Link to={`cotizaciones/editar/${rowData.id}`}><Action tooltip="Editar Cotización" color="orange" icon="edit" size="xs" /></Link></div>
                                             <div className="mx-1"><Link to={``}><Action tooltip="Enviar a Producción" color="green" icon="send" size="xs" /></Link></div>
                                             <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: rowData.id }) : mostrarMsj() }} tooltip="Eliminar Cotización" color="red" icon="trash" size="xs" /></div>
                                         </div>

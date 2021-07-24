@@ -9,6 +9,15 @@ export const SAVE_COTIZACION = gql`
     }
 `;
 
+export const UPDATE_COTIZACION = gql`
+    mutation actualizarCotizacion($id:ID, $input:cotizacion){
+        actualizarCotizacion(id: $id, input:$input){
+            estado
+            message
+        }
+    }
+`;
+
 export const OBTENER_COTIZACIONES = gql`
     query obtenerCotizaciones{
         obtenerCotizaciones{
@@ -54,6 +63,7 @@ export const OBTENER_COTIZACION = gql`
             formula{
                 id
                 nombre
+                tipo
             }
             tipoProducto{
                 id
