@@ -86,14 +86,16 @@ const Cotizaciones = ({ ...props }) => {
 
     const getData = () => {
         if (data) {
-            return data.obtenerCotizaciones.filter((value, index) => {
-                if (filter !== "" && modo !== "") {
-                    return getFilteredByKey(modo, value, filter);
-                }
-                const start = displayLength * (page - 1);
-                const end = start + displayLength;
-                return index >= start && index < end;
-            });
+            if (data.obtenerCotizaciones) {
+                return data.obtenerCotizaciones.filter((value, index) => {
+                    if (filter !== "" && modo !== "") {
+                        return getFilteredByKey(modo, value, filter);
+                    }
+                    const start = displayLength * (page - 1);
+                    const end = start + displayLength;
+                    return index >= start && index < end;
+                });
+            }
         }
         return []
     }
@@ -158,7 +160,7 @@ const Cotizaciones = ({ ...props }) => {
     }
 
     const enviarProduccion = async (datos) => {
-        if(datos.estado !== 'ENVIADA'){
+        if (datos.estado !== 'ENVIADA') {
             if (verificarExistencias(datos, false)) {
                 var items = []
                 for (let i = 0; i < datos.elementos.length; i++) {
@@ -178,8 +180,8 @@ const Cotizaciones = ({ ...props }) => {
                     cotizacion: datos.id,
                     elementos: items
                 }
-                const {data} = await produccion({variables: {input}, errorPolicy: 'all'})
-                const {estado, message} = data.enviarProduccion
+                const { data } = await produccion({ variables: { input }, errorPolicy: 'all' })
+                const { estado, message } = data.enviarProduccion
                 if (estado) {
                     Notification['success']({
                         title: 'Enviar a Producción la Cotización',
@@ -193,7 +195,7 @@ const Cotizaciones = ({ ...props }) => {
                         description: message
                     })
                 }
-            }else{
+            } else {
                 Notification['info']({
                     title: 'Enviar a Producción la Cotización',
                     duration: 20000,

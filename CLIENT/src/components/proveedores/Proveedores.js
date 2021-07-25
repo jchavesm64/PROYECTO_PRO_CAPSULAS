@@ -72,14 +72,17 @@ const Proveedores = ({ ...props }) => {
     }
 
     const getData = () => {
-        return data_proveedores.obtenerProveedores.filter((value, index) => {
-            if (filter !== "" && modo !== "") {
-                return getFilteredByKey(modo, value, filter);
+        if (data_proveedores) {
+            if (data_proveedores.obtenerProveedores) {
+                return data_proveedores.obtenerProveedores.filter((value, index) => {
+                    if (filter !== "" && modo !== "") {
+                        return getFilteredByKey(modo, value, filter);
+                    }
+                    return value
+                });
             }
-            const start = displayLength * (page - 1);
-            const end = start + displayLength;
-            return index >= start && index < end;
-        });
+        }
+        return []
     }
 
     const mostrarMsj = () => {

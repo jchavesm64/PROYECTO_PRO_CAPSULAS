@@ -37,14 +37,17 @@ const Movimientos = ({ ...props }) => {
     }
 
     const getData = () => {
-        return data_movimiento.obtenerMovimientos.filter((value, index) => {
-            if (filter !== "" && modo !== "") {
-                return getFilteredByKey(modo, value, filter);
+        if (data_movimiento) {
+            if (data_movimiento.obtenerMovimientos) {
+                return data_movimiento.obtenerMovimientos.filter((value, index) => {
+                    if (filter !== "" && modo !== "") {
+                        return getFilteredByKey(modo, value, filter);
+                    }
+                    return value
+                });
             }
-            const start = displayLength * (page - 1);
-            const end = start + displayLength;
-            return index >= start && index < end;
-        });
+        }
+        return []
     }
 
     if (load_movimiento) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
@@ -64,7 +67,7 @@ const Movimientos = ({ ...props }) => {
                 <Boton name="Atras" onClick={e => props.history.push(`/materias_primas`)} icon="arrow-left-line" tooltip="Ir a Materias Primas" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Movimientos de Materia Prima</h3>
-            { data_movimiento.obtenerMovimientos.length > 0 &&
+            {data_movimiento.obtenerMovimientos.length > 0 &&
                 <>
                     <h5 className="text-center">{nombre}</h5>
                     <div className="input-group mt-3 mb-3">
@@ -84,7 +87,7 @@ const Movimientos = ({ ...props }) => {
             }
             {data_movimiento.obtenerMovimientos.length === 0 &&
                 <>
-                    <hr/>
+                    <hr />
                     <h4 className="text-center">No existe movimientos</h4>
                 </>
             }

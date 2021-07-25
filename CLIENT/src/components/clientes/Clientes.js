@@ -71,14 +71,17 @@ const Clientes = ({ ...props }) => {
     }
 
     const getData = () => {
-        return data_clientes.obtenerClientes.filter((value, index) => {
-            if (filter !== "" && modo !== "") {
-                return getFilteredByKey(modo, value, filter);
+        if(data_clientes){
+            if(data_clientes.obtenerClientes){
+                return data_clientes.obtenerClientes.filter((value, index) => {
+                    if (filter !== "" && modo !== "") {
+                        return getFilteredByKey(modo, value, filter);
+                    }
+                    return value
+                });
             }
-            const start = displayLength * (page - 1);
-            const end = start + displayLength;
-            return index >= start && index < end;
-        });
+        }
+        return []
     }
 
     const mostrarMsj = () => {
