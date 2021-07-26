@@ -9,7 +9,7 @@ const { Column, HeaderCell, Cell } = Table;
 const EditarPolvo = ({ ...props }) => {
     const [actualizar] = useMutation(UPDATE_COTIZACION)
     const [cotizacion, setCotizacion] = useState(null)
-    const { formula, cliente, producto, peso, capsulas, costoCapsulas, envases, costoEnvases, etiquetas, costoEtiquetas, elementos, porcentajes, precios, valor_venta } = props
+    const { formula, cliente, producto, peso, capsulas, costoCapsulas, envases, costoEnvases, etiquetas, costoEtiquetas, elementos, porcentajes, precios, valor_venta, estado } = props
     const [venta, setVenta] = useState(valor_venta)
 
     if (cotizacion === null) {
@@ -191,6 +191,9 @@ const EditarPolvo = ({ ...props }) => {
     }
 
     const validarFormulario = () => {
+        if(estado === 'ENVIADA'){
+            return true
+        }
         return !formula || !cliente || !producto || !peso || capsulas === 0 || costoCapsulas === 0 || envases === 0 || costoEnvases === 0 || etiquetas === 0 || costoEtiquetas === 0 || venta === 0 || getTotalTabla() === 0
     }
 

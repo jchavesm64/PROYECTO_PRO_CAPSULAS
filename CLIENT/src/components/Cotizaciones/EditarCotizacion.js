@@ -197,6 +197,7 @@ const EditarCotizacion = ({ props, cotizacion }) => {
                         porcentajes={cotizacion.porcentajes}
                         precios={cotizacion.precio_kilo}
                         valor_venta={cotizacion.venta}
+                        estado={cotizacion.estado}
                     />
                 }
                 {cotizacion.formula.tipo === 'BLANDA' &&
@@ -218,6 +219,7 @@ const EditarCotizacion = ({ props, cotizacion }) => {
                         cantidad_capsula={cotizacion.cantidad_capsula}
                         precios_cap={cotizacion.precios_capsula}
                         agua_purificada={cotizacion.agua_purificada}
+                        estado={cotizacion.estado}
                     />
                 }
             </div>

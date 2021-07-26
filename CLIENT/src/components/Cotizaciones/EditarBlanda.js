@@ -10,7 +10,7 @@ const CapsulaBlanda = ({ ...props }) => {
     const [costoCapsula, setCostoCapsula] = useState(0)
     const [actualizar] = useMutation(UPDATE_COTIZACION)
     const [cotizacion, setCotizacion] = useState(null)
-    const { formula, cliente, producto, peso, capsulas, envases, costoEnvases, etiquetas, costoEtiquetas, elementos, porcentajes, precios, valor_venta, capsula_ele, cantidad_capsula, precios_cap, agua_purificada } = props
+    const { formula, cliente, producto, peso, capsulas, envases, costoEnvases, etiquetas, costoEtiquetas, elementos, porcentajes, precios, valor_venta, capsula_ele, cantidad_capsula, precios_cap, agua_purificada, estado } = props
     const [venta, setVenta] = useState(valor_venta)
 
     if (formula !== null && cotizacion === null) {
@@ -320,6 +320,9 @@ const CapsulaBlanda = ({ ...props }) => {
     }
 
     const validarFormulario = () => {
+        if(estado === 'ENVIADA'){
+            return true
+        }
         return !formula || !cliente || !producto || !peso || capsulas === 0 || parseFloat(getTotalCapsula()) === 0 || envases === 0 || costoEnvases === 0 || etiquetas === 0 || costoEtiquetas === 0 || venta === 0 || getTotalTabla() === 0
     }
 
