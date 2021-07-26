@@ -10,7 +10,7 @@ import Configuracion from '../components/ConfiguracionesGenerales/Configuracione
 import TipoProductos from '../components/ConfiguracionesGenerales/TipoProducto/TipoProducto';
 import TipoProveduria from '../components/ConfiguracionesGenerales/Proveduria/TipoProveduria';
 import Roles from '../components/ConfiguracionesGenerales/Roles/GestionarRoles';
-import Usuarios from '../components/usuarios/Usuarios';
+import Usuarios from '../components/usuarios/usuarios';
 import NuevoUsuario from '../components/usuarios/NuevoUsuario';
 import EditarUsuario from '../components/usuarios/EditarUsuario';
 import Clientes from '../components/clientes/Clientes';
