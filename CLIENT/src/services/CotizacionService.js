@@ -52,6 +52,7 @@ export const OBTENER_COTIZACIONES = gql`
             agua_purificada
             porcentajes
             precio_kilo
+            estado
         }
     }
 `;
@@ -94,6 +95,7 @@ export const OBTENER_COTIZACION = gql`
             agua_purificada
             porcentajes
             precio_kilo
+            estado
         }
     }
 `;

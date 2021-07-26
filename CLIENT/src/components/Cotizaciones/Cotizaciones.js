@@ -195,13 +195,13 @@ const Cotizaciones = ({ ...props }) => {
                         description: message
                     })
                 }
-            } else {
-                Notification['info']({
-                    title: 'Enviar a Producción la Cotización',
-                    duration: 20000,
-                    description: "La cotización ya fue enviada a producción"
-                })
             }
+        } else {
+            Notification['info']({
+                title: 'Enviar a Producción la Cotización',
+                duration: 20000,
+                description: "La cotización ya fue enviada a producción"
+            })
         }
     }
 
@@ -215,6 +215,7 @@ const Cotizaciones = ({ ...props }) => {
     }
 
     const datos = getData()
+    console.log(datos)
 
     return (
         <>
