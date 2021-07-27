@@ -10,6 +10,7 @@ import { states } from '../../Json/states.json'
 import { countries2 } from '../../Json/countries2.json'
 import List from '../shared/List'
 import Action from '../shared/Action'
+import ListDoble from '../shared/ListDoble'
 
 const NuevoProveedor = (props) => {
     const [nombre, setNombre] = useState('');
@@ -28,6 +29,8 @@ const NuevoProveedor = (props) => {
     const [ubicacion, setUbicacion] = useState(false);
     const [prov, setProv] = useState(false);
     const [code, setCode] = useState('')
+    const [red, setRed] = useState('')
+    const [redes, setRedes] = useState([]);
 
     const getPaises = () => {
         const paises = []
@@ -68,16 +71,16 @@ const NuevoProveedor = (props) => {
     }
 
     const agregarTelefono = (telefono) => {
-        if(code !== ""){
+        if (code !== "") {
             var band = false;
             telefonos.map(t => {
-                if (code+' '+t.telefono === telefono) {
+                if (code + ' ' + t.telefono === telefono) {
                     band = true;
                 }
             })
             if (!band) {
                 telefonos.push({
-                    "telefono": code+' '+telefono
+                    "telefono": code + ' ' + telefono
                 })
                 document.getElementById('telefono').value = "";
                 setRefrescar(!refrescar);
@@ -88,7 +91,7 @@ const NuevoProveedor = (props) => {
                     description: "Ya está agregado el telefono"
                 })
             }
-        }else{
+        } else {
             Notification['info']({
                 title: 'Agregar Telefono',
                 duration: 5000,
@@ -127,6 +130,37 @@ const NuevoProveedor = (props) => {
         }
     }
 
+    const agregarRedSocial = (redsocial) => {
+        console.log(redes)
+        if (red !== "") {
+            var band = false
+            redes.map(item => {
+                if (item.enlace === redsocial) {
+                    band = true
+                }
+            })
+            if (!band) {
+                redes.push({
+                    'red': red,
+                    'enlace': redsocial
+                })
+                setRefrescar(!refrescar);
+            } else {
+                Notification['info']({
+                    title: 'Agregar Red Social',
+                    duration: 5000,
+                    description: "Ya está agregado la red social"
+                })
+            }
+        } else {
+            Notification['info']({
+                title: 'Agregar Telefono',
+                duration: 5000,
+                description: "No ha seleccionado una red social"
+            })
+        }
+    }
+
     const getProvedurias = () => {
         const datos = []
         if (data_provedurias.obtenerTipoProveduria) {
@@ -154,6 +188,7 @@ const NuevoProveedor = (props) => {
                 direccion,
                 telefonos,
                 correos,
+                redes,
                 provedurias,
                 estado: "ACTIVO"
             }
@@ -217,30 +252,40 @@ const NuevoProveedor = (props) => {
                     </div>
                 </div>
                 {contacto &&
-                    <div style={{margin: 0, padding: 0}} className="row mt-2">
-                        <div className="col-md-6 d-inline-block">
-                            <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar} />
-                            <div className="input-group mt-2 mb-3 w-90 mx-auto">
-                                <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
-                                    <InputGroup.Addon>
-                                        <Icon icon="phone" />
-                                    </InputGroup.Addon>
-                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)}/>
-                                    <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
-                                    <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
-                                </InputGroup>
+                    <div>
+                        <div style={{ margin: 0, padding: 0 }} className="row mt-2">
+                            <div className="col-md-6 d-inline-block">
+                                <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar} />
+                                <div className="input-group mt-2 mb-3 w-90 mx-auto">
+                                    <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
+                                        <InputGroup.Addon>
+                                            <Icon icon="phone" />
+                                        </InputGroup.Addon>
+                                        <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)} />
+                                        <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
+                                        <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
+                                    </InputGroup>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-6 d-inline-block">
-                            <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
-                            <div className="input-group mt-2 w-90 mx-auto">
-                                <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
-                                    <InputGroup.Addon>
-                                        <Icon icon="at" />
-                                    </InputGroup.Addon>
-                                    <input id="correo" type="email" placeholder="Dirección de correo electronico" className="rounded-0 form-control" />
-                                    <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarCorreo(document.getElementById('correo').value)} tooltip="Agregar Correo" />
-                                </InputGroup>
+                            <div className="col-md-6 d-inline-block">
+                                <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
+                                <div className="input-group mt-2 w-90 mx-auto">
+                                    <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
+                                        <InputGroup.Addon>
+                                            <Icon icon="at" />
+                                        </InputGroup.Addon>
+                                        <input id="correo" type="email" placeholder="Dirección de correo electronico" className="rounded-0 form-control" />
+                                        <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarCorreo(document.getElementById('correo').value)} tooltip="Agregar Correo" />
+                                    </InputGroup>
+                                </div>
+                            </div>
+                            <div className="col-md-6 mx-auto">
+                                <ListDoble data={redes} clave="red" clave2="enlace" header="Red Social" header2="Enlace" setRefrescar={setRefrescar} refrescar={refrescar}/>
+                                <div className="input-group mt-3 mb-3 w-90 mx-auto">
+                                    <InputPicker cleanable={false} className="h-100 rounded-0" size="md" placeholder="Red Social" data={[{ label: 'Facebook', value: 'Facebook' }, { label: 'Twitter', value: 'Twitter' }, { label: 'Instagram', value: 'Instagram' }]} searchable={true} onChange={(e) => setRed(e)} />
+                                    <input id="enlace" type="text" placeholder="Enlace a la red social" className="rounded-0 form-control" />
+                                    <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarRedSocial(document.getElementById('enlace').value)} tooltip="Agregar Red Social" />
+                                </div>
                             </div>
                         </div>
                     </div>

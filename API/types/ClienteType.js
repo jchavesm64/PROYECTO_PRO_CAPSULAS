@@ -12,6 +12,7 @@ const cliente_type = gql`
         direccion: String
         telefonos: [Telefono]
         correos: [Email]
+        redes: [RedSocial]
         estado: Estado
     }
 
@@ -29,6 +30,7 @@ const cliente_type = gql`
         direccion: String
         telefonos: [TelefonoInput]
         correos: [EmailInput]
+        redes: [RedSocialInput]
         estado: Estado
     }
 

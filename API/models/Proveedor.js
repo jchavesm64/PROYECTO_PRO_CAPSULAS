@@ -36,6 +36,11 @@ const ProveedorSchema = new mongoose.Schema({
         require: true,
         trim: true
     },
+    redes:{
+        type: Array,
+        require: true,
+        trim: true
+    },
     provedurias: [{
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'tipoProveduria'

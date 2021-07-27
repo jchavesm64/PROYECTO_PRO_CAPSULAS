@@ -10,6 +10,7 @@ const proveedor_type = gql`
         direccion: String
         telefonos: [Telefono]
         correos: [Email] 
+        redes: [RedSocial]
         provedurias: [TipoProveduria]
         estado: Estado
     }
@@ -27,6 +28,7 @@ const proveedor_type = gql`
         direccion: String
         telefonos: [TelefonoInput]
         correos: [EmailInput] 
+        redes: [RedSocialInput]
         provedurias: [ID]
         estado: Estado
     }

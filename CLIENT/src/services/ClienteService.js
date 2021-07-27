@@ -16,6 +16,10 @@ export const OBTENER_CLIENTES = gql`
             correos{
                 email
             }
+            redes{
+                red
+                enlace
+            }
             estado
         }
     }
@@ -36,6 +40,10 @@ export const OBTENER_CLIENTE = gql`
             }
             correos{
                 email
+            }
+            redes{
+                red
+                enlace
             }
             estado
         }

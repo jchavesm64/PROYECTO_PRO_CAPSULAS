@@ -15,6 +15,10 @@ export const OBTENER_PROVEEDORES = gql`
             correos{
                 email
             }
+            redes{
+                red
+                enlace
+            }
             provedurias{
                 id
                 tipo
@@ -38,6 +42,10 @@ export const OBTENER_PROVEEDOR = gql`
             }
             correos{
                 email
+            }
+            redes{
+                red
+                enlace
             }
             provedurias{
                 id

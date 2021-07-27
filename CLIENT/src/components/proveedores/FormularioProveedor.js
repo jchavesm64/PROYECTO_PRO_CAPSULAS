@@ -10,6 +10,7 @@ import { states } from '../../Json/states.json'
 import { countries2 } from '../../Json/countries2.json'
 import List from '../shared/List'
 import Action from '../shared/Action'
+import ListDoble from '../shared/ListDoble'
 
 const FormularioProveedor = ({ props, proveedor, uso }) => {
 
@@ -57,6 +58,8 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
     const [ubicacion, setUbicacion] = useState(false);
     const [prov, setProv] = useState(false)
     const [code, setCode] = useState('')
+    const [red, setRed] = useState('')
+    const [redes, setRedes] = useState(proveedor.redes);
 
     React.useEffect(() => {
         setNombre(proveedor.empresa)
@@ -67,6 +70,7 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
         setTelefonos(proveedor.telefonos)
         setCorreos(proveedor.correos)
         setProvedurias(getSelectedProvedurias())
+        setRedes(proveedor.redes)
     }, [proveedor])
 
     const getPaises = () => {
@@ -167,6 +171,37 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
         }
     }
 
+    const agregarRedSocial = (redsocial) => {
+        console.log(redes)
+        if (red !== "") {
+            var band = false
+            redes.map(item => {
+                if (item.enlace === redsocial) {
+                    band = true
+                }
+            })
+            if (!band) {
+                redes.push({
+                    'red': red,
+                    'enlace': redsocial
+                })
+                setRefrescar(!refrescar);
+            } else {
+                Notification['info']({
+                    title: 'Agregar Red Social',
+                    duration: 5000,
+                    description: "Ya está agregado la red social"
+                })
+            }
+        } else {
+            Notification['info']({
+                title: 'Agregar Telefono',
+                duration: 5000,
+                description: "No ha seleccionado una red social"
+            })
+        }
+    }
+
     const getProvedurias = () => {
         const datos = []
         if (data_provedurias.obtenerTipoProveduria) {
@@ -194,6 +229,7 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
                 direccion,
                 telefonos,
                 correos,
+                redes,
                 provedurias,
                 estado: "ACTIVO"
             }
@@ -257,21 +293,22 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
                     </div>
                 </div>
                 {contacto &&
-                    <div className="row mt-2">
-                        <div className="w-50 d-inline-block">
+                    <div>
+                    <div style={{ margin: 0, padding: 0 }} className="row mt-2">
+                        <div className="col-md-6 d-inline-block">
                             <List estilos="w-90 mx-auto" data={telefonos} clave="telefono" header="Teleonos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-2 mb-3 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
                                     <InputGroup.Addon>
                                         <Icon icon="phone" />
                                     </InputGroup.Addon>
-                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)}/>
+                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)} />
                                     <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
                                     <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
                                 </InputGroup>
                             </div>
                         </div>
-                        <div className="w-50 d-inline-block">
+                        <div className="col-md-6 d-inline-block">
                             <List data={correos} clave="email" header="Correos" edit={false} borrar={true} setRefrescar={setRefrescar} />
                             <div className="input-group mt-2 w-90 mx-auto">
                                 <InputGroup className="mx-auto w-90 btn-outline-light mb-2">
@@ -283,7 +320,16 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
                                 </InputGroup>
                             </div>
                         </div>
+                        <div className="col-md-6 mx-auto">
+                            <ListDoble data={redes} clave="red" clave2="enlace" header="Red Social" header2="Enlace" setRefrescar={setRefrescar} refrescar={refrescar}/>
+                            <div className="input-group mt-3 mb-3 w-90 mx-auto">
+                                <InputPicker cleanable={false} className="h-100 rounded-0" size="md" placeholder="Red Social" data={[{ label: 'Facebook', value: 'Facebook' }, { label: 'Twitter', value: 'Twitter' }, { label: 'Instagram', value: 'Instagram' }]} searchable={true} onChange={(e) => setRed(e)} />
+                                <input id="enlace" type="text" placeholder="Enlace a la red social" className="rounded-0 form-control" />
+                                <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarRedSocial(document.getElementById('enlace').value)} tooltip="Agregar Red Social" />
+                            </div>
+                        </div>
                     </div>
+                </div>
                 }
                 <div className="row border-bottom border-dark my-3">
                     <div className="col-md-11 float-left">

@@ -42,6 +42,11 @@ const ClientesSchema = new mongoose.Schema({
         require: true,
         trim: true
     },
+    redes:{
+        type: Array,
+        require: true,
+        trim: true
+    },
     estado:{
         type:String,
         require: true,

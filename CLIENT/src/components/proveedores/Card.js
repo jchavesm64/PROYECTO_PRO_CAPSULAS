@@ -9,7 +9,7 @@ const CardProveedores = ({ ...props }) => {
     const { proveedor, setConfirmation, mostrarMsj } = props;
 
     return (
-        <Panel shaded bordered bodyFill style={{ width: 300, maxWidth: 300 }}
+        <Panel shaded bordered bodyFill style={{ width: 350, maxWidth: 350 }}
             className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
             onMouseEnter={() => setState(true)}
             onMouseLeave={() => setState(false)}
@@ -28,6 +28,12 @@ const CardProveedores = ({ ...props }) => {
                 <Label icon="at" value={proveedor.correos[0].email} />
                 <h6>Telefono</h6>
                 <Label icon="phone" value={proveedor.telefonos[0].telefono} />
+                {proveedor.redes.length > 0 &&
+                    <>
+                        <h6>Redes Sociales</h6>
+                        <a href={proveedor.redes[0].enlace} target="_blank"><Label icon="comment" value={proveedor.redes[0].red + ": " + proveedor.redes[0].enlace} /></a>
+                    </>
+                }
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
                 <div className="mx-1"><Link to={`proveedores/editar/${proveedor.id}`}><Action tooltip="Editar Cliente" color="orange" icon="edit" size="xs" /></Link></div>
