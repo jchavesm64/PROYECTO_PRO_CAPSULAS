@@ -136,7 +136,7 @@ const NuevoMovimiento = (props) => {
                 </div>
             </div>
             <div className="w-100 mx-auto">
-                <h6>Seleccione el archivo CAO</h6>
+                <h6>Seleccione el archivo COA</h6>
                 <Uploader draggable removable fileList={[]} fileListVisible={false} multiple={false} autoUpload={false} onChange={selectArchivo} accept="application/*" className="text-center"> 
                     <div style={{lineHeight: '100px'}}>{cao === "" ? "Seleccion o Arrastre el archivo a esta area": cao}</div>
                 </Uploader>

@@ -1,15 +1,11 @@
 const { gql } = require('apollo-server-express');
 
 const cliente_type = gql`
-    enum TipoCliente{
-        FISICO
-        EMPRESA
-    }
 
     type Cliente{
         id: ID
         nombre: String
-        tipo: TipoCliente
+        tipo: String
         codigo: String
         pais: String
         ciudad: String
@@ -25,7 +21,7 @@ const cliente_type = gql`
     }
 
     input ClienteInput{
-        tipo: TipoCliente
+        tipo: String
         nombre: String
         codigo: String
         pais: String

@@ -12,6 +12,8 @@ import { withRouter } from 'react-router';
 
 const FormularioCliente = ({ props, cliente }) => {
 
+    console.log(cliente)
+
     const getPais = (pais) => {
         var country = null
         countries.map(p => {
@@ -99,12 +101,12 @@ const FormularioCliente = ({ props, cliente }) => {
     const getTipos = () => {
         const tipos = [];
         tipos.push({
-            "label": "FISICO",
-            "value": "FISICO"
+            "label": "Físico",
+            "value": "Físico"
         })
         tipos.push({
-            "label": "EMPRESA",
-            "value": "EMPRESA"
+            "label": "Jurídico",
+            "value": "Jurídico"
         })
         return tipos;
     }

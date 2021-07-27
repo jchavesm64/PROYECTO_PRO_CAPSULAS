@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const ClientesSchema = new mongoose.Schema({
     tipo:{
         type: String,
+        enum: ['Físico', 'Jurídico'],
         require: true,
         trim: true,
     },
