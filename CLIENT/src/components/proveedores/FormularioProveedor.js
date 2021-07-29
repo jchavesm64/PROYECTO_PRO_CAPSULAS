@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable array-callback-return */
+import React, { useState, useEffect } from 'react'
 import { Notification, SelectPicker, InputGroup, Icon, TagPicker, Loader, InputPicker } from 'rsuite'
 import Boton from '../shared/Boton'
 import { withRouter } from 'react-router-dom'
@@ -61,7 +63,7 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
     const [red, setRed] = useState('')
     const [redes, setRedes] = useState(proveedor.redes);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setNombre(proveedor.empresa)
         setCedula(proveedor.cedula)
         setPais(getPais(proveedor.pais))

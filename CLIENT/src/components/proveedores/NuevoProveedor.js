@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from 'react'
 import { Notification, SelectPicker, InputGroup, Icon, TagPicker, Loader, InputPicker } from 'rsuite'
 import Boton from '../shared/Boton'
@@ -18,8 +19,8 @@ const NuevoProveedor = (props) => {
     const [pais, setPais] = useState(null);
     const [ciudad, setCiudad] = useState(null);
     const [direccion, setDireccion] = useState('');
-    const [telefonos, setTelefonos] = useState([]);
-    const [correos, setCorreos] = useState([]);
+    const [telefonos] = useState([]);
+    const [correos] = useState([]);
     const [provedurias, setProvedurias] = useState([])
     const [refrescar, setRefrescar] = useState(false);
     const [insertar] = useMutation(SAVE_PROVEEDOR);
@@ -30,7 +31,7 @@ const NuevoProveedor = (props) => {
     const [prov, setProv] = useState(false);
     const [code, setCode] = useState('')
     const [red, setRed] = useState('')
-    const [redes, setRedes] = useState([]);
+    const [redes] = useState([]);
 
     const getPaises = () => {
         const paises = []

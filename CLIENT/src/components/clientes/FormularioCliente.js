@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+/* eslint-disable array-callback-return */
+import React, { useState, useEffect } from 'react'
 import { useMutation } from "@apollo/react-hooks";
 import { countries } from '../../Json/countries.json'
 import { states } from '../../Json/states.json'
@@ -50,7 +51,7 @@ const FormularioCliente = ({ props, cliente }) => {
     const [code, setCode] = useState('')
     const [red, setRed] = useState('')
 
-    React.useEffect(() => {
+    useEffect(() => {
         setTipo(cliente.tipo)
         setNombre(cliente.nombre)
         setCodigo(cliente.codigo)
