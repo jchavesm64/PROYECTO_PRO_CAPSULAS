@@ -9,7 +9,6 @@ import { UPDATE_PROVEEDOR } from '../../services/ProveedorService'
 import { OBTENER_TIPO_PROVEDURIA } from '../../services/TipoProveduriaService'
 import { countries } from '../../Json/countries.json'
 import { states } from '../../Json/states.json'
-import { countries2 } from '../../Json/countries2.json'
 import List from '../shared/List'
 import Action from '../shared/Action'
 import ListDoble from '../shared/ListDoble'
@@ -88,10 +87,10 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
 
     const getCodes = () => {
         const codes = []
-        countries2.map(c => {
+        countries.map(c => {
             codes.push({
-                "label": c.dial_code,
-                "value": c.dial_code
+                "label": c.code,
+                "value": c.code
             })
         })
         return codes
@@ -288,6 +287,30 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
                 }
                 <div className="row border-bottom border-dark my-3">
                     <div className="col-md-11 float-left">
+                        <h5>Dirección del Proveedor</h5>
+                    </div>
+                    <div className="d-flex col-md-1 justify-content-end float-right">
+                        <Action className="mb-1" onClick={() => { setUbicacion(!ubicacion) }} tooltip={ubicacion ? "Ocultar" : "Mostrar"} color={"cyan"} icon={ubicacion ? "angle-up" : "angle-down"} size="xs" />
+                    </div>
+                </div>
+                {ubicacion &&
+                    <>
+                        <div className="row">
+                            <div className="col-md-6 float-left w-90">
+                                <h6>Paises</h6>
+                                <SelectPicker className="mx-auto w-100 mt-2" size="md" placeholder="Paises" defaultValue={pais} data={getPaises()} onChange={(e) => setPais(e)} />
+                            </div>
+                            <div className="justify-content-end col-md-6 float-right w-90">
+                                <h6>Ciudades</h6>
+                                <SelectPicker className="mx-auto w-100 mt-2" size="md" placeholder="Provincias o Estados" defaultValue={ciudad} data={getCiudades()} onChange={(e) => setCiudad(e)} />
+                            </div>
+                        </div>
+                        <h6 className="mt-3">Dirección o señas particulares</h6>
+                        <input className="form-control mt-2" type="text" placeholder="Dirección o señas particulares" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
+                    </>
+                }
+                <div className="row border-bottom border-dark my-3">
+                    <div className="col-md-11 float-left">
                         <h5>Contacto del Proveedor</h5>
                     </div>
                     <div className="d-flex col-md-1 justify-content-end float-right">
@@ -304,7 +327,7 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
                                     <InputGroup.Addon>
                                         <Icon icon="phone" />
                                     </InputGroup.Addon>
-                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} searchable={true} onChange={(e) => setCode(e)} />
+                                    <InputPicker className="h-100 rounded-0" size="md" placeholder="Area" data={getCodes()} value={pais ? pais.code : ''} searchable={true} onChange={(e) => setCode(e)} />
                                     <input id="telefono" type="number" placeholder="Numero de telefono" className="rounded-0 form-control" />
                                     <Boton className="rounded-0 h-100" icon="save" color="green" onClick={() => agregarTelefono(document.getElementById('telefono').value)} tooltip="Agregar Telefono" />
                                 </InputGroup>
@@ -332,30 +355,6 @@ const FormularioProveedor = ({ props, proveedor, uso }) => {
                         </div>
                     </div>
                 </div>
-                }
-                <div className="row border-bottom border-dark my-3">
-                    <div className="col-md-11 float-left">
-                        <h5>Dirección del Proveedor</h5>
-                    </div>
-                    <div className="d-flex col-md-1 justify-content-end float-right">
-                        <Action className="mb-1" onClick={() => { setUbicacion(!ubicacion) }} tooltip={ubicacion ? "Ocultar" : "Mostrar"} color={"cyan"} icon={ubicacion ? "angle-up" : "angle-down"} size="xs" />
-                    </div>
-                </div>
-                {ubicacion &&
-                    <>
-                        <div className="row">
-                            <div className="col-md-6 float-left w-90">
-                                <h6>Paises</h6>
-                                <SelectPicker className="mx-auto w-100 mt-2" size="md" placeholder="Paises" defaultValue={pais} data={getPaises()} onChange={(e) => setPais(e)} />
-                            </div>
-                            <div className="justify-content-end col-md-6 float-right w-90">
-                                <h6>Ciudades</h6>
-                                <SelectPicker className="mx-auto w-100 mt-2" size="md" placeholder="Provincias o Estados" defaultValue={ciudad} data={getCiudades()} onChange={(e) => setCiudad(e)} />
-                            </div>
-                        </div>
-                        <h6 className="mt-3">Dirección o señas particulares</h6>
-                        <input className="form-control mt-2" type="text" placeholder="Dirección o señas particulares" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
-                    </>
                 }
                 <div className="row border-bottom border-dark my-3">
                     <div className="col-md-11 float-left">
