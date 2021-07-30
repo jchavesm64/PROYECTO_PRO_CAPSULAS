@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React, { useState } from 'react'
 import { Panel } from 'rsuite';
 import { Link, withRouter } from 'react-router-dom';
@@ -36,8 +37,9 @@ const CardProveedores = ({ ...props }) => {
                 }
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
-                <div className="mx-1"><Link to={`proveedores/editar/${proveedor.id}`}><Action tooltip="Editar Cliente" color="orange" icon="edit" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`proveedores/editar/${proveedor.id}`}><Action tooltip="Editar Proveedor" color="orange" icon="edit" size="xs" /></Link></div>
                 <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: proveedor.id }) : mostrarMsj() }} tooltip="Eliminar Cliente" color="red" icon="trash" size="xs" /></div>
+                <div className="mx-1"><Link to={`proveedores/detalles/${proveedor.id}`}><Action tooltip="Detalles del Proveedor" color="blue" icon="info" size="xs" /></Link></div>
             </div>
         </Panel>
     )
