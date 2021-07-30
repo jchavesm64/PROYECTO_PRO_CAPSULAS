@@ -42,6 +42,9 @@ const FormularioCliente = ({ props, cliente }) => {
     const [telefonos, setTelefonos] = useState(cliente.telefonos);
     const [correos, setCorreos] = useState(cliente.correos);
     const [redes, setRedes] = useState(cliente.redes)
+    const [city, setCity] = useState(cliente.city)
+    const [calle, setCalle] = useState(cliente.calle)
+    const [cp, setCP] = useState(cliente.cp)
     const [refrescar, setRefrescar] = useState(false);
     const [actualizar] = useMutation(UPDATE_CLIENTE);
     const [datos, setDatos] = useState(true);
@@ -60,6 +63,9 @@ const FormularioCliente = ({ props, cliente }) => {
         setTelefonos(cliente.telefonos)
         setCorreos(cliente.correos)
         setRedes(cliente.redes)
+        setCity(cliente.city)
+        setCalle(cliente.calle)
+        setCP(cliente.cp)
     }, [cliente])
 
     const getCodes = () => {
@@ -216,6 +222,9 @@ const FormularioCliente = ({ props, cliente }) => {
                 codigo,
                 pais: pais.name,
                 ciudad: ciudad.name,
+                city,
+                calle,
+                cp,
                 direccion,
                 telefonos,
                 correos,
@@ -295,8 +304,22 @@ const FormularioCliente = ({ props, cliente }) => {
                                 <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Paises" data={getPaises()} onChange={(e) => setPais(e)} defaultValue={pais} />
                             </div>
                             <div className="justify-content-end col-md-6 float-right">
-                                <h6>Ciudades</h6>
-                                <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Provincias o Estados" data={getCiudades()} onChange={(e) => setCiudad(e)} defaultValue={ciudad} />
+                                <h6 className>Provincia o Estado</h6>
+                                <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Provincia o Estado" data={getCiudades()} onChange={(e) => setCiudad(e)} defaultValue={ciudad} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-5">
+                                <h6 className="mt-3">Ciudad</h6>
+                                <input className="form-control mt-3" type="text" placeholder="Ciudad" value={city} onChange={(e) => setCity(e.target.value)} />
+                            </div>
+                            <div className="col-md-4">
+                                <h6 className="mt-3">Calle</h6>
+                                <input className="form-control mt-3" type="text" placeholder="Calle" value={calle} onChange={(e) => setCalle(e.target.value)} />
+                            </div>
+                            <div className="col-md-3">
+                                <h6 className="mt-3">Código Postal</h6>
+                                <input className="form-control mt-3" type="text" placeholder="Código Postal" value={cp} onChange={(e) => setCP(e.target.value)} />
                             </div>
                         </div>
                         <h6 className="mt-3">Dirección o señas particulares</h6>

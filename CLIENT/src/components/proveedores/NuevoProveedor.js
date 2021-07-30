@@ -18,6 +18,9 @@ const NuevoProveedor = (props) => {
     const [pais, setPais] = useState(null);
     const [ciudad, setCiudad] = useState(null);
     const [direccion, setDireccion] = useState('');
+    const [city, setCity] = useState('')
+    const [calle, setCalle] = useState('')
+    const [cp, setCP] = useState('')
     const [telefonos] = useState([]);
     const [correos] = useState([]);
     const [provedurias, setProvedurias] = useState([])
@@ -175,7 +178,7 @@ const NuevoProveedor = (props) => {
     }
 
     const validarForm = () => {
-        return !nombre || !cedula || !pais || !ciudad || !direccion || telefonos.length === 0 || correos.length === 0 || provedurias.length === 0;
+        return !nombre || !cedula || !pais || !ciudad || !direccion || !city || !calle || !cp || telefonos.length === 0 || correos.length === 0 || provedurias.length === 0;
     }
 
     const onSaveCliente = async () => {
@@ -185,6 +188,9 @@ const NuevoProveedor = (props) => {
                 cedula,
                 pais: pais.name,
                 ciudad: ciudad.name,
+                city,
+                calle,
+                cp,
                 direccion,
                 telefonos,
                 correos,
@@ -259,8 +265,22 @@ const NuevoProveedor = (props) => {
                                 <SelectPicker className="mx-auto w-100 mt-2" size="md" placeholder="Paises" data={getPaises()} onChange={(e) => setPais(e)} />
                             </div>
                             <div className="justify-content-end col-md-6 float-right">
-                                <h6>Ciudades</h6>
-                                <SelectPicker className="mx-auto w-100 mt-2" size="md" placeholder="Provincias o Estados" data={getCiudades()} onChange={(e) => setCiudad(e)} />
+                                <h6 className>Provincia o Estado</h6>
+                                <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Provincia o Estado" data={getCiudades()} onChange={(e) => setCiudad(e)} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-5">
+                                <h6 className="mt-3">Ciudad</h6>
+                                <input className="form-control mt-3" type="text" placeholder="Ciudad" value={city} onChange={(e) => setCity(e.target.value)} />
+                            </div>
+                            <div className="col-md-4">
+                                <h6 className="mt-3">Calle</h6>
+                                <input className="form-control mt-3" type="text" placeholder="Calle" value={calle} onChange={(e) => setCalle(e.target.value)} />
+                            </div>
+                            <div className="col-md-3">
+                                <h6 className="mt-3">Código Postal</h6>
+                                <input className="form-control mt-3" type="text" placeholder="Código Postal" value={cp} onChange={(e) => setCP(e.target.value)} />
                             </div>
                         </div>
                         <h6 className="mt-3">Dirección o señas particulares</h6>
@@ -304,7 +324,7 @@ const NuevoProveedor = (props) => {
                                 </div>
                             </div>
                             <div className="col-md-6 mx-auto">
-                                <ListDoble data={redes} clave="red" clave2="enlace" header="Red Social" header2="Enlace" setRefrescar={setRefrescar} refrescar={refrescar}/>
+                                <ListDoble data={redes} clave="red" clave2="enlace" header="Red Social" header2="Enlace" setRefrescar={setRefrescar} refrescar={refrescar} />
                                 <div className="input-group mt-3 mb-3 w-90 mx-auto">
                                     <InputPicker cleanable={false} className="h-100 rounded-0" size="md" placeholder="Red Social" data={[{ label: 'Facebook', value: 'Facebook' }, { label: 'Twitter', value: 'Twitter' }, { label: 'Instagram', value: 'Instagram' }]} searchable={true} onChange={(e) => setRed(e)} />
                                     <input id="enlace" type="text" placeholder="Enlace a la red social" className="rounded-0 form-control" />

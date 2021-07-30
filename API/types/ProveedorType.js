@@ -7,6 +7,9 @@ const proveedor_type = gql`
         cedula: String
         pais: String
         ciudad: String
+        city: String
+        calle: String
+        cp: String
         direccion: String
         telefonos: [Telefono]
         correos: [Email] 
@@ -25,6 +28,9 @@ const proveedor_type = gql`
         cedula: String
         pais: String
         ciudad: String
+        city: String
+        calle: String
+        cp: String
         direccion: String
         telefonos: [TelefonoInput]
         correos: [EmailInput] 

@@ -9,6 +9,9 @@ const cliente_type = gql`
         codigo: String
         pais: String
         ciudad: String
+        city: String
+        calle: String
+        cp: String
         direccion: String
         telefonos: [Telefono]
         correos: [Email]
@@ -27,6 +30,9 @@ const cliente_type = gql`
         codigo: String
         pais: String
         ciudad: String
+        city: String
+        calle: String
+        cp: String
         direccion: String
         telefonos: [TelefonoInput]
         correos: [EmailInput]

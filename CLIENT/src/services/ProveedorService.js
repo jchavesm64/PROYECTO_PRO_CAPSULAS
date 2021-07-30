@@ -8,6 +8,9 @@ export const OBTENER_PROVEEDORES = gql`
             cedula
             pais
             ciudad
+            city
+            calle
+            cp
             direccion
             telefonos{
                 telefono
@@ -36,6 +39,9 @@ export const OBTENER_PROVEEDOR = gql`
             cedula
             pais
             ciudad
+            city
+            calle
+            cp
             direccion
             telefonos{
                 telefono
