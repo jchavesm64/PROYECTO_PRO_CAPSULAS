@@ -23,6 +23,10 @@ const FormulaSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'FormulasBase'
     },
+    cliente:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'clientes'
+    },
     estado:{
         type: String,
         require: true,

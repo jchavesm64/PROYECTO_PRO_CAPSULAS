@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import Boton from '../../shared/Boton';
@@ -12,6 +13,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { SAVE_FORMULA } from '../../../services/FormulaService'
 import { OBTENER_MATERIAS_PRIMAS } from '../../../services/MateriaPrimaService'
 import { OBTENER_FORMULAS_BASE } from '../../../services/FormulaBaseService'
+import { OBTENER_CLIENTES } from '../../../services/ClienteService'
 import { Input } from 'rsuite';
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -20,11 +22,13 @@ const NuevaFormula = ({ ...props }) => {
     const [displayLength, setDisplayLength] = useState(10);
     const { loading, error, data: materias_primas } = useQuery(OBTENER_MATERIAS_PRIMAS, { pollInterval: 1000 });
     const { loading: load_formulas, error: error_formulas, data: formulas } = useQuery(OBTENER_FORMULAS_BASE, { pollInterval: 1000 });
+    const { loading: load_clientes, error: error_clientes, data: clientes } = useQuery(OBTENER_CLIENTES, { pollInterval: 1000 });
     const [formula, setFormula] = useState([])
     const [filter, setFilter] = useState('')
     const [nombre, setNombre] = useState("")
     const [tipo, setTipo] = useState('')
     const [base, setBase] = useState('')
+    const [cliente, setCliente] = useState('')
     const [insertar] = useMutation(SAVE_FORMULA)
 
     const handleChangePage = (dataKey) => {
@@ -64,7 +68,7 @@ const NuevaFormula = ({ ...props }) => {
                     porcentajes.push(item.porcentaje)
                 })
                 var input = {}
-                if(!base){
+                if (!base) {
                     input = {
                         nombre,
                         tipo,
@@ -72,7 +76,7 @@ const NuevaFormula = ({ ...props }) => {
                         porcentajes,
                         estado: 'ACTIVO'
                     }
-                }else{
+                } else {
                     input = {
                         nombre,
                         tipo,
@@ -195,15 +199,15 @@ const NuevaFormula = ({ ...props }) => {
     }
 
     const validarFormula = () => {
-        if(tipo === 'BLANDA'){
+        if (tipo === 'BLANDA') {
             return formula.length === 0 || !nombre || !base;
         }
         return formula.length === 0 || !nombre;
     }
 
     const getFormulasBase = () => {
-        if(formulas !== null){
-            if(formulas.obtenerFormulasBase){
+        if (formulas !== null) {
+            if (formulas.obtenerFormulasBase) {
                 var datos = []
                 formulas.obtenerFormulasBase.map(item => {
                     datos.push({
@@ -217,7 +221,23 @@ const NuevaFormula = ({ ...props }) => {
         return []
     }
 
-    if (loading || load_formulas) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    const getClientes = () => {
+        if (clientes !== null) {
+            if (clientes.obtenerClientes) {
+                var datos = []
+                clientes.obtenerClientes.map(item => {
+                    datos.push({
+                        label: item.nombre,
+                        value: item.id
+                    })
+                })
+                return datos
+            }
+        }
+        return []
+    }
+
+    if (loading || load_formulas || load_clientes) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error) {
         Notification['error']({
             title: 'Error',
@@ -232,6 +252,13 @@ const NuevaFormula = ({ ...props }) => {
             description: 'Error, no podemos obtener la información de fórmulas, verificar tu conexión a internet'
         })
     }
+    if (error_clientes) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de clientes, verificar tu conexión a internet'
+        })
+    }
 
     const data = getData()
 
@@ -242,6 +269,10 @@ const NuevaFormula = ({ ...props }) => {
             </div>
             <h3 className="text-center">Gestión de formulas</h3>
             <hr />
+            <div className="row">
+                <h6 className="my-1">Cliente</h6>
+                <InputPicker className="w-100" data={getClientes()} placeholder="Cliente" value={cliente} onChange={(e) => setCliente(e)} />
+            </div>
             <div class="row my-1">
                 <div className="col-md-4">
                     <h6 className="my-1">Tipo de Cápsula</h6>

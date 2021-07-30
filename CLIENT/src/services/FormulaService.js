@@ -27,6 +27,12 @@ export const OBTENER_FORMULAS = gql`
                     nombre
                 }
             }
+            cliente{
+                id
+                tipo
+                nombre
+                codigo
+            }
             estado
         }
     }
@@ -60,6 +66,12 @@ export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
                     nombre
                 }
             }
+            cliente{
+                id
+                tipo
+                nombre
+                codigo
+            }
             porcentajes
         }
     }
@@ -90,6 +102,12 @@ export const OBTENER_FORMULA = gql`
                     id
                     nombre
                 }
+            }
+            cliente{
+                id
+                tipo
+                nombre
+                codigo
             }
             porcentajes
             estado
