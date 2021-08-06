@@ -17,7 +17,7 @@ const CapsulaBlanda = ({ ...props }) => {
         const datos = [], capsula = []
         for (let i = 0; i < formula.elementos.length; i++) {
             datos.push({
-                materia_prima: formula.elementos[i].materia_prima,
+                materia_prima: formula.elementos[i],
                 porcentaje: formula.porcentajes[i],
                 precio_kilo: 0
             })

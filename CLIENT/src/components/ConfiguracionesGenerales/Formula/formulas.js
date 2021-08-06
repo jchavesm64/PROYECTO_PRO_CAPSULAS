@@ -109,10 +109,6 @@ const Formulas = ({ ...props }) => {
                             <Cell dataKey='nombre' />
                         </Column>
                         <Column width={500} flexGrow={1}>
-                            <HeaderCell>Tipo de Cápsula</HeaderCell>
-                            <Cell dataKey='tipo' />
-                        </Column>
-                        <Column width={500} flexGrow={1}>
                             <HeaderCell>Cliente</HeaderCell>
                             <Cell>
                                 {

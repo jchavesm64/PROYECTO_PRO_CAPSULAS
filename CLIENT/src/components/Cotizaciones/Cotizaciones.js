@@ -117,11 +117,11 @@ const Cotizaciones = ({ ...props }) => {
                 cantidad: ((((((parseFloat(datos.pesoCapsula) * datos.porcentajes[i]) / 100) / 1000) * parseFloat(datos.cantidad)) * parseFloat(datos.envases)) / 1000)
             })
         }
-        for (let i = 0; i < datos.capsula.length; i++) {
+        for (let i = 0; i < datos.elementos_c.length; i++) {
             items.push({
                 id: datos.capsula[i].id,
-                nombre: datos.capsula[i].nombre,
-                cantidad: datos.cantidad_capsula[i]
+                nombre: datos.elementos_c[i].nombre,
+                cantidad: datos.cantidad_c[i]
             })
         }
         return items
@@ -248,11 +248,11 @@ const Cotizaciones = ({ ...props }) => {
                         </Cell>
                     </Column>
                     <Column flexGrow={1}>
-                        <HeaderCell>Producto</HeaderCell>
+                        <HeaderCell>Presentación</HeaderCell>
                         <Cell>
                             {
                                 rowData => {
-                                    return (<label>{rowData.tipoProducto.tipo}</label>)
+                                    return (<label>{rowData.presentacion.tipo}</label>)
                                 }
                             }
                         </Cell>

@@ -23,36 +23,42 @@ export const OBTENER_COTIZACIONES = gql`
         obtenerCotizaciones{
             id
             formula{
+                id
                 nombre
             }
-            tipoProducto{
+            presentacion{
+                id
                 tipo
             }
             cliente{
+                id
                 nombre
             }
-            pesoCapsula
-            cantidad
-            costoCapsula
-            envases
-            costoEnvase
-            etiqueta
-          	costoEtiqueta
-            venta
+            peso
             elementos{
                 id
                 nombre
             }
-            capsula{
+            porcentajes
+            precios
+            cant_cap
+            cost_cap
+            cant_env
+            cost_env
+            cant_eti
+            cost_eti
+            venta
+            dosis
+            serving
+            agua
+            elementos_c{
                 id
                 nombre
             }
-            precios_capsula
-            cantidad_capsula
-            agua_purificada
-            porcentajes
-            precio_kilo
+            cantidad_c
+            precios_c
             estado
+            status
         }
     }
 `;
@@ -64,9 +70,8 @@ export const OBTENER_COTIZACION = gql`
             formula{
                 id
                 nombre
-                tipo
             }
-            tipoProducto{
+            presentacion{
                 id
                 tipo
             }
@@ -74,28 +79,31 @@ export const OBTENER_COTIZACION = gql`
                 id
                 nombre
             }
-            pesoCapsula
-            cantidad
-            costoCapsula
-            envases
-            costoEnvase
-            etiqueta
-          	costoEtiqueta
-            venta
+            peso
             elementos{
                 id
                 nombre
             }
-            capsula{
+            porcentajes
+            precios
+            cant_cap
+            cost_cap
+            cant_env
+            cost_env
+            cant_eti
+            cost_eti
+            venta
+            dosis
+            serving
+            agua
+            elementos_c{
                 id
                 nombre
             }
-            precios_capsula
-            cantidad_capsula
-            agua_purificada
-            porcentajes
-            precio_kilo
+            cantidad_c
+            precios_c
             estado
+            status
         }
     }
 `;

@@ -8,6 +8,7 @@ import {
     Loader,
     Notification,
     InputPicker,
+    Checkbox
 } from 'rsuite';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { SAVE_FORMULA } from '../../../services/FormulaService'
@@ -26,8 +27,8 @@ const NuevaFormula = ({ ...props }) => {
     const [formula, setFormula] = useState([])
     const [filter, setFilter] = useState('')
     const [nombre, setNombre] = useState("")
-    const [tipo, setTipo] = useState('')
     const [base, setBase] = useState('')
+    const [mostrar, setMostrar] = useState(false)
     const [cliente, setCliente] = useState('')
     const [insertar] = useMutation(SAVE_FORMULA)
 
@@ -71,7 +72,6 @@ const NuevaFormula = ({ ...props }) => {
                 if (!base) {
                     input = {
                         nombre,
-                        tipo,
                         elementos,
                         porcentajes,
                         estado: 'ACTIVO'
@@ -79,7 +79,6 @@ const NuevaFormula = ({ ...props }) => {
                 } else {
                     input = {
                         nombre,
-                        tipo,
                         elementos,
                         porcentajes,
                         formulaBase: base.id,
@@ -199,7 +198,7 @@ const NuevaFormula = ({ ...props }) => {
     }
 
     const validarFormula = () => {
-        if (tipo === 'BLANDA') {
+        if (mostrar === true) {
             return formula.length === 0 || !nombre || !base;
         }
         return formula.length === 0 || !nombre;
@@ -270,20 +269,17 @@ const NuevaFormula = ({ ...props }) => {
             <h3 className="text-center">Gestión de formulas</h3>
             <hr />
             <div className="row">
-                <h6 className="my-1">Cliente</h6>
-                <InputPicker className="w-100" data={getClientes()} placeholder="Cliente" value={cliente} onChange={(e) => setCliente(e)} />
-            </div>
-            <div class="row my-1">
-                <div className="col-md-4">
-                    <h6 className="my-1">Tipo de Cápsula</h6>
-                    <InputPicker className="w-100" data={[{ label: 'Polvo', value: 'POLVO' }, { label: 'Blanda', value: 'BLANDA' }]} placeholder="Tipo de Cápsula" value={tipo} onChange={(e) => setTipo(e)} />
+                <div className="col-md-5">
+                    <h6 className="my-1">Cliente</h6>
+                    <InputPicker className="w-100" data={getClientes()} placeholder="Cliente" value={cliente} onChange={(e) => setCliente(e)} />
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-7">
                     <h5>Nombre de la fórmula</h5>
                     <Input className="my-1" type="text" placeholder="Nombre de la fórmula" value={nombre} onChange={(e) => setNombre(e)} />
                 </div>
             </div>
-            {tipo === 'BLANDA' &&
+            <Checkbox onChange={() => setMostrar(!mostrar)}>Marcar si la fórmula requiere de una fórmula base</Checkbox>
+            {mostrar === true &&
                 <div className="row my-1 p-2">
                     <h6>Fórmula Base</h6>
                     <InputPicker data={getFormulasBase()} placeholder="Fórmula Base" value={base} onChange={(e) => setBase(e)} />

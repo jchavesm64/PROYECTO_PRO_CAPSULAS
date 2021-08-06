@@ -5,7 +5,6 @@ export const OBTENER_FORMULAS = gql`
         obtenerFormulas{
             id
             nombre
-            tipo
             elementos{
                 id
                 nombre
@@ -43,7 +42,6 @@ export const OBTENER_FORMULAS_MOVIMIENTOS = gql`
         obtenerFormulasConMovimiento{
             id 
             nombre
-            tipo
             elementos{
                 materia_prima{
                     id
@@ -82,7 +80,6 @@ export const OBTENER_FORMULA = gql`
         obtenerFormula(id:$id){
             id
             nombre
-            tipo
             elementos{
                 id
                 nombre
