@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { OBTENER_FORMULAS } from '../../services/FormulaService'
 import { OBTENER_CLIENTES } from '../../services/ClienteService'
 import { OBTENER_TIPO_PRODUCTOS } from '../../services/TipoProductoService'
-import { Loader, Notification, InputPicker, Input } from 'rsuite';
+import { Loader, Notification, InputPicker } from 'rsuite';
 import CapsulaDura from './capsulaDura'
 import CapsulaBlanda from './capsulaBlanda'
 import Boton from '../shared/Boton';
@@ -120,6 +120,9 @@ const Cotizador = ({ ...props }) => {
             <div className="bg-white p-2 shadow rounded my-2">
                 {producto.tipo === 'Cápsula dura' && formula && 
                     <CapsulaDura formula={formula} cliente={cliente} producto={producto} />
+                }
+                {producto.tipo === 'Cápsula blanda' && formula && 
+                    <CapsulaBlanda formula={formula} cliente={cliente} producto={producto} />
                 }
             </div>
         </>

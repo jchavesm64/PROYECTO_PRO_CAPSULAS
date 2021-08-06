@@ -166,13 +166,13 @@ const Cotizaciones = ({ ...props }) => {
                 for (let i = 0; i < datos.elementos.length; i++) {
                     items.push({
                         id: datos.elementos[i].id,
-                        cantidad: ((((((parseFloat(datos.pesoCapsula) * datos.porcentajes[i]) / 100) / 1000) * parseFloat(datos.cantidad)) * parseFloat(datos.envases)) / 1000)
+                        cantidad: ((((((parseFloat(datos.peso) * datos.porcentajes[i]) / 100) / 1000) * parseFloat(datos.cant_cap)) * parseFloat(datos.cant_env)) / 1000)
                     })
                 }
-                for (let i = 0; i < datos.capsula.length; i++) {
+                for (let i = 0; i < datos.elementos_c.length; i++) {
                     items.push({
-                        id: datos.capsula[i].id,
-                        cantidad: datos.cantidad_capsula[i]
+                        id: datos.elementos_c[i].id,
+                        cantidad: datos.cantidad_c[i]
                     })
                 }
                 const input = {

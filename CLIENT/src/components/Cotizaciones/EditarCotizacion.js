@@ -7,7 +7,7 @@ import { OBTENER_CLIENTES } from '../../services/ClienteService'
 import { OBTENER_TIPO_PRODUCTOS } from '../../services/TipoProductoService'
 import { Loader, Notification, InputPicker } from 'rsuite';
 import Boton from '../shared/Boton';
-import EditarPolvo from './EditarDura'
+import EditarDura from './EditarDura'
 import EditarBlanda from './EditarBlanda'
 
 const EditarCotizacion = ({ props, cotizacion }) => {
@@ -126,7 +126,16 @@ const EditarCotizacion = ({ props, cotizacion }) => {
 
             <div className="bg-white p-2 shadow rounded my-2">
                 {cotizacion.presentacion.tipo === 'Cápsula dura' &&
-                    <EditarPolvo formula={formula}
+                    <EditarDura 
+                        formula={formula}
+                        cliente={cliente}
+                        producto={producto}
+                        objeto={cotizacion}
+                    />
+                }
+                {cotizacion.presentacion.tipo === 'Cápsula blanda' &&
+                    <EditarBlanda
+                        formula={formula}
                         cliente={cliente}
                         producto={producto}
                         objeto={cotizacion}
