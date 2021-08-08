@@ -8,6 +8,7 @@ import { OBTENER_TIPO_PRODUCTOS } from '../../services/TipoProductoService'
 import { Loader, Notification, InputPicker } from 'rsuite';
 import CapsulaDura from './capsulaDura'
 import CapsulaBlanda from './capsulaBlanda'
+import CapsulaPolvo from './capsulaPolvo'
 import Boton from '../shared/Boton';
 
 const Cotizador = ({ ...props }) => {
@@ -69,6 +70,11 @@ const Cotizador = ({ ...props }) => {
         return []
     }
 
+    const onChangeFormula = (formula) => {
+        setFomula(formula)
+        setProducto('')
+    }
+
     if (load_formulas || load_clientes || load_productos) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error_formulas) {
         Notification['error']({
@@ -92,8 +98,6 @@ const Cotizador = ({ ...props }) => {
         })
     }
 
-    console.log(producto)
-
     return (
         <>
             <div>
@@ -105,11 +109,11 @@ const Cotizador = ({ ...props }) => {
                 <div className="row my-2">
                     <div className="col-md-6">
                         <h6>Seleccione la Formula</h6>
-                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Fórmula" data={getFormulas()} searchable={true} onChange={(e) => setFomula(e)} />
+                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Fórmula" data={getFormulas()} searchable={true} onChange={(e) => onChangeFormula(e)} />
                     </div>
                     <div className="col-md-6">
                         <h6>Seleccione la presentación</h6>
-                        <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Presentación" data={getProducto()} searchable={true} onChange={(e) => setProducto(e)} />
+                        <InputPicker cleanable={false} value={producto} className="rounded-0 w-100" size="md" placeholder="Presentación" data={getProducto()} searchable={true} onChange={(e) => setProducto(e)} />
                     </div>
                 </div>
                 <div className="w-75 mx-auto">
@@ -117,14 +121,19 @@ const Cotizador = ({ ...props }) => {
                     <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Cliente" data={getClientes()} searchable={true} onChange={(e) => setCliente(e)} />
                 </div>
             </div>
-            <div className="bg-white p-2 shadow rounded my-2">
-                {producto.tipo === 'Cápsula dura' && formula && 
-                    <CapsulaDura formula={formula} cliente={cliente} producto={producto} />
-                }
-                {producto.tipo === 'Cápsula blanda' && formula && 
-                    <CapsulaBlanda formula={formula} cliente={cliente} producto={producto} />
-                }
-            </div>
+            {formula &&
+                <div className="bg-white p-2 shadow rounded my-2">
+                    {producto.tipo === 'Cápsula dura' &&
+                        <CapsulaDura formula={formula} cliente={cliente} producto={producto} />
+                    }
+                    {producto.tipo === 'Cápsula blanda' &&
+                        <CapsulaBlanda formula={formula} cliente={cliente} producto={producto} />
+                    }
+                    {producto.tipo === 'Polvo' &&
+                        <CapsulaPolvo formula={formula} cliente={cliente} producto={producto} />
+                    }
+                </div>
+            }
         </>
     )
 }

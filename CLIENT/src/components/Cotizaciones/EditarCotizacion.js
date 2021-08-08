@@ -9,6 +9,7 @@ import { Loader, Notification, InputPicker } from 'rsuite';
 import Boton from '../shared/Boton';
 import EditarDura from './EditarDura'
 import EditarBlanda from './EditarBlanda'
+import EditarPolvo from './EditarPolvo'
 
 const EditarCotizacion = ({ props, cotizacion }) => {
     const [formula, setFomula] = useState(cotizacion.formula.id)
@@ -98,8 +99,6 @@ const EditarCotizacion = ({ props, cotizacion }) => {
         })
     }
 
-    console.log(cotizacion)
-
     return (
         <>
             <div>
@@ -135,6 +134,14 @@ const EditarCotizacion = ({ props, cotizacion }) => {
                 }
                 {cotizacion.presentacion.tipo === 'Cápsula blanda' &&
                     <EditarBlanda
+                        formula={formula}
+                        cliente={cliente}
+                        producto={producto}
+                        objeto={cotizacion}
+                    />
+                }
+                {cotizacion.presentacion.tipo === 'Polvo' &&
+                    <EditarPolvo
                         formula={formula}
                         cliente={cliente}
                         producto={producto}

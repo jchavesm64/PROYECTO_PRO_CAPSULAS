@@ -27,8 +27,6 @@ const Editar = ({...props}) => {
         })
     }
 
-    console.log(data)
-
     return (
         <EditarCotizacion props={props} cotizacion={data.obtenerCotizacion}/>
     )

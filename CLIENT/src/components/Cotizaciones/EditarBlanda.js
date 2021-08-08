@@ -28,30 +28,8 @@ const CapsulaBlanda = ({ ...props }) => {
         setEtiquetas(objeto.cant_eti)
         setCostoEnvase(objeto.cost_env)
         setCostoEtiquetas(objeto.cost_eti)
-        const datos = [], capsula = []
-        for (let i = 0; i < objeto.elementos.length; i++) {
-            datos.push({
-                materia_prima: objeto.elementos[i],
-                porcentaje: objeto.porcentajes[i],
-                precio_kilo: objeto.precios[i]
-            })
-        }
-        for (let i = 0; i < objeto.elementos_c.length; i++) {
-            capsula.push({
-                materia_prima: objeto.elementos_c[i],
-                cantidad_kilo: objeto.cantidad_c[i],
-                precio_kilo: objeto.precios_c[i]
-            })
-        }
-        capsula.push({
-            materia_prima: { id: 'nulo', nombre: 'Agua Purificada' },
-            cantidad_kilo: objeto.agua,
-            precio_kilo: 0
-        })
-        setCotizacion({ datos: datos, capsula: capsula })
-        console.log(cotizacion)
     }, [objeto])
-/*
+
     if (formula !== null && cotizacion === null) {
         const datos = [], capsula = []
         for (let i = 0; i < objeto.elementos.length; i++) {
@@ -75,7 +53,7 @@ const CapsulaBlanda = ({ ...props }) => {
         })
         setCotizacion({ datos: datos, capsula: capsula })
     }
-*/
+
     const actualizarCantidadCapsula = (data, cantidad) => {
         var newDatos = []
         if (cantidad !== "") {
