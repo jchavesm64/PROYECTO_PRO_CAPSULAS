@@ -9,6 +9,7 @@ import { Loader, Notification, InputPicker } from 'rsuite';
 import CapsulaDura from './capsulaDura'
 import CapsulaBlanda from './capsulaBlanda'
 import CapsulaPolvo from './capsulaPolvo'
+import Stick from './stick'
 import Boton from '../shared/Boton';
 
 const Cotizador = ({ ...props }) => {
@@ -131,6 +132,9 @@ const Cotizador = ({ ...props }) => {
                     }
                     {producto.tipo === 'Polvo' &&
                         <CapsulaPolvo formula={formula} cliente={cliente} producto={producto} />
+                    }
+                    {producto.tipo === 'Sticks' &&
+                        <Stick formula={formula} cliente={cliente} producto={producto} />
                     }
                 </div>
             }

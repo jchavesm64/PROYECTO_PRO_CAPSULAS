@@ -10,6 +10,7 @@ import Boton from '../shared/Boton';
 import EditarDura from './EditarDura'
 import EditarBlanda from './EditarBlanda'
 import EditarPolvo from './EditarPolvo'
+import EditarStick from './EditarStick'
 
 const EditarCotizacion = ({ props, cotizacion }) => {
     const [formula, setFomula] = useState(cotizacion.formula.id)
@@ -142,6 +143,14 @@ const EditarCotizacion = ({ props, cotizacion }) => {
                 }
                 {cotizacion.presentacion.tipo === 'Polvo' &&
                     <EditarPolvo
+                        formula={formula}
+                        cliente={cliente}
+                        producto={producto}
+                        objeto={cotizacion}
+                    />
+                }
+                {cotizacion.presentacion.tipo === 'Sticks' &&
+                    <EditarStick
                         formula={formula}
                         cliente={cliente}
                         producto={producto}
