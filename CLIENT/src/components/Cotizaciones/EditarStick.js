@@ -115,7 +115,7 @@ const EditarStick = ({...props}) => {
         console.log(input)
         try {
             const { data } = await actualizar({ variables: { id: objeto.id, input }, errorPolicy: 'all' })
-            const { estado, message } = data.insertarCotizacion;
+            const { estado, message } = data.actualizarCotizacion;
             if (estado) {
                 Notification['success']({
                     title: 'Guardar Cotización',

@@ -127,7 +127,7 @@ const Cotizador = ({ ...props }) => {
                     {producto.tipo === 'Cápsula dura' &&
                         <CapsulaDura formula={formula} cliente={cliente} producto={producto} />
                     }
-                    {producto.tipo === 'Cápsula blanda' &&
+                    {producto.tipo === 'Cápsula blanda' && formula.formulaBase &&
                         <CapsulaBlanda formula={formula} cliente={cliente} producto={producto} />
                     }
                     {producto.tipo === 'Polvo' &&
