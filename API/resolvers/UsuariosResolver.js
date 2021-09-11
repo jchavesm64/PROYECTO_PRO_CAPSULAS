@@ -75,7 +75,15 @@ export default {
         obtenerUsuariosActivos: async (_, { }) => {
             try {
                 const usuarios = await Usuario.find({ estado: "ACTIVO" }).populate({ path: 'roles', populate: [{ path: 'permisos' }] });
-                return usuarios;
+                return usuarios.sort(function(a, b){
+                    if(a.nombre > b.nombre){
+                        return 1
+                    }
+                    if(a.nombre < b.nombre){
+                        return -1
+                    }
+                    return 0;
+                });
             } catch (error) {
                 return error;
             }
@@ -303,10 +311,14 @@ export default {
         cambiarClave: async (_, { id, actual, nueva }) => {
             try {
                 const usuario = await Usuario.findById(id);
-                console.log(usuario)
                 if (usuario) {
                     const valid = await bcrypt.compare(actual, usuario.clave);
-                    if (valid) {
+                    if (!valid) {
+                        return {
+                            success: false,
+                            message: "La contraseña actual no es correcto"
+                        }
+                    } else {
                         var clave_enc = await bcrypt.hash(nueva, 10);
                         const result = await Usuario.findByIdAndUpdate(id, { clave: clave_enc }, { new: true });
                         if (result) {
@@ -319,11 +331,6 @@ export default {
                                 success: false,
                                 message: "No se puedo cambiar la contraseña"
                             }
-                        }
-                    } else {
-                        return {
-                            success: false,
-                            message: "La contraseña actual no es correcto"
                         }
                     }
                 } else {
