@@ -105,6 +105,7 @@ export default {
                                     var salida = {
                                         tipo: 'SALIDA',
                                         lote: r.lote,
+                                        proveedor: r.proveedor,
                                         codigo: r.codigo,
                                         fecha: fecha,
                                         cantidad: cant,
