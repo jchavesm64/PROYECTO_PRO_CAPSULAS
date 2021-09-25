@@ -110,6 +110,7 @@ const Cotizaciones = ({ ...props }) => {
 
     function crearItems(datos) {
         var items = []
+        console.log(datos)
         for (let i = 0; i < datos.elementos.length; i++) {
             items.push({
                 id: datos.elementos[i].id,
@@ -119,7 +120,7 @@ const Cotizaciones = ({ ...props }) => {
         }
         for (let i = 0; i < datos.elementos_c.length; i++) {
             items.push({
-                id: datos.capsula[i].id,
+                id: datos.elementos_c[i].id,
                 nombre: datos.elementos_c[i].nombre,
                 cantidad: datos.cantidad_c[i]
             })
