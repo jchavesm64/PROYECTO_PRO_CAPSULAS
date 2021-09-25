@@ -304,11 +304,13 @@ const EditarStick = ({ ...props }) => {
                     <h6>Ganancia</h6>
                     <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat(((getTotal() / envases) * utilidad.utilidad) / 100).toFixed(4)}</label></strong>
                     <h6>Venta</h6>
-                    <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat((getTotal()/envases) + (((getTotal()/envases)*utilidad.utilidad)/100)).toFixed(4)}</label></strong>
+                    <strong className="bg-white rounded border"><label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat((getTotal() / envases) + (((getTotal() / envases) * utilidad.utilidad) / 100)).toFixed(4)}</label></strong>
                 </div>
-                <div className="d-flex justify-content-end my-2">
-                    <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />
-                </div>
+                {objeto.estado === 'REGISTRADA' &&
+                    <div className="d-flex justify-content-end my-2">
+                        <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />
+                    </div>
+                }
             </div>
         </>
     )
