@@ -5,7 +5,7 @@ export default {
     Query: {
         obtenerMovimientos: async (_, { id }) => {
             try {
-                const mov = await Movimientos.find({ materia_prima: id }).populate('usuario').populate('materia_prima');
+                const mov = await Movimientos.find({ materia_prima: id }).populate('usuario').populate('materia_prima').populate('proveedor');
                 return mov;
             } catch (error) {
                 return error;
@@ -90,6 +90,7 @@ export default {
                                     var salida = {
                                         tipo: 'SALIDA',
                                         lote: r.lote,
+                                        proveedor: r.proveedor,
                                         codigo: r.codigo,
                                         fecha: fecha,
                                         cantidad: r.existencia,

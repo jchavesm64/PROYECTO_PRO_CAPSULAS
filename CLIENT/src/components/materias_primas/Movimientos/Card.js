@@ -29,6 +29,8 @@ const CardMovimiento = ({ ...props }) => {
                     <Label icon="hashtag" value={movimiento.lote} />
                     <h6>Código</h6>
                     <Label icon="barcode" value={movimiento.codigo} />
+                    <h6>Proveedor</h6>
+                    <Label icon="shopping-cart" value={movimiento.proveedor ? movimiento.proveedor.empresa : "No especificado"} />
                     {movimiento.tipo === 'ENTRADA' &&
                         <>
                             <h6>Fabricación</h6>

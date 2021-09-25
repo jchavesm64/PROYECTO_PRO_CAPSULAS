@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { Input, InputPicker, Notification, Uploader } from 'rsuite'
-import { useMutation } from '@apollo/react-hooks'
+import { Input, InputPicker, Notification, Uploader, Loader } from 'rsuite'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { SAVE_MOVIMIENTO } from '../../../services/MovimientosService';
+import { OBTENER_PROVEEDORES} from '../../../services/ProveedorService'
 import Boton from '../../shared/Boton';
 
 const NuevoMovimiento = (props) => {
     const [lote, setLote] = useState('')
     const [codigo, setCodigo] = useState('')
+    const [proveedor, setProveedor] = useState('')
     const [fechaFabricacion, setFechaFabricacion] = useState('')
     const [fechaVencimiento, setFechaVencimiento] = useState('')
     const [cantidad, setCantidad] = useState('')
@@ -15,6 +17,7 @@ const NuevoMovimiento = (props) => {
     const [moneda, setMoneda] = useState('US Dollar')
     const [cao, setCao] = useState('')
     const [insertar] = useMutation(SAVE_MOVIMIENTO);
+    const { loading: load_proveedores, data: data_proveedores } = useQuery(OBTENER_PROVEEDORES, { pollInterval: 1000 })
 
     const { session } = props
     const { id } = props.match.params
@@ -29,6 +32,7 @@ const NuevoMovimiento = (props) => {
                         tipo: 'ENTRADA',
                         lote,
                         codigo,
+                        proveedor: proveedor.id,
                         fechaFabricacion,
                         fechaVencimiento,
                         fecha,
@@ -91,6 +95,21 @@ const NuevoMovimiento = (props) => {
         setCao(file[0].name)
     }
 
+    const getProvedores = () => {
+        const datos = []
+        if (data_proveedores.obtenerProveedores) {
+            data_proveedores.obtenerProveedores.map(item => {
+                datos.push({
+                    "value": item,
+                    "label": item.empresa
+                });
+            });
+        }
+        return datos;
+    }
+
+    if (load_proveedores) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+
     return (
         <div>
             <div>
@@ -134,6 +153,10 @@ const NuevoMovimiento = (props) => {
                     </div>
 
                 </div>
+            </div>
+            <div className="w-75 mx-auto">
+                <h6>Seleccione el Proveedor</h6>
+                <InputPicker cleanable={false} className="rounded-0 w-100" size="md" placeholder="Proveedores" data={getProvedores()} searchable={true} onChange={(e) => setProveedor(e)} />
             </div>
             <div className="w-100 mx-auto">
                 <h6>Seleccione el archivo COA</h6>

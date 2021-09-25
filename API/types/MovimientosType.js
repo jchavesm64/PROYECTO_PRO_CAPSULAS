@@ -13,6 +13,7 @@ const movimientos_type = gql`
         id: ID
         tipo: Tipo
         lote: String
+        proveedor: Proveedor
         codigo: String
         fechaFabricacion: Date
         fechaVencimiento: Date
@@ -59,6 +60,7 @@ const movimientos_type = gql`
         tipo: Tipo
         lote: String
         codigo: String
+        proveedor: ID
         fechaFabricacion: Date
         fechaVencimiento: Date
         fecha: Date
