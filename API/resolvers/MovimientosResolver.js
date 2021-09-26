@@ -1,5 +1,9 @@
 import { Movimientos, Cotizacion } from '../models';
 import mongoose from 'mongoose'
+import {google} from 'googleapis'
+import {Storage} from '@google-cloud/storage'
+import path from 'path'
+import { createReadStream } from 'fs';
 
 export default {
     Query: {
@@ -138,6 +142,35 @@ export default {
                     estado: false,
                     data: null,
                     message: "Ocurrio un error inesperada al enviar la cotización a producción"
+                }
+            }
+        },
+        subirArchivoCOA: async (_, {file}) => {
+            try{
+                var newFilename = new Date().getTime();
+                const {createReadStream, filename} = await file;
+                newFilename = newFilename + "_" + filename;
+                const gcStorage = new Storage({
+                    keyFilename: path.join(__dirname, '../google_cloud_data.json'),
+                    projectId: 'causal-rite-327202'
+                });
+                const bucket = gcStorage.bucket('bucket_pro_capsulas')
+                await new Promise((res) => 
+                    createReadStream()
+                    .pipe(bucket.file(`archivos_coa/${newFilename}`)
+                    .createWriteStream({resumable: true, gzip: true}))
+                    .on('finish', res)
+                )
+                return {
+                    estado: true,
+                    filename: newFilename,
+                    message: "El archivo fue subido con éxito"
+                }
+            }catch(error){
+                return{
+                    estado: false,
+                    filename: "vacio",
+                    message: "El archivo no puedo ser subido..."
                 }
             }
         }

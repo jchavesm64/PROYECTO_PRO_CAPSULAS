@@ -25,12 +25,9 @@ const parametrosGenerales_type = gql`
         message: String
     }
 
-    type Query {
-        validarParametro(input:entrada_parametro):Respuesta_parametro
-    }
-
     type Mutation{
         insertarParametro(input:Parametro_input):Respuesta_parametro
+        validarParametro(input:entrada_parametro):Respuesta_parametro
     }
 `;
 

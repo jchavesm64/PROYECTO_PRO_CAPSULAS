@@ -82,10 +82,17 @@ const movimientos_type = gql`
         obtenerMovimientos(id:ID): [MovimientosType]
     }
 
+    type RespuestaUpload{
+        estado: Boolean
+        filename: String
+        message: String
+    }
+
     type Mutation{
         insertarMovimiento(input:MovimientosInput):RespuestaMovimientos
         verificarExistencias(input:Items):RespuestaVerificar
         enviarProduccion(input:salidas):RespuestaMovimientos
+        subirArchivoCOA(file:Upload):RespuestaUpload
     }
 `;
 

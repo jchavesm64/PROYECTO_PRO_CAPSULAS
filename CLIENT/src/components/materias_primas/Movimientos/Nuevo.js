@@ -5,6 +5,7 @@ import { useQuery, useMutation, useLazyQuery } from '@apollo/react-hooks'
 import { SAVE_MOVIMIENTO } from '../../../services/MovimientosService';
 import { OBTENER_PROVEEDORES } from '../../../services/ProveedorService';
 import { VALIDAR_PARAMETRO } from '../../../services/ParametrosGeneralesService';
+import { UPLOAD_FILE_COA } from '../../../services/MovimientosService';
 import Boton from '../../shared/Boton';
 
 const NuevoMovimiento = (props) => {
@@ -16,18 +17,47 @@ const NuevoMovimiento = (props) => {
     const [cantidad, setCantidad] = useState('')
     const [precio, setPrecio] = useState('')
     const [moneda, setMoneda] = useState('US Dollar')
-    const [cao, setCao] = useState('')
+    const [file, setFile] = useState(null)
     const [validar, setValidar] = useState(false)
     const [parametro, setParametro] = useState('')
     const [p_correcto, setPCorrecto] = useState(false)
     const [insertar] = useMutation(SAVE_MOVIMIENTO);
     const { loading: load_proveedores, data: data_proveedores } = useQuery(OBTENER_PROVEEDORES, { pollInterval: 1000 })
-    const [val_cod, {loading: load_validar, error: error_validar, data: data_validar}] = useLazyQuery(VALIDAR_PARAMETRO);
-
+    const [val_cod, {loading: load_validar}] = useMutation(VALIDAR_PARAMETRO);
+    const [subir, { loading: subirLoading }] = useMutation(UPLOAD_FILE_COA)
     const { session } = props
     const { id } = props.match.params
 
-    const onSaveMovimiento = async () => {
+    const subirArchivo = async () => {
+        try {
+            const { data } = await subir({ variables: { file: file.blobFile } });
+            const { estado, filename, message } = data.subirArchivoCOA;
+            console.log(filename)
+            if (estado) {
+                Notification['success']({
+                    title: 'Subir Archivo',
+                    description: message,
+                    duration: 10000
+                });
+                onSaveMovimiento(filename)
+            } else {
+                Notification['error']({
+                    title: 'Subir Archivo',
+                    description: message,
+                    duration: 10000
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            Notification["error"]({
+                title: "Subir Archivo",
+                duration: 10000,
+                description: "Error al intentar subir el archivo",
+            });
+        }
+    }
+
+    const onSaveMovimiento = async (filename) => {
         var date = new Date();
         var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
         if (fechaFabricacion < fechaVencimiento && fechaFabricacion <= fecha || p_correcto) {
@@ -46,11 +76,10 @@ const NuevoMovimiento = (props) => {
                         precio: cantidad * precio,
                         precio_unidad: precio,
                         moneda,
-                        cao,
+                        cao: filename,
                         usuario: session.id,
                         materia_prima: id
                     }
-                    console.log(fecha, input)
                     const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
                     const { estado, message } = data.insertarMovimiento;
                     if (estado) {
@@ -92,16 +121,16 @@ const NuevoMovimiento = (props) => {
     }
 
     const validarForm = () => {
-        if(p_correcto){
-            return !lote || !codigo || !cantidad || !precio || !moneda || !cao;
-        }else{
-            return !lote || !codigo || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio || !moneda || !cao;
+        if (p_correcto) {
+            return !lote || !codigo || !cantidad || !precio || !moneda || !file;
+        } else {
+            return !lote || !codigo || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio || !moneda || !file;
         }
     }
 
     const selectArchivo = (file) => {
         console.log(file)
-        setCao(file[0].name)
+        setFile(file[0])
     }
 
     const getProvedores = () => {
@@ -122,9 +151,9 @@ const NuevoMovimiento = (props) => {
             codigo: 'C-001',
             valor: parametro
         }
-        await val_cod({variables:{input}, errorPolicy: 'all'});
-        const {estado, message} = data_validar.validarParametro;
-        if(estado){
+        const {data} = await val_cod({ variables: { input }, errorPolicy: 'all' });
+        const { estado, message } = data.validarParametro;
+        if (estado) {
             Notification['success']({
                 title: 'Recuperar Clave',
                 description: message,
@@ -132,7 +161,7 @@ const NuevoMovimiento = (props) => {
             });
             setValidar(false);
             setPCorrecto(true);
-        }else{
+        } else {
             Notification['error']({
                 title: 'Recuperar Clave',
                 description: message,
@@ -142,6 +171,17 @@ const NuevoMovimiento = (props) => {
     }
 
     if (load_proveedores || load_validar) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+
+    if (subirLoading) {
+        return (
+            <Loader
+                backdrop
+                content="Subiendo archivo espere..."
+                vertical
+                size="lg"
+            />
+        );
+    }
 
     return (
         <div>
@@ -216,11 +256,11 @@ const NuevoMovimiento = (props) => {
             <div className="w-100 mx-auto">
                 <h6>Seleccione el archivo COA</h6>
                 <Uploader draggable removable fileList={[]} fileListVisible={false} multiple={false} autoUpload={false} onChange={selectArchivo} accept="application/*" className="text-center">
-                    <div style={{ lineHeight: '100px' }}>{cao === "" ? "Seleccion o Arrastre el archivo a esta area" : cao}</div>
+                    <div style={{ lineHeight: '100px' }}>{!file ? "Seleccion o Arrastre el archivo a esta area" : file.name}</div>
                 </Uploader>
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={onSaveMovimiento} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />
+                <Boton onClick={() => subirArchivo()} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
         </div>
     );

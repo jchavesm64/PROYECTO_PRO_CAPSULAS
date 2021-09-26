@@ -1,7 +1,7 @@
 import { ParametrosGenerales } from "../models";
 
 export default {
-    Query:{
+    Mutation:{
         validarParametro: async (_, {input}) => {
             try{
                 const {codigo, valor} = input
@@ -30,9 +30,7 @@ export default {
                     message: 'Hubo un error inesperado'
                 }
             }
-        }
-    },
-    Mutation:{
+        },
         insertarParametro: async (_, { input }) => {
             try {
                 const parametro = new ParametrosGenerales(input);
