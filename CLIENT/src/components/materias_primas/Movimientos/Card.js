@@ -33,10 +33,18 @@ const CardMovimiento = ({ ...props }) => {
                     <Label icon="shopping-cart" value={movimiento.proveedor ? movimiento.proveedor.empresa : "No especificado"} />
                     {movimiento.tipo === 'ENTRADA' &&
                         <>
-                            <h6>Fabricación</h6>
-                            <Label icon="calendar-o" value={getFecha(movimiento.fechaFabricacion)} />
-                            <h6>Vencimiento</h6>
-                            <Label icon="calendar-o" value={getFecha(movimiento.fechaVencimiento)} />
+                            {movimiento.fechaFabricacion &&
+                                <>
+                                    <h6>Fabricación</h6>
+                                    <Label icon="calendar-o" value={getFecha(movimiento.fechaFabricacion)} />
+                                </>
+                            }
+                            {movimiento.fechaVencimiento &&
+                                <>
+                                    <h6>Vencimiento</h6>
+                                    <Label icon="calendar-o" value={getFecha(movimiento.fechaVencimiento)} />   
+                                </>
+                            }
                         </>
                     }
                     <h6>Cantidad</h6>

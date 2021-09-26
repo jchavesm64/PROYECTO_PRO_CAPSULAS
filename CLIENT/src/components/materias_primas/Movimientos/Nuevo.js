@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { Input, InputPicker, Notification, Uploader, Loader } from 'rsuite'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { Input, InputPicker, Notification, Uploader, Loader, Checkbox, Modal, Button } from 'rsuite'
+import { useQuery, useMutation, useLazyQuery } from '@apollo/react-hooks'
 import { SAVE_MOVIMIENTO } from '../../../services/MovimientosService';
-import { OBTENER_PROVEEDORES} from '../../../services/ProveedorService'
+import { OBTENER_PROVEEDORES } from '../../../services/ProveedorService';
+import { VALIDAR_PARAMETRO } from '../../../services/ParametrosGeneralesService';
 import Boton from '../../shared/Boton';
 
 const NuevoMovimiento = (props) => {
@@ -16,8 +17,12 @@ const NuevoMovimiento = (props) => {
     const [precio, setPrecio] = useState('')
     const [moneda, setMoneda] = useState('US Dollar')
     const [cao, setCao] = useState('')
+    const [validar, setValidar] = useState(false)
+    const [parametro, setParametro] = useState('')
+    const [p_correcto, setPCorrecto] = useState(false)
     const [insertar] = useMutation(SAVE_MOVIMIENTO);
     const { loading: load_proveedores, data: data_proveedores } = useQuery(OBTENER_PROVEEDORES, { pollInterval: 1000 })
+    const [val_cod, {loading: load_validar, error: error_validar, data: data_validar}] = useLazyQuery(VALIDAR_PARAMETRO);
 
     const { session } = props
     const { id } = props.match.params
@@ -25,7 +30,7 @@ const NuevoMovimiento = (props) => {
     const onSaveMovimiento = async () => {
         var date = new Date();
         var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
-        if (fechaFabricacion < fechaVencimiento && fechaFabricacion <= fecha) {
+        if (fechaFabricacion < fechaVencimiento && fechaFabricacion <= fecha || p_correcto) {
             if (!(cantidad < 1 || precio < 1)) {
                 try {
                     const input = {
@@ -87,7 +92,11 @@ const NuevoMovimiento = (props) => {
     }
 
     const validarForm = () => {
-        return !lote || !codigo || !fechaFabricacion || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio || !moneda || !cao;
+        if(p_correcto){
+            return !lote || !codigo || !cantidad || !precio || !moneda || !cao;
+        }else{
+            return !lote || !codigo || !fechaFabricacion || !fechaVencimiento || !cantidad || !precio || !moneda || !cao;
+        }
     }
 
     const selectArchivo = (file) => {
@@ -108,7 +117,31 @@ const NuevoMovimiento = (props) => {
         return datos;
     }
 
-    if (load_proveedores) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    const validarCodigo = async () => {
+        const input = {
+            codigo: 'C-001',
+            valor: parametro
+        }
+        await val_cod({variables:{input}, errorPolicy: 'all'});
+        const {estado, message} = data_validar.validarParametro;
+        if(estado){
+            Notification['success']({
+                title: 'Recuperar Clave',
+                description: message,
+                duration: 10000
+            });
+            setValidar(false);
+            setPCorrecto(true);
+        }else{
+            Notification['error']({
+                title: 'Recuperar Clave',
+                description: message,
+                duration: 10000
+            });
+        }
+    }
+
+    if (load_proveedores || load_validar) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
     return (
         <div>
@@ -126,6 +159,27 @@ const NuevoMovimiento = (props) => {
                     <Input type="text" placeholder="Código" value={codigo} onChange={(e) => setCodigo(e)} />
                 </div>
             </div>
+            <hr />
+            <Checkbox checked={validar || p_correcto} onChange={() => setValidar(!validar)}>Marcar para no especificar fechas</Checkbox>
+            <Modal backdrop="static" show={validar} onHide={() => { setValidar(false) }}>
+                <Modal.Header>
+                    <Modal.Title>Código de Verificación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="row mx-2">
+                        <h6 className="mb-2" >Ingrese el Código</h6>
+                        <Input type="text" placeholder="Código" value={parametro} onChange={(e) => setParametro(e)} />
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button disabled={parametro === ''} onClick={() => validarCodigo()} appearance="primary">
+                        Validar
+                    </Button>
+                    <Button onClick={() => setValidar(false)} appearance="subtle">
+                        Cancelar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <div className="row my-1">
                 <div className="col-md-6">
                     <h6 className="my-1">Fecha de Fabricación</h6>
@@ -136,6 +190,7 @@ const NuevoMovimiento = (props) => {
                     <Input type="date" placeholder="Fecha de Vencimiento" value={fechaVencimiento} onChange={(e) => setFechaVencimiento(e)} />
                 </div>
             </div>
+            <hr />
             <div className="row my-1">
                 <div className="col-md-6">
                     <h6 className="my-1">Cantidad</h6>
@@ -160,8 +215,8 @@ const NuevoMovimiento = (props) => {
             </div>
             <div className="w-100 mx-auto">
                 <h6>Seleccione el archivo COA</h6>
-                <Uploader draggable removable fileList={[]} fileListVisible={false} multiple={false} autoUpload={false} onChange={selectArchivo} accept="application/*" className="text-center"> 
-                    <div style={{lineHeight: '100px'}}>{cao === "" ? "Seleccion o Arrastre el archivo a esta area": cao}</div>
+                <Uploader draggable removable fileList={[]} fileListVisible={false} multiple={false} autoUpload={false} onChange={selectArchivo} accept="application/*" className="text-center">
+                    <div style={{ lineHeight: '100px' }}>{cao === "" ? "Seleccion o Arrastre el archivo a esta area" : cao}</div>
                 </Uploader>
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
