@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React, { useState } from 'react'
 import { Panel } from 'rsuite';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Label from '../../shared/Label'
 import { Icon } from 'rsuite';
 

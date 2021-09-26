@@ -1,7 +1,8 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
 import { Input, InputPicker, Notification, Uploader, Loader, Checkbox, Modal, Button } from 'rsuite'
-import { useQuery, useMutation, useLazyQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { SAVE_MOVIMIENTO } from '../../../services/MovimientosService';
 import { OBTENER_PROVEEDORES } from '../../../services/ProveedorService';
 import { VALIDAR_PARAMETRO } from '../../../services/ParametrosGeneralesService';
@@ -60,7 +61,7 @@ const NuevoMovimiento = (props) => {
     const onSaveMovimiento = async (filename) => {
         var date = new Date();
         var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
-        if (fechaFabricacion < fechaVencimiento && fechaFabricacion <= fecha || p_correcto) {
+        if ((fechaFabricacion < fechaVencimiento && fechaFabricacion <= fecha) || p_correcto) {
             if (!(cantidad < 1 || precio < 1)) {
                 try {
                     const input = {
