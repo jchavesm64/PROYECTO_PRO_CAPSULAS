@@ -16,6 +16,8 @@ const CardMovimiento = ({ ...props }) => {
         return date.getFullYear() + ' / ' + mes + ' / ' + day;
     }
 
+    console.log(movimiento.pro)
+
     return (
         <Panel shaded bordered bodyFill style={{ width: 600, maxWidth: 600 }}
             className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
@@ -32,8 +34,12 @@ const CardMovimiento = ({ ...props }) => {
                         <Label icon="hashtag" value={movimiento.lote} />
                         <h6>Código</h6>
                         <Label icon="barcode" value={movimiento.codigo} />
-                        <h6>Proveedor</h6>
-                        <Label icon="shopping-cart" value={movimiento.proveedor ? movimiento.proveedor.empresa : "No especificado"} />
+                        {movimiento.proveedor &&
+                            <>
+                                <h6>Proveedor</h6>
+                                <Label icon="shopping-cart" value={movimiento.proveedor.empresa} />
+                            </>
+                        }
                         {movimiento.tipo === 'ENTRADA' &&
                             <>
                                 {movimiento.fechaFabricacion &&
