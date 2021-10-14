@@ -16,8 +16,6 @@ const CardMovimiento = ({ ...props }) => {
         return date.getFullYear() + ' / ' + mes + ' / ' + day;
     }
 
-    console.log(movimiento.pro)
-
     return (
         <Panel shaded bordered bodyFill style={{ width: 600, maxWidth: 600 }}
             className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
@@ -34,12 +32,8 @@ const CardMovimiento = ({ ...props }) => {
                         <Label icon="hashtag" value={movimiento.lote} />
                         <h6>Código</h6>
                         <Label icon="barcode" value={movimiento.codigo} />
-                        {movimiento.proveedor &&
-                            <>
-                                <h6>Proveedor</h6>
-                                <Label icon="shopping-cart" value={movimiento.proveedor.empresa} />
-                            </>
-                        }
+                        <h6>Proveedor</h6>
+                        <Label icon="shopping-cart" value={movimiento.proveedor ? movimiento.proveedor.empresa : "No especificado"} />
                         {movimiento.tipo === 'ENTRADA' &&
                             <>
                                 {movimiento.fechaFabricacion &&
@@ -79,7 +73,7 @@ const CardMovimiento = ({ ...props }) => {
                 <div className="m-1 row">
                     <h6>Archivo COA</h6>
                     <div className="col-md-5 float-left bg-primary rounded py-1 my-1">
-                        <a className="text-white" href={"https://storage.cloud.google.com/bucket_pro_capsulas/archivos_coa/" + movimiento.cao} target="_blank"><Icon icon="eye" />  Ver Archivo COA</a>
+                        <a className="text-white" href={"https://storage.cloud.google.com/bucket_pro_capsulas/archivos_coa/" + movimiento.cao+"?authuser=2"} target="_blank"><Icon icon="eye" />  Ver Archivo COA</a>
                     </div>
                     <div className="col-md-2"></div>
                     {/* 
