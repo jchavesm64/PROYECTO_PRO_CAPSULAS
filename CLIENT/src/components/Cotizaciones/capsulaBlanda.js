@@ -244,7 +244,7 @@ const CapsulaBlanda = ({ ...props }) => {
             cotizacion.datos.map(item => {
                 total += parseFloat(getTotalFila(item))
             })
-            total += parseFloat(parseFloat(getTotalCapsula()) / cantidad)
+            total += parseFloat(parseFloat(getTotalCapsula()))
             total += parseFloat(costoEnvase * envases)
             total += parseFloat(costoEtiquetas * etiquetas)
             return parseFloat(total).toFixed(4)
@@ -552,7 +552,7 @@ const CapsulaBlanda = ({ ...props }) => {
                             <Input type="number" min={1} value={utilidad} onChange={(e) => setUtilidad(e)} />
                             <h6>Ganancia</h6>
                             <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" size="lg" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat(((getTotal() / envases) * utilidad) / 100).toFixed(4)}</label></strong>
-                            <h6>Venta</h6>
+                            <h6>Precio Final</h6>
                             <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" size="lg" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat((getTotal() / envases) + (((getTotal() / envases) * utilidad) / 100)).toFixed(4)}</label></strong>
                         </div>
                         <div className="d-flex justify-content-end my-2">

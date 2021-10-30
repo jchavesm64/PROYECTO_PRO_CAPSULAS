@@ -7,11 +7,10 @@ import { Notification, Table, Input, InputGroup, Icon } from 'rsuite';
 import Boton from '../shared/Boton';
 const { Column, HeaderCell, Cell } = Table;
 
-const Stick = ({...props}) => {
+const Stick = ({ ...props }) => {
     const [insertar] = useMutation(SAVE_COTIZACION)
     const [cotizacion, setCotizacion] = useState(null)
     const [venta, setVenta] = useState(0)
-    const [dosis, setDosis] = useState(0)
     const [envases, setEnvases] = useState(0)
     const [etiquetas, setEtiquetas] = useState(0)
     const [costoEtiquetas, setCostoEtiquetas] = useState(0)
@@ -39,21 +38,21 @@ const Stick = ({...props}) => {
     }
 
     const getGramosEnvase = (porcentaje) => {
-        if(peso > 0 && envases > 0){
+        if (peso > 0 && envases > 0) {
             return parseFloat(getGramosScoop(porcentaje) * envases).toFixed(4)
         }
         return 0
     }
 
     const getKilosTotal = (porcentaje) => {
-        if(peso > 0 && envases > 0){
+        if (peso > 0 && envases > 0) {
             return parseFloat(getGramosEnvase(porcentaje) / 1000).toFixed(4)
         }
         return 0
     }
 
     const getTotalFila = (porcentaje, precio) => {
-        if(peso > 0 && envases > 0){
+        if (peso > 0 && envases > 0) {
             return parseFloat(getKilosTotal(porcentaje) * precio).toFixed(4)
         }
         return 0
@@ -105,11 +104,10 @@ const Stick = ({...props}) => {
             elementos: ele,
             porcentajes: por,
             precios: precio,
-            dosis: dosis,
             cant_env: envases,
             cant_eti: etiquetas,
             cost_eti: costoEtiquetas,
-            venta: ((getTotal()/envases) + (((getTotal()/envases)*utilidad)/100)),
+            venta: ((getTotal() / envases) + (((getTotal() / envases) * utilidad) / 100)),
             estado: 'REGISTRADA',
             status: 'ACTIVO'
         }
@@ -142,7 +140,7 @@ const Stick = ({...props}) => {
     }
 
     const validarFormulario = () => {
-        return !formula || !cliente || !producto || !peso || !dosis || envases === 0 || etiquetas === 0 || costoEtiquetas < 0 || utilidad === 0 || getTotal() === 0
+        return !formula || !cliente || !producto || !peso || envases === 0 || etiquetas === 0 || costoEtiquetas < 0 || utilidad === 0 || getTotal() === 0
     }
 
     const actualizarPrecio = (data, precio) => {
@@ -196,16 +194,12 @@ const Stick = ({...props}) => {
             <h5>Parámetros específicos de la cotización</h5>
             <div className="row my-2">
                 <div className="col-md-6">
-                    <h6>Dosis</h6>
-                    <Input type="number" min={1} value={dosis} onChange={(e) => setDosis(e)} />
                     <h6>Total de envases</h6>
                     <Input type="number" min={1} value={envases} onChange={(e) => setEnvases(e)} />
                     <h6>Total de Empaques</h6>
                     <Input type="number" min={1} value={etiquetas} onChange={(e) => setEtiquetas(e)} />
                 </div>
                 <div className="col-md-6">
-                    <div style={{height: 60}}></div>
-                    <div style={{height: 60}}></div>
                     <h6>Costo por Empaque</h6>
                     <InputGroup size="md" className="w-90 mx-auto">
                         <InputGroup.Addon size="md">
@@ -213,11 +207,9 @@ const Stick = ({...props}) => {
                         </InputGroup.Addon>
                         <Input type="number" min={1} value={costoEtiquetas} onChange={(e) => setCostoEtiquetas(e)} />
                     </InputGroup>
+                    <h6>Cantidad del producto</h6>
+                    <Input type="number" searchable={true} onChange={(e) => setPeso(e)} />
                 </div>
-            </div>
-            <div className="w-50 mx-auto">
-                <h6>Cantidad del producto</h6>
-                <Input type="number" searchable={true} onChange={(e) => setPeso(e)}/>
             </div>
             <h5>Elementos de la formula</h5>
             <div>
@@ -310,9 +302,9 @@ const Stick = ({...props}) => {
                     <h6>Porcentaje de Ganancia por Envase</h6>
                     <Input type="number" min={1} value={utilidad} onChange={(e) => setUtilidad(e)} />
                     <h6>Ganancia</h6>
-                    <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat(((getTotal() / envases)*utilidad)/100).toFixed(4)}</label></strong>
-                    <h6>Venta</h6>
-                    <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat((getTotal()/envases) + (((getTotal()/envases)*utilidad)/100)).toFixed(4)}</label></strong>
+                    <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat(((getTotal() / envases) * utilidad) / 100).toFixed(4)}</label></strong>
+                    <h6>Precio Final</h6>
+                    <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat((getTotal() / envases) + (((getTotal() / envases) * utilidad) / 100)).toFixed(4)}</label></strong>
                 </div>
                 <div className="d-flex justify-content-end my-2">
                     <Boton name="Guardar Cotización" icon="plus" color="green" tooltip="Guardar Cotización" onClick={() => onSaveCotizacion()} disabled={validarFormulario()} />

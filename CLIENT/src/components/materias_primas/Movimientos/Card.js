@@ -8,6 +8,11 @@ import { Icon } from 'rsuite';
 const CardMovimiento = ({ ...props }) => {
     const [state, setState] = useState(false);
     const { movimiento } = props;
+    const moneda = {
+        'US Dollar': '$',
+        'Colón': '₡',
+        'Yen': '¥'
+    }
 
     function getFecha(fecha) {
         var date = new Date(fecha);
@@ -61,7 +66,7 @@ const CardMovimiento = ({ ...props }) => {
                                 <h6>Precio unidad</h6>
                                 <Label icon="hashtag" value={movimiento.precio_unidad} />
                                 <h6>Total</h6>
-                                <Label icon="hashtag" value={movimiento.precio} />
+                                <Label icon="hashtag" value={moneda[movimiento.moneda] + ' ' + movimiento.precio} />
                             </>
                         }
                         <h6>Registrado por</h6>

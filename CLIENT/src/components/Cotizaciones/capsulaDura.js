@@ -126,7 +126,7 @@ const CapsulaDura = ({ ...props }) => {
             cotizacion.map(item => {
                 total += parseFloat(getTotalFila(item))
             })
-            total += parseFloat(costoCapsula * cantidad)
+            total += parseFloat((envases * cantidad)*costoCapsula)
             total += parseFloat(costoEnvase * envases)
             total += parseFloat(costoEtiquetas * etiquetas)
             return parseFloat(total).toFixed(4)
@@ -213,7 +213,7 @@ const CapsulaDura = ({ ...props }) => {
             <div className="row my-2">
                 <div className="col-md-6">
                     <h6>Cápsulas por envases</h6>
-                    <Input type="number" min={1} value={cantidad} onChange={(e) => setCantidad(e)} />
+                    <Input type="number" min={1} value={cantidad} onChange={(e) => setCantidad(e)} pattern="([0-9]{1,3}),([0-9]{1,3})"/>
                     <h6>Total de envases</h6>
                     <Input type="number" min={1} value={envases} onChange={(e) => setEnvases(e)} />
                     <h6>Total de etiquetas</h6>
@@ -227,7 +227,7 @@ const CapsulaDura = ({ ...props }) => {
                         <InputGroup.Addon size="md">
                             <Icon icon="fas fa-dollar-sign" />
                         </InputGroup.Addon>
-                        <Input type="number" min={1} value={costoCapsula} onChange={(e) => setCostoCapsula(e)} />
+                        <Input type="number" min={1} value={costoCapsula} onChange={(e) => setCostoCapsula(e)} lang='es'/>
                     </InputGroup>
                     <h6>Costo por envase</h6>
                     <InputGroup size="md" className="w-90 mx-auto">
@@ -360,7 +360,7 @@ const CapsulaDura = ({ ...props }) => {
                 <Input type="number" min={1} value={utilidad} onChange={(e) => setUtilidad(e)} />
                 <h6>Ganancia</h6>
                 <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat(((getTotal() / envases) * utilidad) / 100).toFixed(4)}</label></strong>
-                <h6>Venta</h6>
+                <h6>Precio Final</h6>
                 <strong className="bg-white rounded border"><Icon icon="fas fa-dollar-sign" /> <label className="pt-2" style={{ fontSize: 16, height: 40 }}>{(utilidad === 0 || envases === 0) ? 0 : parseFloat((getTotal() / envases) + (((getTotal() / envases) * utilidad) / 100)).toFixed(4)}</label></strong>
             </div>
             <div className="d-flex justify-content-end my-2">
