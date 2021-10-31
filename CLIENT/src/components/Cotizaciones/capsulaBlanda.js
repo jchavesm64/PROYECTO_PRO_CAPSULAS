@@ -24,17 +24,17 @@ const CapsulaBlanda = ({ ...props }) => {
         const datos = [], capsula = []
         for (let i = 0; i < formula.elementos.length; i++) {
             datos.push({
-                materia_prima: formula.elementos[i],
+                materia_prima: formula.elementos[i].materia_prima,
                 porcentaje: formula.porcentajes[i],
-                precio_kilo: 0
+                precio_kilo: formula.elementos[i].movimientos[0].precio_unidad
             })
         }
         var base = formula.formulaBase.elementos
         for (let i = 0; i < base.length; i++) {
             capsula.push({
-                materia_prima: base[i],
+                materia_prima: base[i].materia_prima,
                 cantidad_kilo: 0,
-                precio_kilo: 0
+                precio_kilo: base[i].movimientos[0].precio_unidad
             })
         }
         capsula.push({
@@ -410,7 +410,7 @@ const CapsulaBlanda = ({ ...props }) => {
                                                     <InputGroup.Addon size="md">
                                                         <Icon icon="fas fa-dollar-sign" />
                                                     </InputGroup.Addon>
-                                                    <Input type="number" className="form-control text-center" defaultValue={rowData.cantidad_kilo} onChange={(e) => actualizarPrecioCapsula(rowData, e)} />
+                                                    <Input type="number" className="form-control text-center" defaultValue={rowData.precio_kilo} onChange={(e) => actualizarPrecioCapsula(rowData, e)} />
                                                 </InputGroup>
                                             )
                                         }

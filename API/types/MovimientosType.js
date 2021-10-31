@@ -56,6 +56,17 @@ const movimientos_type = gql`
         elementos: [salida]
     }
 
+    input salida_inventario{
+        tipo: Tipo
+        lote: String
+        proveedor: ID
+        codigo: String
+        fecha: Date
+        cantidad: Number
+        usuario: ID
+        materia_prima: ID
+    }
+
     input MovimientosInput{
         tipo: Tipo
         lote: String
@@ -80,6 +91,7 @@ const movimientos_type = gql`
 
     type Query{
         obtenerMovimientos(id:ID): [MovimientosType]
+        obtenerMovimientos2(id:ID): [MovimientosType]
     }
 
     type RespuestaUpload{
@@ -90,6 +102,7 @@ const movimientos_type = gql`
 
     type Mutation{
         insertarMovimiento(input:MovimientosInput):RespuestaMovimientos
+        insertarSalida(input:salida_inventario):RespuestaMovimientos
         verificarExistencias(input:Items):RespuestaVerificar
         enviarProduccion(input:salidas):RespuestaMovimientos
         subirArchivoCOA(file:Upload):RespuestaUpload

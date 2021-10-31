@@ -25,9 +25,9 @@ const CapsulaPolvo = ({ ...props }) => {
         const datos = []
         for (let i = 0; i < formula.elementos.length; i++) {
             datos.push({
-                materia_prima: formula.elementos[i],
+                materia_prima: formula.elementos[i].materia_prima,
                 porcentaje: formula.porcentajes[i],
-                precio_kilo: 0
+                precio_kilo: formula.elementos[i].movimientos[0].precio_unidad
             })
         }
         setCotizacion(datos)
