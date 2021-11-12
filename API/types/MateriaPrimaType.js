@@ -7,6 +7,7 @@ const materia_prima_type = gql`
     enum Unidad {
         Kilogramo
         Litro
+        Unidades
     }
 
     type MateriaPrima{
