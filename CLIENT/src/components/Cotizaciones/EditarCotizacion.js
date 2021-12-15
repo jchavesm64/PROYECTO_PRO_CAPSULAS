@@ -11,7 +11,7 @@ import EditarDura from './EditarDura'
 import EditarBlanda from './EditarBlanda'
 import EditarPolvo from './EditarPolvo'
 import EditarStick from './EditarStick'
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import CotizacionPDF from './pdf/CotizacionPDF'
 
 const EditarCotizacion = ({ props, cotizacion }) => {
@@ -162,16 +162,16 @@ const EditarCotizacion = ({ props, cotizacion }) => {
                     />
                 }
             </div>
-            <div className="my-2">
+            <div className="my-2 d-flex justify-content-start">
                 <PDFDownloadLink
                     document={<CotizacionPDF formula={cotizacion.formula} cliente={cotizacion.cliente} producto={cotizacion.presentacion} objeto={cotizacion} />}
-                    fileName={`INFORME_COTIZACION_${fecha}.pdf`}
+                    fileName={`INFORME_COTIZACION_${cotizacion.cliente.nombre}_${cotizacion.presentacion.tipo}_${cotizacion.formula.nombre}_${fecha}.pdf`}
                 >
                     {({ blob, url, loading: loadingDocument, error: error_loading }) =>
                         loadingDocument ?
-                            <Boton name="Cargando documento..." icon="download" size="xs" color="green" tooltip="Cargando informe" position='end' />
+                            <Boton name="Cargando documento..." icon="download" size="md" color="green" tooltip="Cargando informe" position='end' />
                             :
-                            <Boton name="Descargar Pdf" icon="download" size="xs" color="green" tooltip="Descargar informe final" position='end' />
+                            <Boton name="Descargar Pdf" icon="download" size="md" color="green" tooltip="Descargar Informe" position='end' />
                     }
                 </PDFDownloadLink>
             </div>

@@ -330,6 +330,21 @@ const CotizacionPDF = ({ ...props }) => {
         return parseFloat(total).toFixed(4)
     }
 
+    const getCostoEnvase = () => {
+        return parseFloat(getTotalElementos() / objeto.cant_env).toFixed(4)
+    }
+
+    const getPorcentajeGanancia = () => {
+        var v = objeto.venta, uti = 0;
+        v -= (getTotalElementos() / objeto.cant_env);
+        uti = (v * 100) / (getTotalElementos() / objeto.cant_env);
+        return uti.toFixed(4)
+    }
+
+    const getPrecioFinal = () => {
+        return parseFloat((getCostoEnvase() * getPorcentajeGanancia()) / 100).toFixed(4)
+    }
+
     const generarParametros = () => {
         if (producto.tipo === 'Cápsula dura') {
             return (
@@ -626,7 +641,7 @@ const CotizacionPDF = ({ ...props }) => {
                         </View>
                         : <View></View>
                 }
-                <Text style={[styles.subtitle, { fontWeight: 400, marginTop: 30, marginBottom: 15 }]}>ELEMENTOS DE LA FÓRMULA</Text>
+                <Text style={[styles.subtitle, { fontWeight: 400, marginTop: 30 }]}>ELEMENTOS DE LA FÓRMULA</Text>
                 {generarElementosFormula()}
                 <View style={[styles.tableRow, { borderWidth: 0 }]}>
                     <View style={{ width: '80%', borderWidth: 0 }}>
@@ -636,7 +651,44 @@ const CotizacionPDF = ({ ...props }) => {
                         <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{'$ ' + getTotalElementos()}</Text>
                     </View>
                 </View>
-
+                <Text style={[styles.subtitle, { fontWeight: 400, marginTop: 30 }]}>OTROS DETALLES</Text>
+                <View style={styles.table}>
+                    <View style={styles.tableRow}>
+                        <View style={[styles.tableColGray, { width: '40%' }]}>
+                            <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'right', marginRight: 10 }]}>Costo de Fabricación por envase:</Text>
+                        </View>
+                        <View style={[styles.tableCol, { width: '60%' }]}>
+                            <Text style={[styles.tableCell, { fontWeight: 100, marginLeft: 10 }]}>{'$ ' + getCostoEnvase()}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <View style={[styles.tableColGray, { width: '40%' }]}>
+                            <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'right', marginRight: 10 }]}>Porcentaje de ganancia por envase:</Text>
+                        </View>
+                        <View style={[styles.tableCol, { width: '60%' }]}>
+                            <Text style={[styles.tableCell, { fontWeight: 100, marginLeft: 10 }]}>{getPorcentajeGanancia()}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <View style={[styles.tableColGray, { width: '40%' }]}>
+                            <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'right', marginRight: 10 }]}>Precio final:</Text>
+                        </View>
+                        <View style={[styles.tableCol, { width: '60%' }]}>
+                            <Text style={[styles.tableCell, { fontWeight: 100, marginLeft: 10 }]}>{'$ ' + getPrecioFinal()}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <View style={[styles.tableColGray, { width: '40%' }]}>
+                            <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'right', marginRight: 10 }]}>Ganancia:</Text>
+                        </View>
+                        <View style={[styles.tableCol, { width: '60%' }]}>
+                            <Text style={[styles.tableCell, { fontWeight: 100, marginLeft: 10 }]}>{'$ ' + (getPrecioFinal() - getCostoEnvase()).toFixed(4)}</Text>
+                        </View>
+                    </View>
+                </View>
+                <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
+                    `${pageNumber} / ${totalPages}`
+                )} fixed />
             </Page>
         </Document>
     )
