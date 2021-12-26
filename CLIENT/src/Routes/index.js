@@ -34,6 +34,10 @@ import NuevaFormulaBase from '../components/ConfiguracionesGenerales/FormulaBase
 import EditarFormulaBase from '../components/ConfiguracionesGenerales/FormulaBase/Editar';
 import EditarCotizacion from '../components/Cotizaciones/Editar';
 import Salida from '../components/materias_primas/Movimientos/Salida';
+import Puestos from '../components/ConfiguracionesGenerales/Puestos/Puestos';
+import Personal from '../components/personal/Personal';
+import NuevoPersonal from '../components/personal/NuevoPersonal';
+import EditarPersonal from '../components/personal/EditarPersonal';
 
 const Router = ({ refetch, session }) => {
 
@@ -65,6 +69,9 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/clientes/nuevo" render={(props) => <NuevoCliente session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes/editar/:id" render={(props) => <EditarCliente uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/clientes/detalles/:id" render={(props) => <EditarCliente uso={false} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/personal" render={(props) => <Personal session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/personal/nuevo" render={(props) => <NuevoPersonal session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/personal/editar/:id" render={(props) => <EditarPersonal uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores" render={(props) => <Proveedores session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores/nuevo" render={(props) => <NuevoProveedor session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/proveedores/editar/:id" render={(props) => <EditarProveedor uso={false} session={data} refetch={refetch} {...props}/>}/>
@@ -88,6 +95,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/formulasbase/nuevo" render={(props) => <NuevaFormulaBase session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulasbase/editar/:id" render={(props) => <EditarFormulaBase uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulasbase/detalles/:id" render={(props) => <EditarFormulaBase uso={false} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/puestos" render={(props) => <Puestos session={data} refetch={refetch} {...props}/>}/>
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

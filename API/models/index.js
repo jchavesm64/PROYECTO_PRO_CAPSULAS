@@ -11,6 +11,8 @@ import Formulas from './Formula'
 import Cotizacion from './Cotizacion';
 import FormulaBase from './FormulaBase';
 import ParametrosGenerales from './ParametrosGenerales';
+import Puesto from './Puesto';
+import Personal from './Personal';
 
 export {
     Rol,
@@ -25,5 +27,7 @@ export {
     Formulas,
     Cotizacion,
     FormulaBase,
-    ParametrosGenerales
+    ParametrosGenerales,
+    Puesto,
+    Personal
 }

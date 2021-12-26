@@ -85,6 +85,24 @@ const SideBar = ({ session }) => {
                                     : ''
                                 }
                                 {
+                                    session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "PERSONAL"))) ?
+                                    <li>
+                                        <a href="#personal" data-bs-toggle="collapse" aria-expanded="false" >
+                                            <h6><Icon icon="fas fa-users"/>Personal</h6>
+                                            <strong><Icon icon="fas fa-users"/>Personal</strong>
+                                        </a>
+                                        <ul className="collapse list-unstyled" id="personal">
+                                            <li className="List">
+                                                <Link to={`/personal`}><Icon icon="fas fa-users"/>Personal</Link>
+                                            </li>
+                                            <li className="List">
+                                                <Link to={`/personal/nuevo`}><Icon icon="plus"/>Nuevo Colaborador</Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    : ''
+                                }
+                                {
                                     session.roles.some(rol => rol.tipo === rolTipo && (rol.permisos.some(permiso => permiso.descripcion === "INVENTARIOS"))) ?
                                     <li>
                                         <a href="#inventarios" data-bs-toggle="collapse" aria-expanded="false" >
