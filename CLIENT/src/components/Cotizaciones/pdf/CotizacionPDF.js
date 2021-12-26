@@ -156,7 +156,7 @@ const CotizacionPDF = ({ ...props }) => {
                                 <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.materia_prima.nombre}</Text>
                             </View>
                             <View style={[styles.tableCol, { width: '6%' }]}>
-                                <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.porcentaje}</Text>
+                                <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.porcentaje + ' %'}</Text>
                             </View>
                             <View style={[styles.tableCol, { width: '10%' }]}>
                                 <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{getMiligramosCapsula(item.porcentaje, objeto.peso)}</Text>
@@ -218,7 +218,7 @@ const CotizacionPDF = ({ ...props }) => {
                                 <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.materia_prima.nombre}</Text>
                             </View>
                             <View style={[styles.tableCol, { width: '6%' }]}>
-                                <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.porcentaje}</Text>
+                                <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.porcentaje + ' %'}</Text>
                             </View>
                             <View style={[styles.tableCol, { width: '12%' }]}>
                                 <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{getGramosScoop(item.porcentaje, objeto.dosis)}</Text>
@@ -274,7 +274,7 @@ const CotizacionPDF = ({ ...props }) => {
                                 <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.materia_prima.nombre}</Text>
                             </View>
                             <View style={[styles.tableCol, { width: '6%' }]}>
-                                <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.porcentaje}</Text>
+                                <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.porcentaje + ' %'}</Text>
                             </View>
                             <View style={[styles.tableCol, { width: '14%' }]}>
                                 <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{getGramosScoopStick(item.porcentaje, objeto.peso)}</Text>
