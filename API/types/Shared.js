@@ -36,6 +36,11 @@ const shared = gql`
         materia_prima: MateriaPrima
         movimientos: [MovimientosType]
     }
+
+    type ProductoMovimientos{
+        producto: Producto
+        movimientos: [MovimientosProductosType]
+    }
 `;
 
 module.exports = shared;

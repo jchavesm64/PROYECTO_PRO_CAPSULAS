@@ -13,6 +13,8 @@ import FormulaBase from './FormulaBase';
 import ParametrosGenerales from './ParametrosGenerales';
 import Puesto from './Puesto';
 import Personal from './Personal';
+import Productos from './Producto';
+import MovimientosProductos from './MovimientosProductos';
 
 export {
     Rol,
@@ -29,5 +31,7 @@ export {
     FormulaBase,
     ParametrosGenerales,
     Puesto,
-    Personal
+    Personal,
+    Productos,
+    MovimientosProductos
 }
