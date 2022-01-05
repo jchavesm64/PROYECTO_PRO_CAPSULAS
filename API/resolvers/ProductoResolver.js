@@ -1,11 +1,11 @@
 import { Productos } from '../models'
-import { MovimientosProducto } from '../models';
+import { MovimientosProductos } from '../models';
 
 export default {
     Query: {
         obtenerProductos: async (_, { }) => {
             try {
-                const productos = await Productos.find({ estado: 'ACTIVO' }).populate({path: 'orden_produccion', populate: [{path: 'formula', path: 'cliente'}]});
+                const productos = await Productos.find({ estado: 'ACTIVO' }).populate({path: 'orden_produccion', populate: [{path: 'formula'}, {path: 'cliente'}, {path: 'presentacion'}]});
                 return productos.sort(function(a, b){
                     if(a.nombre > b.nombre){
                         return 1
@@ -22,19 +22,19 @@ export default {
         obtenerProductosConMovimientos: async (_, { }) => {
             try {
                 var productosmovimientos = []
-                const productos = await Productos.find({ estado: 'ACTIVO' }).populate({path: 'orden_produccion', populate: [{path: 'formula', path: 'cliente'}]});;
+                const productos = await Productos.find({ estado: 'ACTIVO' }).populate({path: 'orden_produccion', populate: [{path: 'formula'}, {path: 'cliente'}, {path: 'presentacion'}]});;
                 productos.map(item => {
-                    const result = MovimientosProducto.find({producto: item.id}).populate('usuario')
+                    const result = MovimientosProductos.find({producto: item.id}).populate('usuario')
                     productosmovimientos.push({
                         producto: item,
                         movimientos: result
                     })
                 })
                 return productosmovimientos.sort(function(a, b){
-                    if(a.producto_.nombre > b.producto_.nombre){
+                    if(a.producto.nombre > b.producto.nombre){
                         return 1
                     }
-                    if(a.producto_.nombre < b.producto_.nombre){
+                    if(a.producto.nombre < b.producto.nombre){
                         return -1
                     }
                     return 0;
@@ -45,7 +45,7 @@ export default {
         },
         obtenerProducto: async (_, { id }) => {
             try {
-                const producto = await Productos.findById(id);
+                const producto = await Productos.findById(id).populate({path: 'orden_produccion', populate: [{path: 'formula'}, {path: 'cliente'}, {path: 'presentacion'}]});;;
                 return producto;
             } catch (error) {
 

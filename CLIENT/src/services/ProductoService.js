@@ -23,8 +23,8 @@ export const OBTENER_PRODUCTOS = gql`
 `;
 
 export const OBTENER_PRODUCTOS_MOVIMIENTOS = gql`
-    query obtenerMateriasPrimasConMovimientos{
-        obtenerMateriasPrimasConMovimientos{
+    query obtenerProductosConMovimientos{
+        obtenerProductosConMovimientos{
             producto{
                 id
                 nombre
@@ -38,6 +38,9 @@ export const OBTENER_PRODUCTOS_MOVIMIENTOS = gql`
                     cliente{
                         id
                         nombre
+                    }
+                    presentacion{
+                        tipo
                     }
                 }
                 estado
@@ -53,6 +56,32 @@ export const OBTENER_PRODUCTOS_MOVIMIENTOS = gql`
                     cedula
                 }
             }
+        }
+    }
+`;
+
+export const OBTENER_PRODUCTO = gql`
+    query obtenerProducto($id:ID){
+        obtenerProducto(id:$id){
+            id
+            nombre
+            unidad
+            existencias
+            orden_produccion{
+                id
+                formula{
+                    id
+                    nombre
+                }
+                cliente{
+                    id
+                    nombre
+                }
+                presentacion{
+                  tipo
+                }
+            }
+            estado
         }
     }
 `;

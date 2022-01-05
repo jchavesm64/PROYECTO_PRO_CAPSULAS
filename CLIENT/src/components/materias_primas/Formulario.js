@@ -1,12 +1,11 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import { countries } from '../../Json/countries.json'
 import { UPDATE_MATERIA_PRIMA } from '../../services/MateriaPrimaService'
-import { Notification, SelectPicker, Loader, InputPicker } from 'rsuite'
+import { Notification, SelectPicker, InputPicker } from 'rsuite'
 import Boton from '../shared/Boton'
 import { withRouter } from 'react-router';
-import { OBTENER_PROVEEDORES } from '../../services/ProveedorService'
 
 const FormularioMateriaPrima = ({ props, materia }) => {
     const getPais = (pais) => {

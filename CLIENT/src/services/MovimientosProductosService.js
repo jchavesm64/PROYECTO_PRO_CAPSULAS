@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const OBTENER_MOVIMIENTOS_PRODUCTOS = gql`
-    query obtenerMovimientos($id:ID){
+    query obtenerMovimientosProductos($id:ID){
         obtenerMovimientos(id:$id){
             id
             tipo
@@ -22,7 +22,7 @@ export const OBTENER_MOVIMIENTOS_PRODUCTOS = gql`
     }
 `;
 
-export const SAVE_MOVIMIENTO = gql`
+export const SAVE_MOVIMIENTO_PRODUCTO = gql`
     mutation insertarMovimientoProducto($input:MovimientosInput){
         insertarMovimientoProducto(input:$input){
             estado
@@ -32,7 +32,7 @@ export const SAVE_MOVIMIENTO = gql`
 `;
 
 
-export const SAVE_SALIDA = gql`
+export const SAVE_SALIDA_PRODUCTO = gql`
     mutation insertarSalidaProducto($input:salida_inventario){
         insertarSalidaProducto(input:$input){
             estado
