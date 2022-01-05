@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { Input, Notification } from 'rsuite'
+import { Input, Notification, InputPicker } from 'rsuite'
 import { useMutation } from '@apollo/react-hooks'
 import { SAVE_MOVIMIENTO_PRODUCTO } from '../../../services/MovimientosProductosService';
 import Boton from '../../shared/Boton';
@@ -39,6 +39,7 @@ const NuevoMovimientoProducto = (props) => {
         }
         const validar = tipo === 'ENTRADA' ? (fecha_vencimiento > fecha) : true
         if ((validar)) {
+            console.log(input)
             if (cantidad > 0) {
                 try {
                     const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
@@ -58,7 +59,6 @@ const NuevoMovimientoProducto = (props) => {
                         })
                     }
                 } catch (error) {
-                    console.log(error)
                     Notification['error']({
                         title: 'Ingresar Movimiento',
                         duration: 5000,
@@ -82,15 +82,22 @@ const NuevoMovimientoProducto = (props) => {
     }
 
     const validarForm = () => {
-        return !fecha_vencimiento || !cantidad;
+        if(!tipo){
+            return false
+        }
+        return tipo === 'ENTRADA' ? !fecha_vencimiento || !cantidad : !cantidad;
     }
 
     return (
         <div>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/materias_primas`)} icon="arrow-left-line" tooltip="Ir a Materias Primas" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/productos`)} icon="arrow-left-line" tooltip="Ir a Productos" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Ingresar Movimiento</h3>
+            <div className='row my-2 d-flex justify-content-start'>
+                <h6>Tipo de Movimiento</h6>
+                <InputPicker className="w-50 mx-2 my-2" data={[{ label: 'Entrada', value: 'ENTRADA' }, { label: 'Salida', value: 'SALIDA' }]} placeholder="Tipo de Movimiento" value={tipo} onChange={(e) => setTipo(e)} />
+            </div>
             {
                 tipo &&
                 <>

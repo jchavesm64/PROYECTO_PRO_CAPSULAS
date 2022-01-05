@@ -62,10 +62,10 @@ const MovimientosProductos = ({...props}) => {
     return (
         <>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/productos`)} icon="arrow-left-line" tooltip="Ir a Materias Primas" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/productos`)} icon="arrow-left-line" tooltip="Ir a Productos" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Movimientos de Materia Prima</h3>
-            {data_movimiento.obtenerMovimientos.length > 0 &&
+            <h3 className="text-center">Movimientos de Producto</h3>
+            {data_movimiento.obtenerMovimientosProductos.length > 0 &&
                 <>
                     <h5 className="text-center">{nombre}</h5>
                     <div className="input-group mt-3 mb-3">
@@ -83,13 +83,13 @@ const MovimientosProductos = ({...props}) => {
                     </div>
                 </>
             }
-            {data_movimiento.obtenerMovimientos.length === 0 &&
+            {data_movimiento.obtenerMovimientosProductos.length === 0 &&
                 <>
                     <hr />
                     <h4 className="text-center">No existe movimientos</h4>
                 </>
             }
-            <Link to={`/movimientos_productos/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
+            <Link to={`/movimiento_producto/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
         </>
     )
 }

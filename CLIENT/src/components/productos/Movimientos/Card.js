@@ -16,14 +16,14 @@ const CardMovimiento = ({ ...props }) => {
     }
 
     return (
-        <Panel shaded bordered bodyFill style={{ width: 600, maxWidth: 600 }}
+        <Panel shaded bordered bodyFill style={{ width: 300, maxWidth: 300 }}
             className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
             onMouseEnter={() => setState(true)}
             onMouseLeave={() => setState(false)}
         >
             <>
                 <h4 className="mt-4 text-center">{"Datos del Movimiento"}</h4>
-                <div className="mx-1 row">
+                <div className="mx-1">
                     <h6>Tipo</h6>
                     <Label icon="list" value={movimiento.tipo} />
                     {movimiento.tipo === 'ENTRADA' &&

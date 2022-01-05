@@ -47,6 +47,7 @@ export const OBTENER_PRODUCTOS_MOVIMIENTOS = gql`
             }
             movimientos{
                 id
+                tipo
                 fecha_vencimiento
                 fecha
                 cantidad

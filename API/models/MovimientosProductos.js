@@ -20,7 +20,7 @@ const MovimientosProductosSchema = new mongose.Schema({
     },
     producto:{
         type: mongose.Schema.Types.ObjectId,
-        ref: 'Producto'
+        ref: 'Productos'
     },
     fecha:{
         type: Date,

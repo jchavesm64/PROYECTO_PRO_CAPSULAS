@@ -4,7 +4,7 @@ export default {
     Query: {
         obtenerMovimientosProductos: async (_, { id }) => {
             try {
-                const mov = await MovimientosProductos.find({ producto: id, tipo: 'ENTRADA' }).populate('usuario').populate('producto');
+                const mov = await MovimientosProductos.find({ producto: id }).populate('usuario').populate('producto');
                 return mov
             } catch (error) {
                 return error;

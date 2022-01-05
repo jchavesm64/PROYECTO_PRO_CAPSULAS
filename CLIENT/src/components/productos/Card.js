@@ -44,13 +44,8 @@ const CardMateria = ({ ...props }) => {
                 <Label icon="hashtag" value={calcularMovimientos(producto.movimientos) + ' ' + producto.producto.unidad} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
-                <div className="mx-1">
-                    <Link to={`salida/${producto.producto.id}`}>
-                        <Action tooltip="Ingresar Salida" color="violet" icon="fas fa-minus" size="xs" />
-                    </Link>
-                </div>
-                <div className="mx-1"><Link to={`productos/${producto.producto.id}/${producto.producto.nombre}`}><Action tooltip="Ver movimientos" color="blue" icon="info" size="xs" /></Link></div>
-                <div className="mx-1"><Link to={`productos/nuevo/${producto.producto.id}`}><Action tooltip="Agregar Movimiento" color="green" icon="plus" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`movimientos_productos/${producto.producto.id}/${producto.producto.nombre}`}><Action tooltip="Ver movimientos" color="blue" icon="info" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`movimiento_producto/nuevo/${producto.producto.id}`}><Action tooltip="Agregar Movimiento" color="green" icon="plus" size="xs" /></Link></div>
                 <div className="mx-1"><Link to={`productos/editar/${producto.producto.id}`}><Action tooltip="Editar Producto" color="orange" icon="edit" size="xs" /></Link></div>
                 <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: producto.producto.id }) : mostrarMsj() }} tooltip="Eliminar Producto" color="red" icon="trash" size="xs" /></div>
             </div>

@@ -41,6 +41,8 @@ import EditarPersonal from '../components/personal/EditarPersonal';
 import Productos from '../components/productos/Productos';
 import NuevoProducto from '../components/productos/Nuevo';
 import EditarProducto from '../components/productos/Editar';
+import MovimientosProductos from '../components/productos/Movimientos/Movimientos';
+import NuevoMovimientoProducto from '../components/productos/Movimientos/Nuevo';
 
 const Router = ({ refetch, session }) => {
 
@@ -65,6 +67,10 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/tipoproductos" render={() => <TipoProductos session={data} refetch={refetch}/>}/>
                                 <Route exact path="/config/tipoproveduria" render={() => <TipoProveduria session={data} refetch={refetch}/>}/>
                                 <Route exact path="/config/roles" render={() => <Roles session={data} refetch={refetch}/>}/>
+                                <Route exact path="/config/formulas" render={(props) => <Formulas session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulas/editar/:id" render={(props) => <EditarFormula uso={true} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulas/detalles/:id" render={(props) => <EditarFormula uso={false} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulas/nuevo" render={(props) => <NuevaFormula session={data} refetch={refetch} {...props}/>}/>
                                 
                                 <Route exact path="/usuarios" render={(props) => <Usuarios session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/usuarios/nuevo" render={(props) => <NuevoUsuario session={data} refetch={refetch} {...props}/>}/>
@@ -89,17 +95,15 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/materias_primas/nuevo" render={(props) => <NuevaMateriaPrima session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/materias_primas/editar/:id" render={(props) => <EditarMateriaPrima session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/movimientos/:id/:nombre" render={(props) => <Movimientos session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimiento/nuevo/:id" render={(props) => <NuevoMovimiento session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/salida/:id" render={(props) => <Salida session={data} refetch={refetch} {...props}/>}/>
 
                                 <Route exact path="/productos" render={(props) => <Productos session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/productos/nuevo" render={(props) => <NuevoProducto session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/productos/editar/:id" render={(props) => <EditarProducto session={data} refetch={refetch} {...props}/>}/>
-
-                                <Route exact path="/movimiento/nuevo/:id" render={(props) => <NuevoMovimiento session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulas" render={(props) => <Formulas session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulas/editar/:id" render={(props) => <EditarFormula uso={true} session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulas/detalles/:id" render={(props) => <EditarFormula uso={false} session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulas/nuevo" render={(props) => <NuevaFormula session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimientos_productos/:id/:nombre" render={(props) => <MovimientosProductos session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimiento_producto/nuevo/:id" render={(props) => <NuevoMovimientoProducto session={data} refetch={refetch} {...props}/>}/>
+                                
                                 <Route exact path="/cotizar" render={(props) => <Cotizador session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/cotizaciones" render={(props) => <Cotizaciones session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/cotizaciones/editar/:id" render={(props) => <EditarCotizacion session={data} refetch={refetch} {...props}/>}/>

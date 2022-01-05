@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const OBTENER_MOVIMIENTOS_PRODUCTOS = gql`
     query obtenerMovimientosProductos($id:ID){
-        obtenerMovimientos(id:$id){
+        obtenerMovimientosProductos(id:$id){
             id
             tipo
             fecha_vencimiento
@@ -23,7 +23,7 @@ export const OBTENER_MOVIMIENTOS_PRODUCTOS = gql`
 `;
 
 export const SAVE_MOVIMIENTO_PRODUCTO = gql`
-    mutation insertarMovimientoProducto($input:MovimientosInput){
+    mutation insertarMovimientoProducto($input:MovimientosProductosInput){
         insertarMovimientoProducto(input:$input){
             estado
             message
