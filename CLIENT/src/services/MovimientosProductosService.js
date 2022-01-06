@@ -30,13 +30,3 @@ export const SAVE_MOVIMIENTO_PRODUCTO = gql`
         }
     }
 `;
-
-
-export const SAVE_SALIDA_PRODUCTO = gql`
-    mutation insertarSalidaProducto($input:salida_inventario){
-        insertarSalidaProducto(input:$input){
-            estado
-            message
-        }
-    }
-`;

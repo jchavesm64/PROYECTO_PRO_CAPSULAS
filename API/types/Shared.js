@@ -41,6 +41,16 @@ const shared = gql`
         producto: Producto
         movimientos: [MovimientosProductosType]
     }
+
+    type SeleccionMovimientos{
+        seleccion: Seleccion
+        movimientos: [MovimientosSeleccionType]
+    }
+
+    type DispensadoMovimientos{
+        dispensado: Dispensado
+        movimientos: [MovimientosDispensadoType]
+    }
 `;
 
 module.exports = shared;

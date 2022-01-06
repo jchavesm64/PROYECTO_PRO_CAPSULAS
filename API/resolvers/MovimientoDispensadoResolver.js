@@ -1,10 +1,10 @@
-import { MovimientosProductos } from '../models';
+import { MovimientoDispensado } from '../models';
 
 export default {
     Query: {
-        obtenerMovimientosProductos: async (_, { id }) => {
+        obtenerMovimientosDispensado: async (_, { id }) => {
             try {
-                const mov = await MovimientosProductos.find({ producto: id }).populate('usuario').populate('producto');
+                const mov = await MovimientoDispensado.find({ dispensado: id }).populate('usuario').populate('dispensado');
                 return mov
             } catch (error) {
                 return error;
@@ -12,9 +12,9 @@ export default {
         }
     },
     Mutation: {
-        insertarMovimientoProducto: async (_, { input }) => {
+        insertarMovimientoDispensado: async (_, { input }) => {
             try {
-                const mov = new MovimientosProductos(input);
+                const mov = new MovimientoDispensado(input);
                 const result = await mov.save();
                 return {
                     estado: true,
@@ -28,6 +28,6 @@ export default {
                     message: "Ocurrio un error al registrar el movimiento"
                 }
             }
-        }
+        },
     }
 }

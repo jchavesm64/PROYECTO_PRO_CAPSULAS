@@ -15,6 +15,10 @@ import Puesto from './Puesto';
 import Personal from './Personal';
 import Productos from './Producto';
 import MovimientosProductos from './MovimientosProductos';
+import Seleccion from './Seleccion';
+import Dispensado from './Dispensado';
+import MovimientoSeleccion from './MovimientoSeleccion';
+import MovimientoDispensado from './MovimientoDispensado';
 
 export {
     Rol,
@@ -33,5 +37,9 @@ export {
     Puesto,
     Personal,
     Productos,
-    MovimientosProductos
+    MovimientosProductos,
+    Seleccion,
+    Dispensado,
+    MovimientoSeleccion,
+    MovimientoDispensado
 }

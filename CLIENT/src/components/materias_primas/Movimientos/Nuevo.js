@@ -261,7 +261,7 @@ const NuevoMovimiento = (props) => {
                 </Uploader>
             </div>
             <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={() => subirArchivo()} tooltip="Guardar Proveedor" name="Guardar" icon="save" color="green" disabled={validarForm()} />
+                <Boton onClick={() => subirArchivo()} tooltip="Guardar Movimiento" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
         </div>
     );

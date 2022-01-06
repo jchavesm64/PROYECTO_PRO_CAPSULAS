@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server-express');
 
-const materia_prima_type = gql`
+const producto_type = gql`
     scalar Date
     scalar Number
 
@@ -46,4 +46,4 @@ const materia_prima_type = gql`
     }
 `;
 
-module.exports = materia_prima_type;
+module.exports = producto_type;

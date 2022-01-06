@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 import { Loader, Notification } from 'rsuite';
 import { useQuery } from "@apollo/react-hooks";
-import { OBTENER_MOVIMIENTOS_PRODUCTOS } from '../../../services/MovimientosProductosService'
+import { OBTENER_MOVIMIENTOS_DISPENSADO } from '../../../services/MovimientoDispensadoService'
 import Boton from '../../shared/Boton'
 import { withRouter } from 'react-router';
 import DataGrid from '../../shared/DataGrid';
 import { Link } from 'react-router-dom';
 
-const MovimientosProductos = ({...props}) => {
+const MovimientosSeleccion = ({ ...props }) => {
 
     const { id, nombre } = props.match.params;
 
     const [filter, setFilter] = useState('')
     const [modo, setModo] = useState('1')
-    const { loading: load_movimiento, error: error_movimiento, data: data_movimiento } = useQuery(OBTENER_MOVIMIENTOS_PRODUCTOS, { variables: { id: id }, pollInterval: 1000 })
+    const { loading: load_movimiento, error: error_movimiento, data: data_movimiento } = useQuery(OBTENER_MOVIMIENTOS_DISPENSADO, { variables: { id: id }, pollInterval: 1000 })
 
     function getFilteredByKey(modo, key, value) {
         if (modo === "1") {
@@ -34,10 +34,48 @@ const MovimientosProductos = ({...props}) => {
         return null;
     }
 
+    const transformarData = (data) => {
+        let newData = []
+        var exi = 0
+        data.map(item1 => {
+            if (item1.tipo === 'ENTRADA') {
+                data.map(item2 => {
+                    if (item2.tipo === 'SALIDA' && item2.lote === item1.lote) {
+                        exi += item2.cantidad
+                    }
+                })
+                newData.push({
+                    id: item1.id,
+                    lote: item1.lote,
+                    fecha: item1.fecha,
+                    cantidad: item1.cantidad,
+                    usuario: item1.usuario,
+                    seleccion: item1.seleccion,
+                    tipo: item1.tipo,
+                    existencias: item1.cantidad - exi
+                })
+            } else {
+                newData.push({
+                    id: item1.id,
+                    lote: item1.lote,
+                    fecha: item1.fecha,
+                    cantidad: item1.cantidad,
+                    usuario: item1.usuario,
+                    seleccion: item1.seleccion,
+                    tipo: item1.tipo,
+                    existencias: item1.cantidad - exi
+                })
+            }
+        })
+        return newData
+    }
+
     const getData = () => {
         if (data_movimiento) {
-            if (data_movimiento.obtenerMovimientosProductos) {
-                return data_movimiento.obtenerMovimientosProductos.filter((value, index) => {
+            console.log(data_movimiento)
+            if (data_movimiento.obtenerMovimientosDispensado) {
+                const data = transformarData(data_movimiento.obtenerMovimientosDispensado)
+                return data.filter((value, index) => {
                     if (filter !== "" && modo !== "") {
                         return getFilteredByKey(modo, value, filter);
                     }
@@ -62,10 +100,10 @@ const MovimientosProductos = ({...props}) => {
     return (
         <>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/productos`)} icon="arrow-left-line" tooltip="Ir a Productos" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/dispensado`)} icon="arrow-left-line" tooltip="Ir a Dispensado" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Movimientos de Producto</h3>
-            {data_movimiento.obtenerMovimientosProductos.length > 0 &&
+            <h3 className="text-center">Movimientos de Dispensado</h3>
+            {data_movimiento.obtenerMovimientosDispensado.length > 0 &&
                 <>
                     <h5 className="text-center">{nombre}</h5>
                     <div className="input-group mt-3 mb-3">
@@ -79,19 +117,21 @@ const MovimientosProductos = ({...props}) => {
                         <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
                     </div>
                     <div className="mt-3">
-                        <DataGrid data={data} type="movimientos_productos" displayLength={9} {...props} />
+                        <DataGrid data={data} type="movimientos_dispensado" displayLength={9} {...props} />
                     </div>
                 </>
             }
-            {data_movimiento.obtenerMovimientosProductos.length === 0 &&
+            {data_movimiento.obtenerMovimientosDispensado.length === 0 &&
                 <>
                     <hr />
                     <h4 className="text-center">No existe movimientos</h4>
                 </>
             }
-            <Link to={`/movimiento_producto/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
+            <Link to={`/movimiento_dispensado/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Agregar Entrada" icon="plus" name="Agregar Entrada" /></Link>
         </>
     )
+
 }
 
-export default withRouter(MovimientosProductos)
+export default withRouter(MovimientosSeleccion)
+

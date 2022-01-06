@@ -85,7 +85,7 @@ const FormularioProducto = ({ props, producto }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/productos`)} icon="arrow-left-line" tooltip="Ir a Productos" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Registro de Productos</h3>
+            <h3 className="text-center">Editar Producto</h3>
             <h6>Nombre del Producto</h6>
             <input className="form-control mt-2" type="text" placeholder="Nombre del Producto" value={nombre} onChange={(e) => setNombre(e.target.value)} />
             <div className="row">

@@ -43,6 +43,18 @@ import NuevoProducto from '../components/productos/Nuevo';
 import EditarProducto from '../components/productos/Editar';
 import MovimientosProductos from '../components/productos/Movimientos/Movimientos';
 import NuevoMovimientoProducto from '../components/productos/Movimientos/Nuevo';
+import Seleccion from '../components/Seleccion/Seleccion';
+import NuevaSeleccion from '../components/Seleccion/Nuevo';
+import EditarSeleccion from '../components/Seleccion/Editar';
+import MovimientosSeleccion from '../components/Seleccion/Movimientos/Movimientos';
+import NuevoMovimientoSeleccion from '../components/Seleccion/Movimientos/Nuevo';
+import SalidaMovimientoSeleccion from '../components/Seleccion/Movimientos/Salida';
+import Dispensado from '../components/Dispensado/Dispensado';
+import NuevoDispensado from '../components/Dispensado/Nuevo';
+import EditarDispensado from '../components/Dispensado/Editar';
+import MovimientosDispensado from '../components/Dispensado/Movimientos/Movimientos';
+import NuevoMovimientoDispensado from '../components/Dispensado/Movimientos/Nuevo';
+import SalidaMovimientoDispensado from '../components/Dispensado/Movimientos/Salida';
 
 const Router = ({ refetch, session }) => {
 
@@ -71,6 +83,11 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/formulas/editar/:id" render={(props) => <EditarFormula uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulas/detalles/:id" render={(props) => <EditarFormula uso={false} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulas/nuevo" render={(props) => <NuevaFormula session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase" render={(props) => <FormulasBase session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase/nuevo" render={(props) => <NuevaFormulaBase session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase/editar/:id" render={(props) => <EditarFormulaBase uso={true} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/formulasbase/detalles/:id" render={(props) => <EditarFormulaBase uso={false} session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/puestos" render={(props) => <Puestos session={data} refetch={refetch} {...props}/>}/>
                                 
                                 <Route exact path="/usuarios" render={(props) => <Usuarios session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/usuarios/nuevo" render={(props) => <NuevoUsuario session={data} refetch={refetch} {...props}/>}/>
@@ -103,15 +120,25 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/productos/editar/:id" render={(props) => <EditarProducto session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/movimientos_productos/:id/:nombre" render={(props) => <MovimientosProductos session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/movimiento_producto/nuevo/:id" render={(props) => <NuevoMovimientoProducto session={data} refetch={refetch} {...props}/>}/>
+
+                                <Route exact path="/seleccion" render={(props) => <Seleccion session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/seleccion/nuevo" render={(props) => <NuevaSeleccion session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/seleccion/editar/:id" render={(props) => <EditarSeleccion session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimientos_seleccion/:id/:nombre" render={(props) => <MovimientosSeleccion session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimiento_seleccion/nuevo/:id" render={(props) => <NuevoMovimientoSeleccion session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/salida_seleccion/:id" render={(props) => <SalidaMovimientoSeleccion session={data} refetch={refetch} {...props}/>}/>
+
+                                <Route exact path="/dispensado" render={(props) => <Dispensado session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/dispensado/nuevo" render={(props) => <NuevoDispensado session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/dispensado/editar/:id" render={(props) => <EditarDispensado session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimientos_dispensado/:id/:nombre" render={(props) => <MovimientosDispensado session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/movimiento_dispensado/nuevo/:id" render={(props) => <NuevoMovimientoDispensado session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/salida_dispensado/:id" render={(props) => <SalidaMovimientoDispensado session={data} refetch={refetch} {...props}/>}/>
                                 
                                 <Route exact path="/cotizar" render={(props) => <Cotizador session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/cotizaciones" render={(props) => <Cotizaciones session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/cotizaciones/editar/:id" render={(props) => <EditarCotizacion session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulasbase" render={(props) => <FormulasBase session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulasbase/nuevo" render={(props) => <NuevaFormulaBase session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulasbase/editar/:id" render={(props) => <EditarFormulaBase uso={true} session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/formulasbase/detalles/:id" render={(props) => <EditarFormulaBase uso={false} session={data} refetch={refetch} {...props}/>}/>
-                                <Route exact path="/config/puestos" render={(props) => <Puestos session={data} refetch={refetch} {...props}/>}/>
+                                
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>
                         </div>

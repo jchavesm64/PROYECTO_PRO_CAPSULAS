@@ -9,42 +9,37 @@ const movimientos_type = gql`
         SALIDA
     }    
 
-    type MovimientosProductosType{
+    type MovimientosSeleccionType{
         id: ID
+        lote: String
         tipo: Tipo
-        fecha_vencimiento: Date
         fecha: Date
         cantidad: Number
         usuario: Usuario
-        producto: Producto
+        seleccion: Producto
     }
 
-    type RespuestaMovimientosProductos{
+    type RespuestaMovimientosSeleccion{
         estado: Boolean
-        data: MovimientosProductosType
+        data: MovimientosSeleccionType
         message: String
     }
 
-    type RespuestaVerificar{
-        estado: Number
-        message: String
-    }
-
-    input MovimientosProductosInput{
+    input MovimientosSeleccionInput{
         tipo: Tipo
-        fecha_vencimiento: Date
+        lote: String
         fecha: Date
         cantidad: Number
         usuario: ID
-        producto: ID
+        seleccion: ID
     }
 
     type Query{
-        obtenerMovimientosProductos(id:ID): [MovimientosProductosType]
+        obtenerMovimientosSeleccion(id:ID): [MovimientosSeleccionType]
     }
 
     type Mutation{
-        insertarMovimientoProducto(input:MovimientosProductosInput):RespuestaMovimientosProductos
+        insertarMovimientoSeleccion(input:MovimientosSeleccionInput):RespuestaMovimientosSeleccion
     }
 `;
 
