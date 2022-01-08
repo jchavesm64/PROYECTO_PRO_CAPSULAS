@@ -55,6 +55,7 @@ import EditarDispensado from '../components/Dispensado/Editar';
 import MovimientosDispensado from '../components/Dispensado/Movimientos/Movimientos';
 import NuevoMovimientoDispensado from '../components/Dispensado/Movimientos/Nuevo';
 import SalidaMovimientoDispensado from '../components/Dispensado/Movimientos/Salida';
+import Categoria from '../components/ConfiguracionesGenerales/Categoria/Categoria';
 
 const Router = ({ refetch, session }) => {
 
@@ -88,6 +89,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/config/formulasbase/editar/:id" render={(props) => <EditarFormulaBase uso={true} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/formulasbase/detalles/:id" render={(props) => <EditarFormulaBase uso={false} session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/config/puestos" render={(props) => <Puestos session={data} refetch={refetch} {...props}/>}/>
+                                <Route exact path="/config/categorias" render={(props) => <Categoria session={data} refetch={refetch} {...props}/>}/>
                                 
                                 <Route exact path="/usuarios" render={(props) => <Usuarios session={data} refetch={refetch} {...props}/>}/>
                                 <Route exact path="/usuarios/nuevo" render={(props) => <NuevoUsuario session={data} refetch={refetch} {...props}/>}/>

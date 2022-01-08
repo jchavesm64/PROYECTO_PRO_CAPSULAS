@@ -19,6 +19,11 @@ import Seleccion from './Seleccion';
 import Dispensado from './Dispensado';
 import MovimientoSeleccion from './MovimientoSeleccion';
 import MovimientoDispensado from './MovimientoDispensado';
+import Categoria from './Categoria';
+import Maquina from './Maquina';
+import Mantenimiento from './Mantenimiento';
+import Incidente from './Incidente';
+import PuestoLimpieza from './PuestoLimpieza';
 
 export {
     Rol,
@@ -41,5 +46,10 @@ export {
     Seleccion,
     Dispensado,
     MovimientoSeleccion,
-    MovimientoDispensado
+    MovimientoDispensado,
+    Categoria,
+    Maquina,
+    Mantenimiento,
+    Incidente,
+    PuestoLimpieza
 }
