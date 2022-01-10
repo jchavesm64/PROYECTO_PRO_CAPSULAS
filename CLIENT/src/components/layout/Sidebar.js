@@ -129,6 +129,11 @@ const SideBar = ({ session }) => {
                                                 <Link to={`/dispensado`}><i className="fas fa-circle"/>Dispensado</Link>
                                             </li>
                                         </ul>
+                                        <ul className="collapse list-unstyled" id="inventarios">
+                                            <li className="List">
+                                                <Link to={`/maquinaria`}><i className="fas fa-cogs"/>Maquinaria</Link>
+                                            </li>
+                                        </ul>
                                     </li>
                                     : ''
                                 }

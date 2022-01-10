@@ -4,7 +4,7 @@ export default {
     Query: {
         obtenerMaquinas: async (_, { }) => {
             try {
-                const maquinas = await Maquina.find({ estado: "ACTIVO" });
+                const maquinas = await Maquina.find({ estado: "ACTIVO" }).populate('categoria');
                 return maquinas.sort(function (a, b) {
                     if (a.nombre > b.nombre) {
                         return 1
@@ -20,7 +20,7 @@ export default {
         },
         obtenerMaquina: async (_, { id }) => {
             try {
-                const maquina = await Maquina.findById(id);
+                const maquina = await Maquina.findById(id).populate('categoria');
                 return maquina;
             } catch (error) {
                 return error;
