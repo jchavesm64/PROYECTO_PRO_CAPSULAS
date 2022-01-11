@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react'
-import { Notification, SelectPicker, InputPicker, Loader, TagPicker } from 'rsuite'
+import { Notification, SelectPicker, Loader } from 'rsuite'
 import Boton from '../shared/Boton'
 import Label from '../shared/Label'
 import Action from '../shared/Action'
@@ -36,6 +36,13 @@ const EditarMaquina = ({ props, maquina }) => {
         setVida(maquina.vida_util)
         setFecha(maquina.fecha_adquirido)
     }, [maquina])
+
+    function getFecha(fecha) {
+        var date = new Date(fecha);
+        var day = (date.getDate() < 9) ? '0' + (date.getDate() + 1) : date.getDate() + 1;
+        var mes = (date.getMonth() < 9) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+        return date.getFullYear() + '-' + mes + '-' + day;
+    }
 
     const getCategorias = () => {
         const categorias = []
@@ -281,7 +288,6 @@ const EditarMaquina = ({ props, maquina }) => {
     }
 
     const FichaParte = ({ item }) => {
-        console.log(item)
         return (
             <div className='rounded bg-white shadow px-1 mx-2' style={{ width: 250, maxWidth: 250 }}>
                 {
@@ -309,21 +315,21 @@ const EditarMaquina = ({ props, maquina }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/maquinaria`)} icon="arrow-left-line" tooltip="Ir a Maquinaria" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Registro de Máquinas</h3>
+            <h3 className="text-center">{uso ? "Editar Máquina" : "Detalles de Máquina"}</h3>
             <h6>Nombre de la Máquina</h6>
             <input className="form-control mt-2" type="text" placeholder="Nombre de la Máquina" value={nombre} onChange={(e) => setNombre(e.target.value)} />
             <div className="row">
                 <div className="col-md-6 float-left">
                     <h6>Categoría</h6>
                     <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Categoría" value={categoria} data={getCategorias()} onChange={(e) => setCategoria(e)} searchable={true} />
-                    <h6 className="my-1">Vida Util</h6>
+                    <h6 className="my-1">Vida Util en años</h6>
                     <input className="form-control mt-2" type="text" placeholder="Vida Util" value={vida_util} onChange={(e) => setVida(e.target.value)} />
                 </div>
                 <div className="col-md-6 mt-2">
                     <h6 className="my-1">Ubicación en Planta</h6>
                     <input className="form-control mt-2" type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
                     <h6 className="my-1">Fecha de Adquisición</h6>
-                    <input className="form-control mt-2" type="date" placeholder="Fecha de Adquisición" value={fecha_adquirido} onChange={(e) => setFecha(e.target.value)} />
+                    <input className="form-control mt-2" type="date" placeholder="Fecha de Adquisición" value={getFecha(fecha_adquirido)} onChange={(e) => setFecha(e.target.value)} />
                 </div>
             </div>
             <div className="row border-bottom border-dark my-3">

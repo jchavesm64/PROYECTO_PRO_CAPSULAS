@@ -3,10 +3,21 @@ import { Panel } from 'rsuite';
 import { Link, withRouter } from 'react-router-dom';
 import Action from '../shared/Action';
 import Label from '../shared/Label'
+import * as moment from 'moment'
 
 const CardMaquina = ({ ...props }) => {
     const [state, setState] = useState(false);
     const { maquina, setConfirmation, mostrarMsj } = props
+
+    const getRestoVidaUtil = (fecha, vida) => {
+        var fecha_limite = new Date(fecha);
+        fecha_limite.setFullYear(fecha_limite.getFullYear() + vida)
+        var fecha_hoy = new Date()
+        const f1 = moment(fecha_hoy, 'YYYY-MM-DD HH:mm:ss')
+        const f2 = moment(fecha_limite, 'YYYY-MM-DD HH:mm:ss')
+        const res = moment.preciseDiff(f1, f2, true)
+        return "Años: " + res.years + ", Meses: " + res.months + ", dias: " + res.days
+    }
 
     return (
         <Panel shaded bordered bodyFill style={{ width: 300, maxWidth: 300 }}
@@ -23,7 +34,9 @@ const CardMaquina = ({ ...props }) => {
                 <h6>Ubicación en Planta</h6>
                 <Label icon="globe" value={maquina.ubicacion} />
                 <h6>Vida útil</h6>
-                <Label icon="fas fa-clock" value={maquina.vida_util} />
+                <Label icon="fas fa-clock" value={maquina.vida_util + ' años'} />
+                <h6>Vida útil restante</h6>
+                <Label icon="fas fa-clock" value={getRestoVidaUtil(maquina.fecha_adquirido, maquina.vida_util)} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
                 <div className="mx-1"><Link to={`maquinaria/nuevo`}><Action tooltip="Agregar Máquina" color="green" icon="plus" size="xs" /></Link></div>

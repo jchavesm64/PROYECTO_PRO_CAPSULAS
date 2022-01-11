@@ -295,7 +295,7 @@ const NuevaMaquina = ({ ...props }) => {
                 <div className="col-md-6 float-left">
                     <h6>Categoría</h6>
                     <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Categoría" data={getCategorias()} onChange={(e) => setCategoria(e)} searchable={true} />
-                    <h6 className="my-1">Vida Util</h6>
+                    <h6 className="my-1">Vida Util en años</h6>
                     <input className="form-control mt-2" type="text" placeholder="Vida Util" value={vida_util} onChange={(e) => setVida(e.target.value)} />
                 </div>
                 <div className="col-md-6 mt-2">
