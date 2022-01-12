@@ -27,6 +27,15 @@ export const OBTENER_MAQUINAS = gql`
     }
 `;
 
+export const OBTENER_MAQUINAS_2 = gql`
+    query obtenerMaquinas{
+        obtenerMaquinas{
+            id
+            nombre
+        }
+    }
+`;
+
 export const OBTENER_MAQUINA = gql`
     query obtenerMaquina($id:ID){
         obtenerMaquina(id:$id){

@@ -11,11 +11,12 @@ const incidente_type = gql`
         fecha: Date
         ubicacion: String
         causa: String
-        estado: Estado
+        estado: String
     }
 
     type Query{
         obtenerIncidentes(id:ID): [Incidente]
+        obtenerIncidente(id:ID): Incidente
     }
 
     input IncidenteInput{
@@ -24,7 +25,7 @@ const incidente_type = gql`
         fecha: Date
         ubicacion: String
         causa: String
-        estado: Estado
+        estado: String
     }
 
     type RespuestaIncidente{

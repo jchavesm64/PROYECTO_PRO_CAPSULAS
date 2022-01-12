@@ -4,7 +4,7 @@ export default {
     Query: {
         obtenerIncidentes: async (_, { id }) => {
             try {
-                const incidentes = await Incidente.find({ maquina: id, estado: "ACTIVO" }).populate('maquina');
+                const incidentes = await Incidente.find({ maquina: id }).populate('maquina');
                 return incidentes.sort(function (a, b) {
                     if (a.nombre > b.nombre) {
                         return 1
@@ -18,6 +18,14 @@ export default {
                 return error;
             }
         },
+        obtenerIncidente: async (_, { id }) => {
+            try {
+                const incidente = await Incidente.findById(id).populate('maquina');
+                return incidente
+            } catch (error) {
+                return error;
+            }
+        }
     },
     Mutation: {
         insertarIncidente: async (_, { input }) => {

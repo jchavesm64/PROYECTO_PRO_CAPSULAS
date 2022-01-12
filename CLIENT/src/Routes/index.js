@@ -59,6 +59,9 @@ import Categoria from '../components/ConfiguracionesGenerales/Categoria/Categori
 import Maquinaria from '../components/Maquinaria/Maquinaria';
 import NuevaMaquina from '../components/Maquinaria/Nuevo';
 import EditarMaquina from '../components/Maquinaria/Editar';
+import Incidentes from '../components/Maquinaria/Incidentes/Incidentes';
+import NuevoIncidente from '../components/Maquinaria/Incidentes/Nuevo';
+import EditarIncidente from '../components/Maquinaria/Incidentes/Editar';
 
 const Router = ({ refetch, session }) => {
 
@@ -144,6 +147,9 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/maquinaria/nuevo" render={(props) => <NuevaMaquina session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/maquinaria/editar/:id" render={(props) => <EditarMaquina uso={true} session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/maquinaria/detalles/:id" render={(props) => <EditarMaquina uso={false} session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/incidentes/:id" render={(props) => <Incidentes session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/incidentes/nuevo/:id" render={(props) => <NuevoIncidente session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/incidentes/editar/:id" render={(props) => <EditarIncidente session={data} refetch={refetch} {...props} />} />
 
                                 <Route exact path="/cotizar" render={(props) => <Cotizador session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/cotizaciones" render={(props) => <Cotizaciones session={data} refetch={refetch} {...props} />} />

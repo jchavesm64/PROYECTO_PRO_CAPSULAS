@@ -28,6 +28,7 @@ const IncidenteSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
+        enum: ['Registrado', 'En Proceso', 'Finalizado'],
         require: true,
         trim: true
     }

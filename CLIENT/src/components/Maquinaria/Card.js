@@ -3,7 +3,7 @@ import { Panel } from 'rsuite';
 import { Link, withRouter } from 'react-router-dom';
 import Action from '../shared/Action';
 import Label from '../shared/Label'
-import * as moment from 'moment'
+import moment from 'moment'
 
 const CardMaquina = ({ ...props }) => {
     const [state, setState] = useState(false);
@@ -15,8 +15,13 @@ const CardMaquina = ({ ...props }) => {
         var fecha_hoy = new Date()
         const f1 = moment(fecha_hoy, 'YYYY-MM-DD HH:mm:ss')
         const f2 = moment(fecha_limite, 'YYYY-MM-DD HH:mm:ss')
-        const res = moment.preciseDiff(f1, f2, true)
-        return "Años: " + res.years + ", Meses: " + res.months + ", dias: " + res.days
+        const f3 = fecha_limite
+        f3.setDate(1)
+        const f4 = moment(f3, 'YYYY-MM-DD HH:mm:ss')
+        const years = f2.diff(f1, 'years')
+        const months = f2.diff(f1, 'months') - (years * 12)
+        const days = f2.diff(f4, 'days')
+        return "Años: " + years + ", Meses: " + months + ", dias: " + days
     }
 
     return (
@@ -40,12 +45,12 @@ const CardMaquina = ({ ...props }) => {
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
                 <div className="mx-1"><Link to={`maquinaria/nuevo`}><Action tooltip="Agregar Máquina" color="green" icon="plus" size="xs" /></Link></div>
-                <div className="mx-1"><Link to={`maquinaria/editar/${maquina.id}`}><Action tooltip="Editar Maquina Prima" color="orange" icon="edit" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`maquinaria/editar/${maquina.id}`}><Action tooltip="Editar Maquina" color="orange" icon="edit" size="xs" /></Link></div>
                 <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: maquina.id }) : mostrarMsj() }} tooltip="Eliminar Máquina" color="red" icon="trash" size="xs" /></div>
                 <div className="mx-1"><Link to={`maquinaria/detalles/${maquina.id}`}><Action tooltip="Detalles" color="cyan" icon="info" size="xs" /></Link></div>
                 <div><h6>|</h6></div>
-                <div className="mx-1"><Link to={`mantenimiento/nuevo/${maquina.id}`}><Action tooltip="Agregar Mantenimiento" color="green" icon="fas fa-cog" size="xs" /></Link></div>
-                <div className="mx-1"><Link to={`incidente/nuevo/${maquina.id}`}><Action tooltip="Agregar Incidente" color="yellow" icon="fas fa-exclamation" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`mantenimientos/${maquina.id}`}><Action tooltip="Mantenimientos" color="green" icon="fas fa-cog" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`incidentes/${maquina.id}`}><Action tooltip="Incidentes" color="yellow" icon="fas fa-exclamation" size="xs" /></Link></div>
             </div>
         </Panel>
     )
