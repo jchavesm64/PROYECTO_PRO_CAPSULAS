@@ -12,8 +12,6 @@ const Editar = ({props, incidente}) => {
     const [state, setEstado] = useState(incidente.estado)
     const [actualizar] = useMutation(UPDATE_INCIDENTE);
 
-    console.log(incidente)
-
     useEffect(() => {
         setDescripcion(incidente.descripcion)
         setUbicacion(incidente.ubicacion)
