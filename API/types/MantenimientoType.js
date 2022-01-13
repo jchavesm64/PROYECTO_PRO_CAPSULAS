@@ -15,6 +15,7 @@ const mantenimiento_type = gql`
 
     type Query{
         obtenerMantenimientos(id:ID): [Mantenimiento]
+        obtenerMantenimiento(id:ID): Mantenimiento
     }
 
     input MantenimientoInput{

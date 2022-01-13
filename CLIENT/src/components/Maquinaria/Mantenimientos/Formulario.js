@@ -31,13 +31,12 @@ const Editar = ({ props, mantenimiento }) => {
         var f = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
         if (fecha_mantenimiento >= f || fecha_aviso >= f) {
             const input = {
-                maquina: mantenimiento.id,
+                maquina: mantenimiento.maquina.id,
                 descripcion,
                 fecha_mantenimiento,
                 fecha_aviso,
                 estado: state
             }
-            console.log(input)
             const { data } = await actualizar({ variables: { id: mantenimiento.id, input }, errorPolicy: 'all' });
             const { estado, message } = data.actualizarMantenimiento;
             if (estado) {

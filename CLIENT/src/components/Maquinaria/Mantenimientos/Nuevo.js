@@ -23,7 +23,6 @@ const NuevoMantenimiento = ({ ...props }) => {
                 fecha_aviso,
                 estado: 'Registrado'
             }
-            console.log(input)
             const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
             const { estado, message } = data.insertarMantenimiento;
             if (estado) {

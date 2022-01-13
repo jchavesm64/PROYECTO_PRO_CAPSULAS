@@ -28,9 +28,8 @@ const Mantenimientos = ({ ...props }) => {
 
     const getData = () => {
         if (data_mantenimientos) {
-            console.log(data_mantenimientos)
-            if (data_mantenimientos.otenerMantenimientos) {
-                return data_mantenimientos.otenerMantenimientos.filter((value, index) => {
+            if (data_mantenimientos.obtenerMantenimientos) {
+                return data_mantenimientos.obtenerMantenimientos.filter((value, index) => {
                     if (filter !== "" && modo !== "") {
                         return getFilteredByKey(modo, value, filter);
                     }
@@ -57,8 +56,8 @@ const Mantenimientos = ({ ...props }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/maquinaria`)} icon="arrow-left-line" tooltip="Ir a Maquinaria" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Incidentes de la Máquina</h3>
-            {data_mantenimientos.otenerMantenimientos.length > 0 &&
+            <h3 className="text-center">Mantenimientos de la Máquina</h3>
+            {data_mantenimientos.obtenerMantenimientos.length > 0 &&
                 <>
                     <h5 className="text-center">{nombre}</h5>
                     <div className="input-group mt-3 mb-3">
@@ -76,13 +75,13 @@ const Mantenimientos = ({ ...props }) => {
                     </div>
                 </>
             }
-            {data_mantenimientos.otenerMantenimientos.length === 0 &&
+            {data_mantenimientos.obtenerMantenimientos.length === 0 &&
                 <>
                     <hr />
                     <h4 className="text-center">No existe movimientos</h4>
                 </>
             }
-            <Link to={`/mantenimientos/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Registrar Incidente" icon="plus" name="Registrar Incidente" /></Link>
+            <Link to={`/mantenimientos/nuevo/${id}`} ><Boton className="my-2" color="green" tooltip="Registrar Mantenimiento" icon="plus" name="Registrar Mantenimiento" /></Link>
         </>
     )
 }

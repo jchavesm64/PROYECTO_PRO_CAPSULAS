@@ -4,16 +4,16 @@ export default {
     Query: {
         obtenerMantenimientos: async (_, { id }) => {
             try {
-                const maquinas = await Mantenimiento.find({ maquina: id, estado: "ACTIVO" }).populate('maquina');
-                return maquinas.sort(function (a, b) {
-                    if (a.nombre > b.nombre) {
-                        return 1
-                    }
-                    if (a.nombre < b.nombre) {
-                        return -1
-                    }
-                    return 0;
-                });
+                const mantenimientos = await Mantenimiento.find({ maquina: id }).populate('maquina');
+                return mantenimientos
+            } catch (error) {
+                return error;
+            }
+        },
+        obtenerMantenimiento: async (_, { id }) => {
+            try {
+                const mantenimientos = await Mantenimiento.findById(id).populate('maquina');
+                return mantenimientos
             } catch (error) {
                 return error;
             }

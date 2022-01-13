@@ -24,10 +24,9 @@ export const OBTENER_MANTENIMIENTO = gql`
                 id
                 nombre
             }
+            fecha_mantenimiento
+            fecha_aviso
             descripcion
-            fecha
-            ubicacion
-            causa
             estado
         }
     }

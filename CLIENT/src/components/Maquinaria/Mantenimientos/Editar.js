@@ -30,7 +30,7 @@ const EditarMantenimiento = (props) => {
 
     return (
         <>
-            <Formulario props={props} incidente={data.obtenerMantenimiento} refetch={refetch}/>
+            <Formulario props={props} mantenimiento={data.obtenerMantenimiento} refetch={refetch}/>
         </>
     );
 }
