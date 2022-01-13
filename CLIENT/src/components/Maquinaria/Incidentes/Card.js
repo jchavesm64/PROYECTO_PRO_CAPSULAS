@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import Action from '../../shared/Action';
 import Label from '../../shared/Label'
 
-const CardMaquina = ({ ...props }) => {
+const CardIncidente = ({ ...props }) => {
     const [state, setState] = useState(false);
     const { incidente } = props
 
@@ -55,4 +55,4 @@ const CardMaquina = ({ ...props }) => {
     )
 }
 
-export default withRouter(CardMaquina)
+export default withRouter(CardIncidente)

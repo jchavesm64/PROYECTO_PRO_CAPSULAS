@@ -10,7 +10,7 @@ const mantenimiento_type = gql`
         fecha_mantenimiento: Date
         fecha_aviso: Date
         descripcion: String
-        estado: Estado
+        estado: String
     }
 
     type Query{
@@ -22,7 +22,7 @@ const mantenimiento_type = gql`
         fecha_mantenimiento: Date
         fecha_aviso: Date
         descripcion: String
-        estado: Estado
+        estado: String
     }
 
     type RespuestaMantenimiento{

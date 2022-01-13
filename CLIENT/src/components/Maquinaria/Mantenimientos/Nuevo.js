@@ -2,49 +2,47 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router'
 import { Input, Notification } from 'rsuite'
 import { useMutation } from '@apollo/react-hooks'
-import { SAVE_INCIDENTE } from '../../../services/IncidenteService';
+import { SAVE_MANTENIMIENTO } from '../../../services/MantenimientoService';
 import Boton from '../../shared/Boton';
 
-const NuevoIncidente = ({ ...props }) => {
+const NuevoMantenimiento = ({ ...props }) => {
     const { id } = props.match.params;
     const [descripcion, setDescripcion] = useState('')
-    const [fecha, setFecha] = useState('')
-    const [ubicacion, setUbicacion] = useState('')
-    const [causa, setCausa] = useState('')
-    const [insertar] = useMutation(SAVE_INCIDENTE);
+    const [fecha_mantenimiento, setFechaMantenimiento] = useState('')
+    const [fecha_aviso, setFechaAviso] = useState('')
+    const [insertar] = useMutation(SAVE_MANTENIMIENTO);
 
-    const onSaveIncidente = async () => {
+    const onSaveMantenimiento = async () => {
         var date = new Date();
         var f = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
-        if (fecha <= f) {
+        if (fecha_mantenimiento >= f || fecha_aviso >= f) {
             const input = {
                 maquina: id,
                 descripcion,
-                fecha,
-                ubicacion,
-                causa,
+                fecha_mantenimiento,
+                fecha_aviso,
                 estado: 'Registrado'
             }
             console.log(input)
             const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
-            const { estado, message } = data.insertarIncidente;
+            const { estado, message } = data.insertarMantenimiento;
             if (estado) {
                 Notification['success']({
-                    title: 'Registrar Incidente',
+                    title: 'Registrar Mantenimiento',
                     duration: 5000,
                     description: message
                 })
                 props.history.push(`/maquinaria`);
             } else {
                 Notification['error']({
-                    title: 'Registrar Incidente',
+                    title: 'Registrar Mantenimiento',
                     duration: 5000,
                     description: message
                 })
             }
         } else {
             Notification['warning']({
-                title: 'Registrar Incidente',
+                title: 'Registrar Mantenimiento',
                 duration: 20000,
                 description: "La fecha del incidente debe ser hoy o anterior a hoy"
             })
@@ -52,7 +50,7 @@ const NuevoIncidente = ({ ...props }) => {
     }
 
     const validarForm = () => {
-        return !descripcion || !fecha || !ubicacion || !causa
+        return !descripcion || !fecha_mantenimiento || !fecha_aviso
     }
 
     return (
@@ -60,26 +58,24 @@ const NuevoIncidente = ({ ...props }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/maquinaria`)} icon="arrow-left-line" tooltip="Ir a Maquinaria" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Ingresar Incidente</h3>
+            <h3 className="text-center">Ingresar Mantenimiento</h3>
             <div className="row my-1">
                 <div className="col-md-6">
-                    <h6 className="my-1">Fecha del Incidente</h6>
-                    <Input type="datetime-local" placeholder="Fecha del Incidente" value={fecha} onChange={(e) => setFecha(e)} />
-                    <h6 className="my-1">Descripción</h6>
-                    <textarea className="form-control" placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+                    <h6 className="my-1">Fecha del Mantenimiento</h6>
+                    <Input type="date" placeholder="Fecha del Mantenimiento" value={fecha_mantenimiento} onChange={(e) => setFechaMantenimiento(e)} />
                 </div>
                 <div className="col-md-6">
-                    <h6 className="my-1">Ubicación en Planta</h6>
-                    <Input type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e)} />
-                    <h6 className="my-1">Causa</h6>
-                    <textarea className="form-control" placeholder="Causa" value={causa} onChange={(e) => setCausa(e.target.value)} />
+                    <h6 className="my-1">Fecha del Aviso</h6>
+                    <Input type="date" placeholder="Fecha del Aviso" value={fecha_aviso} onChange={(e) => setFechaAviso(e)} />
                 </div>
             </div>
+            <h6 className="my-1">descripción</h6>
+            <textarea className="form-control" placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
             <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={onSaveIncidente} tooltip="Guardar Incidente" name="Guardar" icon="save" color="green" disabled={validarForm()} />
+                <Boton onClick={onSaveMantenimiento} tooltip="Guardar Mantenimiento" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
         </>
     )
 }
 
-export default withRouter(NuevoIncidente)
+export default withRouter(NuevoMantenimiento)
