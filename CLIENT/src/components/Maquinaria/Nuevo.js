@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import { Notification, SelectPicker, InputPicker, Loader, TagPicker } from 'rsuite'
+import { Notification, SelectPicker, Loader } from 'rsuite'
 import Boton from '../shared/Boton'
 import Label from '../shared/Label'
 import Action from '../shared/Action'

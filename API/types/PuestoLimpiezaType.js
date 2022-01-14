@@ -4,12 +4,16 @@ const incidente_type = gql`
 
     scalar Date
 
+    type Area{
+        nombre: String
+    }
+
     type PuestoLimpieza{
         id: ID
         descripcion: String
         nombre: String
-        ubicacion: [String]
-        areas: Date
+        ubicacion: String
+        areas: [Area]
         estado: Estado
     }
 
@@ -18,11 +22,15 @@ const incidente_type = gql`
         obtenerPuestoLimpieza(id:ID): PuestoLimpieza
     }
 
+    input AreaInput{
+        nombre: String
+    }
+
     input PuestoLimpiezaInput{
         descripcion: String
         nombre: String
-        ubicacion: [String]
-        areas: Date
+        ubicacion: String
+        areas: [AreaInput]
         estado: Estado
     }
 
