@@ -65,6 +65,9 @@ import EditarIncidente from '../components/Maquinaria/Incidentes/Editar';
 import Mantenimientos from '../components/Maquinaria/Mantenimientos/Mantenimientos';
 import NuevoMantenimiento from '../components/Maquinaria/Mantenimientos/Nuevo';
 import EditarMantenimiento from '../components/Maquinaria/Mantenimientos/Editar';
+import PuestosLimpieza from '../components/PuestosLimpieza/PuestosLimpieza'
+import NuevoPuestoLimpieza from '../components/PuestosLimpieza/Nuevo';
+import EditarPuestoLimpieza from '../components/PuestosLimpieza/Editar'
 
 const Router = ({ refetch, session }) => {
 
@@ -160,6 +163,11 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/cotizar" render={(props) => <Cotizador session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/cotizaciones" render={(props) => <Cotizaciones session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/cotizaciones/editar/:id" render={(props) => <EditarCotizacion session={data} refetch={refetch} {...props} />} />
+
+                                <Route exact path="/puestos_limpieza" render={(props) => <PuestosLimpieza session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/puestos_limpieza/nuevo" render={(props) => <NuevoPuestoLimpieza session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/puestos_limpieza/editar/:id" render={(props) => <EditarPuestoLimpieza uso={true} session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/puestos_limpieza/detalles/:id" render={(props) => <EditarPuestoLimpieza uso={false} session={data} refetch={refetch} {...props} />} />
 
                                 {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
                             </Switch>

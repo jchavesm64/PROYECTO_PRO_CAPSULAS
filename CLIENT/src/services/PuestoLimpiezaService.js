@@ -5,7 +5,7 @@ export const OBTENER_PUESTO_LIMPIEZAS = gql`
         obtenerPuestoLimpiezas{
             id
             nombre
-            descripcion
+            codigo
             ubicacion
             areas{
                 nombre
@@ -20,7 +20,7 @@ export const OBTENER_PUESTO_LIMPIEZA = gql`
         obtenerPuestoLimpieza(id:$id){
             id
             nombre
-            descripcion
+            codigo
             ubicacion
             areas{
                 nombre

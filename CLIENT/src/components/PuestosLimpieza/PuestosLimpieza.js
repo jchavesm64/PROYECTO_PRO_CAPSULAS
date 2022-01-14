@@ -50,7 +50,7 @@ const Maquinaria = ({ ...props }) => {
                 return key
             }
         } else if (modo === "2") {
-            const val = key.ubicacion.toLowerCase();
+            const val = key.codigo.toLowerCase();
             const val2 = value.toLowerCase();
             if (val.includes(val2)) {
                 return key
@@ -99,7 +99,7 @@ const Maquinaria = ({ ...props }) => {
                 <div style={{ padding: 0 }} className="col-md-3">
                     <select id="select_modo" className="h-100 rounded-0 btn btn-outline-secondary dropdown-toggle w-100" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
                         <option value="1"> Puesto de Limpieza</option>
-                        <option value="2"> Ubicación en Planta</option>
+                        <option value="2"> Código de Puesto</option>
                     </select>
                 </div>
                 <div style={{ padding: 0 }} className="col-md-9 h-100">
@@ -110,10 +110,10 @@ const Maquinaria = ({ ...props }) => {
                 </div>
             </div>
             <div className="mt-3">
-                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="maquina" displayLength={9} {...props} />
+                <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="puesto" displayLength={9} {...props} />
             </div>
             <div className="d-flex justify-content-start my-2">
-                <Link to={`/maquinaria/nuevo`}><Boton tooltip="Nueva Puesto de Limpieza" name="Nuevo" icon="plus" color="green" /></Link>
+                <Link to={`/puestos_limpieza/nuevo`}><Boton tooltip="Nueva Puesto de Limpieza" name="Nuevo" icon="plus" color="green" /></Link>
             </div>
             {isConfirmation}
         </>

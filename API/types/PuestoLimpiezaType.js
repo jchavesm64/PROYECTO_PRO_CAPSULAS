@@ -10,7 +10,7 @@ const incidente_type = gql`
 
     type PuestoLimpieza{
         id: ID
-        descripcion: String
+        codigo: String
         nombre: String
         ubicacion: String
         areas: [Area]
@@ -27,7 +27,7 @@ const incidente_type = gql`
     }
 
     input PuestoLimpiezaInput{
-        descripcion: String
+        codigo: String
         nombre: String
         ubicacion: String
         areas: [AreaInput]

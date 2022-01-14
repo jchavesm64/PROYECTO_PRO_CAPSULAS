@@ -10,9 +10,9 @@ import { SAVE_PUESTO_LIMPIEZA } from '../../services/PuestoLimpiezaService'
 
 const NuevoPuesto = ({ ...props }) => {
     const [nombre, setNombre] = useState('')
-    const [areas, setAreas] = useState([{ "nombre": "Modelo" }])
+    const [areas, setAreas] = useState([{ "nombre": "" }])
     const [ubicacion, setUbicacion] = useState('')
-    const [descripcion, setDescripcion] = useState('')
+    const [codigo, setCodigo] = useState('')
     const [datos, setDatos] = useState(true)
     const [reload, setReload] = useState(false)
     const [insertar] = useMutation(SAVE_PUESTO_LIMPIEZA);
@@ -23,7 +23,7 @@ const NuevoPuesto = ({ ...props }) => {
             const input = {
                 nombre,
                 ubicacion,
-                descripcion,
+                codigo,
                 areas,
                 estado: 'ACTIVO'
             }
@@ -35,7 +35,7 @@ const NuevoPuesto = ({ ...props }) => {
                     duration: 5000,
                     description: message
                 })
-                props.history.push(`/puesto_limpieza`);
+                props.history.push(`/puestos_limpieza`);
             } else {
                 Notification['error']({
                     title: 'Insertar Puesto de Limpieza',
@@ -94,29 +94,26 @@ const NuevoPuesto = ({ ...props }) => {
     }
 
     const validarForm = () => {
-        return !nombre || !ubicacion || !descripcion || areas.length === 0
+        return !nombre || !ubicacion || !codigo || areas.length === 0
     }
 
     return (
         <>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/puesto_limpieza`)} icon="arrow-left-line" tooltip="Ir a Puestos de Limpieza" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/puestos_limpieza`)} icon="arrow-left-line" tooltip="Ir a Puestos de Limpieza" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Registro de Puestos de Limpieza</h3>
+            <h6>Nombre del Puesto</h6>
+            <Input type="text" placeholder="Nombre del Puesto" value={nombre} onChange={(e) => setNombre(e)} />
             <div className="row">
                 <div className="col-md-6 float-left">
-                    <h6>Nombre del Puesto</h6>
-                    <Input type="text" placeholder="Nombre del Puesto" value={nombre} onChange={(e) => setNombre(e)} />
+                    <h6 className="my-1">Código del Puesto</h6>
+                    <Input type="text" placeholder="Código del Puesto" value={codigo} onChange={(e) => setCodigo(e)} />
                 </div>
-                <div className="col-md-6 mt-2">
-                    <h6 className="my-1">Ubicación en Plante</h6>
+                <div className="col-md-6">
+                    <h6 className="my-1">Ubicación en Planta</h6>
                     <Input type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e)} />
                 </div>
-            </div>
-            <h6>Nombre del Puesto</h6>
-            <textarea className="form-control" placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-            <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={onSavePuestoLimpieza} tooltip="Guardar Puesto de Limpieza" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
             <div className="row border-bottom border-dark my-3">
                 <div className="col-md-11 float-left">

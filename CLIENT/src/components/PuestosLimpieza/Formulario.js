@@ -9,11 +9,12 @@ import { UPDATE_PUESTO_LIMPIEZA } from '../../services/PuestoLimpiezaService'
 
 
 const Formulario = ({ props, puesto }) => {
+    console.log(puesto)
     const { uso } = props
     const [nombre, setNombre] = useState(puesto.nombre)
     const [areas, setAreas] = useState(puesto.areas)
     const [ubicacion, setUbicacion] = useState(puesto.ubicacion)
-    const [descripcion, setDescripcion] = useState(puesto.descripcion)
+    const [codigo, setCodigo] = useState(puesto.codigo)
     const [datos, setDatos] = useState(true)
     const [reload, setReload] = useState(false)
     const [actualizar] = useMutation(UPDATE_PUESTO_LIMPIEZA);
@@ -22,7 +23,7 @@ const Formulario = ({ props, puesto }) => {
         setNombre(puesto.nombre)
         setAreas(puesto.areas)
         setUbicacion(puesto.ubicacion)
-        setDescripcion(puesto.descripcion)
+        setCodigo(puesto.codigo)
     }, [puesto])
 
     const onSavePuestoLimpieza = async () => {
@@ -30,7 +31,7 @@ const Formulario = ({ props, puesto }) => {
             const input = {
                 nombre,
                 ubicacion,
-                descripcion,
+                codigo,
                 areas,
                 estado: 'ACTIVO'
             }
@@ -42,7 +43,7 @@ const Formulario = ({ props, puesto }) => {
                     duration: 5000,
                     description: message
                 })
-                props.history.push(`/puesto_limpieza`);
+                props.history.push(`/puestos_limpieza`);
             } else {
                 Notification['error']({
                     title: 'Editar Puesto de Limpieza',
@@ -104,29 +105,26 @@ const Formulario = ({ props, puesto }) => {
     }
 
     const validarForm = () => {
-        return !nombre || !ubicacion || !descripcion || areas.length === 0
+        return !nombre || !ubicacion || !codigo || areas.length === 0
     }
 
     return (
         <>
             <div>
-                <Boton name="Atras" onClick={e => props.history.push(`/puesto_limpieza`)} icon="arrow-left-line" tooltip="Ir a Puestos de Limpieza" size="xs" color="blue" />
+                <Boton name="Atras" onClick={e => props.history.push(`/puestos_limpieza`)} icon="arrow-left-line" tooltip="Ir a Puestos de Limpieza" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Registro de Puestos de Limpieza</h3>
+            <h6>Nombre del Puesto</h6>
+            <Input type="text" placeholder="Nombre del Puesto" value={nombre} onChange={(e) => setNombre(e)} />
             <div className="row">
                 <div className="col-md-6 float-left">
-                    <h6>Nombre del Puesto</h6>
-                    <Input type="text" placeholder="Nombre del Puesto" value={nombre} onChange={(e) => setNombre(e)} />
+                    <h6 className="my-1">Código del Puesto</h6>
+                    <Input type="text" placeholder="Código del Puesto" value={codigo} disabled={true} />
                 </div>
-                <div className="col-md-6 mt-2">
+                <div className="col-md-6">
                     <h6 className="my-1">Ubicación en Plante</h6>
                     <Input type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e)} />
                 </div>
-            </div>
-            <h6>Nombre del Puesto</h6>
-            <textarea className="form-control" placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-            <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={onSavePuestoLimpieza} tooltip="Guardar Puesto de Limpieza" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>
             <div className="row border-bottom border-dark my-3">
                 <div className="col-md-11 float-left">
@@ -145,9 +143,11 @@ const Formulario = ({ props, puesto }) => {
                                 return (<FichaArea item={item} />)
                             })
                         }
-                        <div className="d-flex col-md-12 justify-content-end float-right">
-                            <Action className="mb-1" onClick={addCaracteritica} tooltip={"Agregar Area"} color={"green"} icon={"plus"} size="xs" />
-                        </div>
+                        {uso === true &&
+                            <div className="d-flex col-md-12 justify-content-end float-right">
+                                <Action className="mb-1" onClick={addCaracteritica} tooltip={"Agregar Area"} color={"green"} icon={"plus"} size="xs" />
+                            </div>
+                        }
                     </div>
                 </>
             }

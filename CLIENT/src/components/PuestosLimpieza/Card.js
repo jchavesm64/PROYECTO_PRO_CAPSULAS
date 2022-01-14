@@ -18,16 +18,15 @@ const CardPuestoLimpieza = ({ ...props }) => {
             <div className="mx-1">
                 <h6>Puesto Limpieza</h6>
                 <Label icon="font" value={puestoLimpieza.nombre} />
-                <h6>Descripción</h6>
-                <Label icon="list" value={puestoLimpieza.descripcion} />
+                <h6>Código</h6>
+                <Label icon="hashtag" value={puestoLimpieza.codigo} />
                 <h6>Ubicación en Planta</h6>
                 <Label icon="globe" value={puestoLimpieza.ubicacion} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
-                <div className="mx-1"><Link to={`puestoLimpieza/nuevo`}><Action tooltip="Agregar Puesto de Limpieza" color="green" icon="plus" size="xs" /></Link></div>
-                <div className="mx-1"><Link to={`puestoLimpieza/editar/${puestoLimpieza.id}`}><Action tooltip="Editar Puesto de Limpieza" color="orange" icon="edit" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`puestos_limpieza/editar/${puestoLimpieza.id}`}><Action tooltip="Editar Puesto de Limpieza" color="orange" icon="edit" size="xs" /></Link></div>
                 <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: puestoLimpieza.id }) : mostrarMsj() }} tooltip="Eliminar Puesto de Limpieza" color="red" icon="trash" size="xs" /></div>
-                <div className="mx-1"><Link to={`puestoLimpieza/detalles/${puestoLimpieza.id}`}><Action tooltip="Detalles" color="cyan" icon="info" size="xs" /></Link></div>
+                <div className="mx-1"><Link to={`puestos_limpieza/detalles/${puestoLimpieza.id}`}><Action tooltip="Detalles" color="cyan" icon="info" size="xs" /></Link></div>
             </div>
         </Panel>
     )

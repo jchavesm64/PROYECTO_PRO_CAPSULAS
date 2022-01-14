@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { OBTENER_PUESTO_LIMPIEZAS } from '../../services/PuestoLimpiezaService'
+import { OBTENER_PUESTO_LIMPIEZA } from '../../services/PuestoLimpiezaService'
 import Formulario from './Formulario';
 import { withRouter } from 'react-router'
 import { Loader, Notification } from 'rsuite';
@@ -8,7 +8,7 @@ import { Loader, Notification } from 'rsuite';
 const EditarPuestoLimpieza = (props) => {
 
     const {id} = props.match.params;
-    const {loading, error, data, refetch, startPolling, stopPolling } = useQuery(OBTENER_PUESTO_LIMPIEZAS, { variables: { id: id }, pollInterval: 1000 });
+    const {loading, error, data, refetch, startPolling, stopPolling } = useQuery(OBTENER_PUESTO_LIMPIEZA, { variables: { id: id }, pollInterval: 1000 });
 
     useEffect( () => {
         startPolling(1000)
