@@ -11,6 +11,14 @@ const MovimientosSchema = new mongose.Schema({
         require: true,
         trim: true
     },
+    cedido:{
+        type: Boolean,
+        require: true
+    },
+    cliente:{
+        type: mongose.Schema.Types.ObjectId,
+        ref: 'clientes'
+    },
     proveedor:{
         type: mongose.Schema.Types.ObjectId,
         ref: 'proveedores'

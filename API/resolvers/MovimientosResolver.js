@@ -18,7 +18,7 @@ export default {
                     action: 'read',
                     expires: Date.now() + 1440 * 60 * 1000,
                 };
-                const mov = await Movimientos.find({ materia_prima: id }).populate('usuario').populate('materia_prima').populate('proveedor');
+                const mov = await Movimientos.find({ materia_prima: id }).populate('usuario').populate('materia_prima').populate('proveedor').populate('cliente');
                 var movimientos = []
                 for(var m in mov){
                     const url = await storage.bucket('bucket_pro_capsulas').file('archivos_coa/' + mov[m].cao).getSignedUrl(options)
@@ -26,6 +26,8 @@ export default {
                         id: mov[m].id,
                         tipo: mov[m].tipo,
                         lote: mov[m].lote,
+                        cedido: mov[m].cedido,
+                        cliente: mov[m].cliente,
                         proveedor: mov[m].proveedor,
                         codigo: mov[m].codigo,
                         fechaFabricacion: mov[m].fechaFabricacion,
@@ -48,7 +50,7 @@ export default {
         },
         obtenerMovimientos2: async (_, { id }) => {
             try {
-                const mov = await Movimientos.find({ materia_prima: id, tipo: 'ENTRADA' }).populate('usuario').populate('materia_prima').populate('proveedor');
+                const mov = await Movimientos.find({ materia_prima: id, tipo: 'ENTRADA' }).populate('usuario').populate('materia_prima').populate('proveedor').populate('cliente');
                 for(var m in mov){
                     const result = await Movimientos.find({ lote: mov[m].lote, tipo: 'SALIDA', materia_prima: mov[m].materia_prima });
                     var cant = mov[m].cantidad
