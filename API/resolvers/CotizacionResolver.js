@@ -11,6 +11,14 @@ export default{
                 return error
             }
         },
+        obtenerCotizaciones2: async (_, {}) => {
+            try{
+                const result = await Cotizacion.find({status: 'ACTIVO', estado: 'ENVIADA'}).populate('formula').populate('presentacion').populate('cliente').populate('elementos').populate('elementos_c');
+                return result;
+            }catch(error){
+                return error
+            }
+        },
         obtenerCotizacion: async (_, {id}) => {
             try{
                 const result = await Cotizacion.findById(id).populate('formula').populate('presentacion').populate('cliente').populate('elementos').populate('elementos_c');

@@ -16,7 +16,7 @@ const NuevoProducto = ({...props}) => {
 
     const getOrdenes = () => {
         const ordenes = []
-        data_ordenes.obtenerCotizaciones.map(item => {
+        data_ordenes.obtenerCotizaciones2.map(item => {
             ordenes.push({
                 "label": item.formula.nombre + " - " + item.cliente.nombre + " - " + item.presentacion.tipo,
                 "value": item.id
@@ -82,7 +82,7 @@ const NuevoProducto = ({...props}) => {
             <h6>Nombre del Producto</h6>
             <input className="form-control mt-2" type="text" placeholder="Nombre del Producto" value={nombre} onChange={(e) => setNombre(e.target.value)} />
             <div className="row">
-                <div className="col-md-6 float-left">
+                <div className="col-md-6 float-left mt-2">
                     <h6>Ordenes de Producción</h6>
                     <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Ordenes de Producción" data={getOrdenes()} onChange={(e) => setOrden(e)} searchable={true} />
                 </div>

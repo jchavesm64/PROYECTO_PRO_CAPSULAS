@@ -118,8 +118,8 @@ export const DELETE_COTIZACION = gql`
 `;
 
 export const OBTENER_ORDENES = gql`
-    query obtenerCotizaciones{
-        obtenerCotizaciones{
+    query obtenerCotizaciones2{
+        obtenerCotizaciones2{
             id
             formula{
                 id

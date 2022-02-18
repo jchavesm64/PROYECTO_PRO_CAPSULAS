@@ -77,6 +77,7 @@ const cotizacion_type = gql`
 
     type Query{
         obtenerCotizaciones: [Cotizacion]
+        obtenerCotizaciones2: [Cotizacion]
         obtenerCotizacion(id:ID): Cotizacion
     }
 
