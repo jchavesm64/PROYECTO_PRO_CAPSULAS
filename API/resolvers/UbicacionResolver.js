@@ -1,11 +1,11 @@
-import { Categoria } from '../models';
+import { Ubicacion } from '../models';
 
 export default {
     Query: {
-        obtenerCategorias: async (_, { }) => {
+        obtenerUbicaciones: async (_, { }) => {
             try {
-                const categorias = await Categoria.find({ estado: "ACTIVO" });
-                return categorias.sort(function(a, b){
+                const ubicacions = await Ubicacion.find({ estado: "ACTIVO" });
+                return ubicacions.sort(function(a, b){
                     if(a.nombre > b.nombre){
                         return 1
                     }
@@ -20,70 +20,70 @@ export default {
         }
     },
     Mutation: {
-        insertarCategoria: async (_, { input }) => {
+        insertarUbicacion: async (_, { input }) => {
             try {
                 const { nombre } = input;
-                const existe = await Categoria.findOne({ nombre });
+                const existe = await Ubicacion.findOne({ nombre });
                 if (existe) {
                     return {
                         estado: false,
                         data: null,
-                        message: "La categoria ya existe"
+                        message: "La ubicacion ya existe"
                     }
                 } else {
-                    const categoria = new Categoria(input);
-                    const result = await categoria.save();
+                    const ubicacion = new Ubicacion(input);
+                    const result = await ubicacion.save();
                     return {
                         estado: true,
                         data: result,
-                        message: "Categoria agregada correctamente"
+                        message: "Ubicacion agregada correctamente"
                     }
                 }
             } catch (error) {
                 return {
                     estado: false,
                     data: null,
-                    message: "Ocurrio un error inesperado al registrar la categoria"
+                    message: "Ocurrio un error inesperado al registrar la ubicacion"
                 }
             }
         },
-        actualizarCategoria: async (_, { id, input }) => {
+        actualizarUbicacion: async (_, { id, input }) => {
             try {
-                const categoria = await Categoria.findOneAndUpdate({ _id: id }, input, { new: true });
+                const ubicacion = await Ubicacion.findOneAndUpdate({ _id: id }, input, { new: true });
                 return {
                     estado: true,
-                    data: categoria,
-                    message: "Categoria, actualizada correctamente"
+                    data: ubicacion,
+                    message: "Ubicacion, actualizada correctamente"
                 }
             } catch (error) {
                 return {
                     estado: false,
                     data: null,
-                    message: "Ocurrio un error inesperado al actualizar la categoria"
+                    message: "Ocurrio un error inesperado al actualizar la ubicacion"
                 }
             }
         },
-        desactivarCategoria: async (_, { id }) => {
+        desactivarUbicacion: async (_, { id }) => {
             try {
-                const categoria = await Categoria.findOneAndUpdate({ _id: id }, { estado: 'INACTIVO' }, { new: true });
-                if (categoria) {
+                const ubicacion = await Ubicacion.findOneAndUpdate({ _id: id }, { estado: 'INACTIVO' }, { new: true });
+                if (ubicacion) {
                     return {
                         estado: true,
                         data: null,
-                        message: "Categoria eliminada correctamente"
+                        message: "Ubicacion eliminada correctamente"
                     };
                 } else {
                     return {
                         estado: false,
                         data: null,
-                        message: "No se pudo eliminar la categoria"
+                        message: "No se pudo eliminar la ubicacion"
                     }
                 }
             } catch (error) {
                 return {
                     estado: false,
                     data: null,
-                    message: "Ocurrio en error inesperado al eliminar la categoria"
+                    message: "Ocurrio en error inesperado al eliminar la ubicacion"
                 }
             }
         }

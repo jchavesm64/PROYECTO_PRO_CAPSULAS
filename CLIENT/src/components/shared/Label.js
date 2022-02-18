@@ -3,7 +3,7 @@ import { InputGroup, Icon } from 'rsuite'
 
 const Label = (props) => {
     return (
-        <InputGroup size="lg" className="w-90 mx-auto my-2">
+        <InputGroup size="lg" className="w-90 mx-auto">
             <InputGroup.Addon size="lg">
                 <Icon icon={props.icon} />
             </InputGroup.Addon>

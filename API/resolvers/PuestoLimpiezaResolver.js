@@ -4,7 +4,7 @@ export default{
     Query:{
         obtenerPuestoLimpiezas: async (_, {}) => {
             try{
-                const puestos = await PuestoLimpieza.find({estado: "ACTIVO"});
+                const puestos = await PuestoLimpieza.find({estado: "ACTIVO"}).populate('ubicacion');
                 return puestos.sort(function(a, b){
                     if(a.nombre > b.nombre){
                         return 1
@@ -20,7 +20,7 @@ export default{
         },
         obtenerPuestoLimpieza: async (_, {id}) => {
             try{
-                const puesto = await PuestoLimpieza.findById(id);
+                const puesto = await PuestoLimpieza.findById(id).populate('ubicacion');
                 return puesto;
             }catch(error){
                 return error;

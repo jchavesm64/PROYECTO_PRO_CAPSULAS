@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { UPDATE_MAQUINA } from '../../services/MaquinaService'
 import { OBTENER_CATEGORIAS } from '../../services/CategoriaService'
+import { OBTENER_UBICACIONES } from '../../services/UbicacionService';
 
 const EditarMaquina = ({ props, maquina }) => {
     const { uso } = props
@@ -15,7 +16,7 @@ const EditarMaquina = ({ props, maquina }) => {
     const [caracteristicas, setCaracteristicas] = useState(maquina.caracteristicas)
     const [partes, setPartes] = useState(maquina.partes)
     const [categoria, setCategoria] = useState(maquina.categoria.id)
-    const [ubicacion, setUbicacion] = useState(maquina.ubicacion)
+    const [ubicacion, setUbicacion] = useState(maquina.ubicacion.id)
     const [vida_util, setVida] = useState(maquina.vida_util)
     const [fecha_adquirido, setFecha] = useState(maquina.fecha_adquirido)
     const [datos, setDatos] = useState(true)
@@ -25,14 +26,14 @@ const EditarMaquina = ({ props, maquina }) => {
     const [nombreParte, setNombreParte] = useState(parte.nombre)
     const [insertar] = useMutation(UPDATE_MAQUINA);
     const { loading: load_categorias, data: data_categorias } = useQuery(OBTENER_CATEGORIAS, { pollInterval: 1000 })
-
+    const { loading: load_ubicaciones, data: data_ubicaciones } = useQuery(OBTENER_UBICACIONES, { pollInterval: 1000 })
 
     useEffect(() => {
         setNombre(maquina.nombre)
         setCaracteristicas(maquina.caracteristicas)
         setPartes(maquina.partes)
         setCategoria(maquina.categoria.id)
-        setUbicacion(maquina.ubicacion)
+        setUbicacion(maquina.ubicacion.id)
         setVida(maquina.vida_util)
         setFecha(maquina.fecha_adquirido)
     }, [maquina])
@@ -55,6 +56,19 @@ const EditarMaquina = ({ props, maquina }) => {
             })
         }
         return categorias
+    }
+
+    const getUbicaciones = () => {
+        const ubicaciones = []
+        if (data_ubicaciones) {
+            data_ubicaciones.obtenerUbicaciones.map(item => {
+                ubicaciones.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return ubicaciones
     }
 
     const onSaveMaquina = async () => {
@@ -308,7 +322,7 @@ const EditarMaquina = ({ props, maquina }) => {
         )
     }
 
-    if (load_categorias) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (load_categorias || load_ubicaciones) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
     return (
         <>
@@ -319,15 +333,15 @@ const EditarMaquina = ({ props, maquina }) => {
             <h6>Nombre de la Máquina</h6>
             <input className="form-control mt-2" type="text" placeholder="Nombre de la Máquina" value={nombre} onChange={(e) => setNombre(e.target.value)} />
             <div className="row">
-                <div className="col-md-6 float-left">
+                <div className="col-md-6 float-left mt-2">
                     <h6>Categoría</h6>
                     <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Categoría" value={categoria} data={getCategorias()} onChange={(e) => setCategoria(e)} searchable={true} />
                     <h6 className="my-1">Vida Util en años</h6>
                     <input className="form-control mt-2" type="text" placeholder="Vida Util" value={vida_util} onChange={(e) => setVida(e.target.value)} />
                 </div>
                 <div className="col-md-6 mt-2">
-                    <h6 className="my-1">Ubicación en Planta</h6>
-                    <input className="form-control mt-2" type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
+                    <h6>Ubicación en Planta</h6>
+                    <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Ubicación en Planta" value={ubicacion} data={getUbicaciones()} onChange={(e) => setUbicacion(e)} searchable={true} />
                     <h6 className="my-1">Fecha de Adquisición</h6>
                     <input className="form-control mt-2" type="date" placeholder="Fecha de Adquisición" value={getFecha(fecha_adquirido)} onChange={(e) => setFecha(e.target.value)} />
                 </div>

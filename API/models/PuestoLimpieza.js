@@ -13,9 +13,8 @@ const PuestoLimpiezaSchema = new mongoose.Schema({
         trim: true
     },
     ubicacion: {
-        type: String,
-        require: true,
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ubicaciones'
     },
     areas:{
         type: Array,

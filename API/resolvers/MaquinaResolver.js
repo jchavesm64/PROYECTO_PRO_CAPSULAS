@@ -1,10 +1,10 @@
-import { Maquina } from '../models';
+import { Maquina, Incidente, Mantenimiento } from '../models';
 
 export default {
     Query: {
         obtenerMaquinas: async (_, { }) => {
             try {
-                const maquinas = await Maquina.find({ estado: "ACTIVO" }).populate('categoria');
+                const maquinas = await Maquina.find({ estado: "ACTIVO" }).populate('categoria').populate('ubicacion');
                 return maquinas.sort(function (a, b) {
                     if (a.nombre > b.nombre) {
                         return 1
@@ -20,10 +20,24 @@ export default {
         },
         obtenerMaquina: async (_, { id }) => {
             try {
-                const maquina = await Maquina.findById(id).populate('categoria');
+                const maquina = await Maquina.findById(id).populate('categoria').populate('ubicacion');
                 return maquina;
             } catch (error) {
                 return error;
+            }
+        },
+        obtenerInformacionMaquina: async (_, { id }) => {
+            try{
+                const maquina = await Maquina.findById(id).populate('categoria');
+                const incidentes = await Incidente.find({maquina: maquina.id});
+                const mantenimientos = await Mantenimiento.find({maquina: maquina.id});
+                return {
+                    maquina,
+                    incidentes,
+                    mantenimientos
+                }
+            }catch(error){
+                return error
             }
         }
     },

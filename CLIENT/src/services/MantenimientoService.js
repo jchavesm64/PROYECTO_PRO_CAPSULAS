@@ -9,8 +9,8 @@ export const OBTENER_MANTENIMIENTOS = gql`
                 nombre
             }
             fecha_mantenimiento
-            fecha_aviso
             descripcion
+            observaciones
             estado
         }
     }
@@ -25,8 +25,8 @@ export const OBTENER_MANTENIMIENTO = gql`
                 nombre
             }
             fecha_mantenimiento
-            fecha_aviso
             descripcion
+            observaciones
             estado
         }
     }

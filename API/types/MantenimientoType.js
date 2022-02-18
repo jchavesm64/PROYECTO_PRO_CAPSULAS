@@ -8,8 +8,8 @@ const mantenimiento_type = gql`
         id: ID
         maquina: Maquina
         fecha_mantenimiento: Date
-        fecha_aviso: Date
         descripcion: String
+        observaciones: String
         estado: String
     }
 
@@ -21,8 +21,8 @@ const mantenimiento_type = gql`
     input MantenimientoInput{
         maquina: ID
         fecha_mantenimiento: Date
-        fecha_aviso: Date
         descripcion: String
+        observaciones: String
         estado: String
     }
 

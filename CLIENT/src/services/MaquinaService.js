@@ -19,7 +19,9 @@ export const OBTENER_MAQUINAS = gql`
             categoria{
                 nombre
             }
-            ubicacion
+            ubicacion{
+                nombre
+            }
             vida_util
             fecha_adquirido
             estado
@@ -56,10 +58,59 @@ export const OBTENER_MAQUINA = gql`
                 id
                 nombre
             }
-            ubicacion
+            ubicacion{
+                id
+                nombre
+            }
             vida_util
             fecha_adquirido
             estado
+        }
+    }
+`;
+
+export const OBTENER_INFORMACION_MAQUINA = gql`
+    query obtenerInformacionMaquina($id:ID){
+        obtenerInformacionMaquina(id:$id){
+            maquina{
+                id
+                nombre
+                caracteristicas{
+                    clave
+                    valor
+                },
+                partes{
+                    parte
+                    caracteristicas{
+                        clave
+                        valor
+                    }
+                }
+                categoria{
+                    id
+                    nombre
+                }
+                ubicacion{
+                    id
+                    nombre
+                }
+                vida_util
+                fecha_adquirido
+                estado
+            }
+            incidentes{
+                descripcion
+                fecha
+                ubicacion
+                causa
+                estado
+            }
+            mantenimientos{
+                fecha_mantenimiento
+                fecha_aviso
+                descripcion
+                estado
+            }
         }
     }
 `;

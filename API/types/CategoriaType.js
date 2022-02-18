@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server-express');
 
-const tipoProducto_type = gql`
+const categoria_type = gql`
     type Categoria{
         id: ID
         nombre: String,
@@ -29,4 +29,4 @@ const tipoProducto_type = gql`
     }
 `;
 
-module.exports = tipoProducto_type;
+module.exports = categoria_type;

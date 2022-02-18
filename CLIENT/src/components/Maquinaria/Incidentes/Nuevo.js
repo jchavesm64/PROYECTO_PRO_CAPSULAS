@@ -52,7 +52,7 @@ const NuevoIncidente = ({ ...props }) => {
     }
 
     const validarForm = () => {
-        return !descripcion || !fecha || !ubicacion || !causa
+        return !descripcion || !fecha || !ubicacion
     }
 
     return (

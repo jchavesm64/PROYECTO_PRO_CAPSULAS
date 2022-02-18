@@ -7,7 +7,7 @@ const Card = ({ link, name, icon }) => {
 
     return (
         <Link className="linkConfig" to={link}>
-            <Panel shaded bordered bodyFill style={{ width: 260, maxWidth: 270 }}
+            <Panel shaded bordered bodyFill style={{ width: 280, maxWidth: 280, maxHeight: 200, height: 200 }}
                 className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
                 onMouseEnter={() => setState(true)}
                 onMouseLeave={() => setState(false)}

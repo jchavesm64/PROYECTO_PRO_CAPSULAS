@@ -8,14 +8,14 @@ import { UPDATE_MANTENIMIENTO } from '../../../services/MantenimientoService'
 const Editar = ({ props, mantenimiento }) => {
     const [descripcion, setDescripcion] = useState(mantenimiento.descripcion)
     const [fecha_mantenimiento, setFechaMantenimiento] = useState(mantenimiento.fecha_mantenimiento)
-    const [fecha_aviso, setFechaAviso] = useState(mantenimiento.fecha_aviso)
+    const [observaciones, setObservaciones] = useState('')
     const [state, setEstado] = useState(mantenimiento.estado)
     const [actualizar] = useMutation(UPDATE_MANTENIMIENTO);
 
     useEffect(() => {
         setDescripcion(mantenimiento.descripcion)
         setFechaMantenimiento(mantenimiento.fecha_mantenimiento)
-        setFechaAviso(mantenimiento.fecha_aviso)
+        setObservaciones(mantenimiento.observaciones)
         setEstado(mantenimiento.estado)
     }, [mantenimiento])
 
@@ -29,12 +29,12 @@ const Editar = ({ props, mantenimiento }) => {
     const onSaveMantenimiento = async () => {
         var date = new Date();
         var f = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
-        if (fecha_mantenimiento >= f || fecha_aviso >= f) {
+        if (fecha_mantenimiento >= f) {
             const input = {
                 maquina: mantenimiento.maquina.id,
                 descripcion,
                 fecha_mantenimiento,
-                fecha_aviso,
+                observaciones,
                 estado: state
             }
             const { data } = await actualizar({ variables: { id: mantenimiento.id, input }, errorPolicy: 'all' });
@@ -79,26 +79,27 @@ const Editar = ({ props, mantenimiento }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/maquinaria`)} icon="arrow-left-line" tooltip="Ir a Maquinaria" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Editar Mantenimiento</h3>
+            <h3 className="text-center">{props.uso ? "Editar Mantenimiento" : "Detalles de Mantenimiento"}</h3>
             <div className="row my-1">
-                <div className="col-md-4">
+                <div className="col-md-6">
                     <h6 className="my-1">Fecha del Mantenimiento</h6>
                     <Input type="date" placeholder="Fecha del Mantenimiento" value={getFecha(fecha_mantenimiento)} onChange={(e) => setFechaMantenimiento(e)} />
                 </div>
-                <div className="col-md-4">
-                    <h6 className="my-1">Fecha del Aviso</h6>
-                    <Input type="date" placeholder="Fecha del Aviso" value={getFecha(fecha_aviso)} onChange={(e) => setFechaAviso(e)} />
-                </div>
-                <div className="col-md-4">
+                <div className="col-md-6">
                     <h6 className="my-1">Estado del Mantenimiento</h6>
                     <InputPicker className='w-100' placeholder="Estado del Mantenimiento" data={getEstados()} value={state} onChange={(e) => setEstado(e)} />
                 </div>
             </div>
             <h6 className="my-1">descripción</h6>
             <textarea className="form-control" placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-            <div className="d-flex justify-content-end float-rigth mt-2">
-                <Boton onClick={onSaveMantenimiento} tooltip="Guardar Mantenimiento" name="Guardar" icon="save" color="green" disabled={validarForm()} />
-            </div>
+            <h6 className="my-1">Observaciones</h6>
+            <textarea className="form-control" placeholder="Observaciones" value={observaciones} onChange={(e) => setObservaciones(e.target.value)} />
+            {
+                props.uso &&
+                <div className="d-flex justify-content-end float-rigth mt-2">
+                    <Boton onClick={onSaveMantenimiento} tooltip="Guardar Mantenimiento" name="Guardar" icon="save" color="green" disabled={validarForm()} />
+                </div>
+            }
         </>
     )
 

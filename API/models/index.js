@@ -24,6 +24,7 @@ import Maquina from './Maquina';
 import Mantenimiento from './Mantenimiento';
 import Incidente from './Incidente';
 import PuestoLimpieza from './PuestoLimpieza';
+import Ubicacion from './Ubicacion';
 
 export {
     Rol,
@@ -51,5 +52,6 @@ export {
     Maquina,
     Mantenimiento,
     Incidente,
-    PuestoLimpieza
+    PuestoLimpieza,
+    Ubicacion
 }

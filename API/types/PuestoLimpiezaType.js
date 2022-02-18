@@ -12,7 +12,7 @@ const incidente_type = gql`
         id: ID
         codigo: String
         nombre: String
-        ubicacion: String
+        ubicacion: Ubicacion
         areas: [Area]
         estado: Estado
     }
@@ -29,7 +29,7 @@ const incidente_type = gql`
     input PuestoLimpiezaInput{
         codigo: String
         nombre: String
-        ubicacion: String
+        ubicacion: ID
         areas: [AreaInput]
         estado: Estado
     }

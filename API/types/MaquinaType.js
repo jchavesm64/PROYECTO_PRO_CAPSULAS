@@ -21,15 +21,22 @@ const maquina_type = gql`
         caracteristicas: [Caracteristicas]
         partes: [Partes]
         categoria: Categoria
-        ubicacion: String
+        ubicacion: Ubicacion
         vida_util: Number
         fecha_adquirido: Date
         estado: Estado
     }
 
+    type MaquinaInformation{
+        maquina: Maquina
+        incidentes: [Incidente]
+        mantenimientos: [Mantenimiento]
+    }
+
     type Query{
         obtenerMaquinas: [Maquina]
         obtenerMaquina(id:ID): Maquina
+        obtenerInformacionMaquina(id: ID): MaquinaInformation
     }
 
     input CaracteristicasInput{
@@ -47,7 +54,7 @@ const maquina_type = gql`
         caracteristicas: [CaracteristicasInput]
         partes: [PartesInput]
         categoria: ID
-        ubicacion: String
+        ubicacion: ID
         vida_util: Number
         fecha_adquirido: Date
         estado: Estado

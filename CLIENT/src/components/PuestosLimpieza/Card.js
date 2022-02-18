@@ -21,7 +21,7 @@ const CardPuestoLimpieza = ({ ...props }) => {
                 <h6>Código</h6>
                 <Label icon="hashtag" value={puestoLimpieza.codigo} />
                 <h6>Ubicación en Planta</h6>
-                <Label icon="globe" value={puestoLimpieza.ubicacion} />
+                <Label icon="globe" value={puestoLimpieza.ubicacion.nombre} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
                 <div className="mx-1"><Link to={`puestos_limpieza/editar/${puestoLimpieza.id}`}><Action tooltip="Editar Puesto de Limpieza" color="orange" icon="edit" size="xs" /></Link></div>

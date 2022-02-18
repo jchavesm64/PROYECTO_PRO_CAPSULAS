@@ -21,9 +21,8 @@ const MaquinaSchema = new mongoose.Schema({
         ref: 'categorias'
     },
     ubicacion: {
-        type: String,
-        require: true,
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ubicaciones'
     },
     vida_util:{
         type: Number,

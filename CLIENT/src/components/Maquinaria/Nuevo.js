@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { SAVE_MAQUINA } from '../../services/MaquinaService'
 import { OBTENER_CATEGORIAS } from '../../services/CategoriaService'
+import { OBTENER_UBICACIONES } from '../../services/UbicacionService';
 
 const NuevaMaquina = ({ ...props }) => {
     const [nombre, setNombre] = useState('')
@@ -24,6 +25,7 @@ const NuevaMaquina = ({ ...props }) => {
     const [nombreParte, setNombreParte] = useState(parte.nombre)
     const [insertar] = useMutation(SAVE_MAQUINA);
     const { loading: load_categorias, data: data_categorias } = useQuery(OBTENER_CATEGORIAS, { pollInterval: 1000 })
+    const { loading: load_ubicaciones, data: data_ubicaciones } = useQuery(OBTENER_UBICACIONES, { pollInterval: 1000 })
 
     const getCategorias = () => {
         const categorias = []
@@ -38,18 +40,31 @@ const NuevaMaquina = ({ ...props }) => {
         return categorias
     }
 
+    const getUbicaciones = () => {
+        const ubicaciones = []
+        if (data_ubicaciones) {
+            data_ubicaciones.obtenerUbicaciones.map(item => {
+                ubicaciones.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return ubicaciones
+    }
+
     const onSaveMaquina = async () => {
         var date = new Date();
         var fecha = date.getFullYear() + "-" + (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' + ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
         let band = false
         caracteristicas.map(item => {
-            if(item.clave === '' || item.valor === ''){
+            if (item.clave === '' || item.valor === '') {
                 band = true
             }
         })
-        if(!band){
-            if(fecha_adquirido <= fecha){
-                if(vida_util > 0){
+        if (!band) {
+            if (fecha_adquirido <= fecha) {
+                if (vida_util > 0) {
                     const input = {
                         nombre,
                         caracteristicas,
@@ -76,21 +91,21 @@ const NuevaMaquina = ({ ...props }) => {
                             description: message
                         })
                     }
-                }else{
+                } else {
                     Notification['warning']({
                         title: 'Agregar Máquina',
                         duration: 20000,
                         description: "La vida útil debe ser mayor a cero"
                     })
                 }
-            }else{
+            } else {
                 Notification['warning']({
                     title: 'Agregar Máquina',
                     duration: 20000,
                     description: "La fecha de adquisición debe ser hoy  o anterior a hoy"
                 })
             }
-        }else{
+        } else {
             Notification['warning']({
                 title: 'Agregar Máquina',
                 duration: 20000,
@@ -281,7 +296,7 @@ const NuevaMaquina = ({ ...props }) => {
         )
     }
 
-    if (load_categorias) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (load_categorias || load_ubicaciones) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
     return (
         <>
@@ -292,15 +307,15 @@ const NuevaMaquina = ({ ...props }) => {
             <h6>Nombre de la Máquina</h6>
             <input className="form-control mt-2" type="text" placeholder="Nombre de la Máquina" value={nombre} onChange={(e) => setNombre(e.target.value)} />
             <div className="row">
-                <div className="col-md-6 float-left">
+                <div className="col-md-6 float-left mt-2">
                     <h6>Categoría</h6>
                     <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Categoría" data={getCategorias()} onChange={(e) => setCategoria(e)} searchable={true} />
                     <h6 className="my-1">Vida Util en años</h6>
                     <input className="form-control mt-2" type="text" placeholder="Vida Util" value={vida_util} onChange={(e) => setVida(e.target.value)} />
                 </div>
                 <div className="col-md-6 mt-2">
-                    <h6 className="my-1">Ubicación en Planta</h6>
-                    <input className="form-control mt-2" type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
+                    <h6>Ubicación en Planta</h6>
+                    <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Ubicación en Planta" data={getUbicaciones()} onChange={(e) => setUbicacion(e)} searchable={true} />
                     <h6 className="my-1">Fecha de Adquisición</h6>
                     <input className="form-control mt-2" type="date" placeholder="Fecha de Adquisición" value={fecha_adquirido} onChange={(e) => setFecha(e.target.value)} />
                 </div>

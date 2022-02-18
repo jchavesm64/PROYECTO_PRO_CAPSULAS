@@ -10,15 +10,15 @@ import {
 import Confirmation from '../../shared/Confirmation';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import {
-    OBTENER_CATEGORIAS,
-    SAVE_CATEGORIA,
-    UPDATE_CATEGORIA,
-    DELETE_CATEGORIA
-} from '../../../services/CategoriaService';
+    OBTENER_UBICACIONES,
+    SAVE_UBICACION,
+    UPDATE_UBICACION,
+    DELETE_UBICACION
+} from '../../../services/UbicacionService';
 import {Redirect} from 'react-router-dom';
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
-const Categoria = ({ ...props }) => {
+const Ubicacion = ({...props}) => {
     const [page, setPage] = useState(1);
     const [displayLength, setDisplayLength] = useState(10);
     const [confimation, setConfirmation] = useState(false);
@@ -26,10 +26,10 @@ const Categoria = ({ ...props }) => {
     const [nuevo, setNuevo] = useState(false);
     const [editar, setEditar] = useState({ dato: null, estado: false });
     const [nombre, setNombre] = useState('');
-    const { loading, error, data: categorias } = useQuery(OBTENER_CATEGORIAS, { pollInterval: 1000 });
-    const [insertar] = useMutation(SAVE_CATEGORIA);
-    const [actualizar] = useMutation(UPDATE_CATEGORIA);
-    const [desactivar] = useMutation(DELETE_CATEGORIA);
+    const { loading, error, data: categorias } = useQuery(OBTENER_UBICACIONES, { pollInterval: 1000 });
+    const [insertar] = useMutation(SAVE_UBICACION);
+    const [actualizar] = useMutation(UPDATE_UBICACION);
+    const [desactivar] = useMutation(DELETE_UBICACION);
 
     const handleChangePage = (dataKey) => {
         setPage(dataKey)
@@ -42,17 +42,17 @@ const Categoria = ({ ...props }) => {
 
     const onDeletObjeto = async (id) => {
         const { data } = await desactivar({ variables: { id } });
-        if (data.desactivarCategoria.estado) {
+        if (data.desactivarUbicacion.estado) {
             Notification['success']({
-                title: 'Eliminar Categoria',
+                title: 'Eliminar Ubicacion',
                 duration: 5000,
-                description: data.desactivarCategoria.message
+                description: data.desactivarUbicacion.message
             })
         } else {
             Notification['error']({
-                title: 'Eliminar Categoria',
+                title: 'Eliminar Ubicacion',
                 duration: 5000,
-                description: data.desactivarCategoria.message
+                description: data.desactivarUbicacion.message
             })
         }
     }
@@ -67,7 +67,7 @@ const Categoria = ({ ...props }) => {
         : ""
 
     const getData = () => {
-        return categorias.obtenerCategorias.filter((value, index) => {
+        return categorias.obtenerUbicaciones.filter((value, index) => {
             if (filter !== "") {
                 return getFilteredByKey(value, filter);
             }
@@ -93,39 +93,39 @@ const Categoria = ({ ...props }) => {
             }
             if (editar.dato !== null) {
                 const { data } = await actualizar({ variables: { id: editar.dato.id, input } });
-                if (data.actualizarCategoria.estado) {
+                if (data.actualizarUbicacion.estado) {
                     Notification['success']({
-                        title: 'Guardar Categoria',
+                        title: 'Guardar Ubicacion',
                         duration: 5000,
-                        description: "Categoria, editado correctamente"
+                        description: "Ubicacion, editado correctamente"
                     })
                 } else {
                     Notification['error']({
-                        title: 'Guardar Categoria',
+                        title: 'Guardar Ubicacion',
                         duration: 5000,
-                        description: data.insertarCategoria.message
+                        description: data.insertarUbicacion.message
                     })
                 }
                 setEditar({ dato: null, estado: false });
             } else {
                 const { data } = await insertar({ variables: { input } });
-                if (data.insertarCategoria.estado) {
+                if (data.insertarUbicacion.estado) {
                     Notification['success']({
-                        title: 'Guardar Categoria',
+                        title: 'Guardar Ubicacion',
                         duration: 5000,
-                        description: "Categoria, agregado correctamente"
+                        description: "Ubicacion, agregado correctamente"
                     })
                 } else {
                     Notification['error']({
-                        title: 'Guardar Categoria',
+                        title: 'Guardar Ubicacion',
                         duration: 5000,
-                        description: data.insertarCategoria.message
+                        description: data.insertarUbicacion.message
                     })
                 }
             }
         } catch (error) {
             Notification['error']({
-                title: 'Guardar Categoria',
+                title: 'Guardar Ubicacion',
                 duration: 5000,
                 description: "Hubo un error inesperado al guardar el categorias"
             })
@@ -155,7 +155,7 @@ const Categoria = ({ ...props }) => {
         })
     }
 
-    const dataCategorias = getData();
+    const dataUbicaciones = getData();
 
     return (
         <>
@@ -163,16 +163,16 @@ const Categoria = ({ ...props }) => {
             <div>
                 <Boton name="Atras" onClick={e => props.history.push(`/config`)} icon="arrow-left-line" tooltip="Ir a Configuraciones Generales" size="xs" color="blue" />
             </div>
-            <h3 className="text-center">Gestión de Categorias</h3>
+            <h3 className="text-center">Gestión de Ubicaciones</h3>
             <div className="input-group mt-3 mb-3">
                 <input id="filter" type="text" placeholder="Busqueda por nombre" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
                 <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
             </div>
             <div className="mt-3">
                 <div>
-                    <Table height={500} data={dataCategorias}>
+                    <Table height={500} data={dataUbicaciones}>
                         <Column width={500} flexGrow={1}>
-                            <HeaderCell>Categoria</HeaderCell>
+                            <HeaderCell>Ubicación</HeaderCell>
                             <Cell dataKey='nombre' />
                         </Column>
                         <Column width={150} fixed="right">
@@ -205,22 +205,22 @@ const Categoria = ({ ...props }) => {
                     showLengthMenu={false}
                     activePage={page}
                     displayLength={displayLength}
-                    total={categorias.obtenerCategorias.length}
+                    total={categorias.obtenerUbicaciones.length}
                     onChangePage={handleChangePage}
                     onChangeLength={handleChangeLength}
                 />
             </div>
             {!nuevo && !editar.estado &&
                 <div className="d-flex justify-content-start">
-                    <Boton name="Nuevo" tooltip="Nuevo Categoria" color="green" icon="plus" size="sm" position="end" onClick={() => setNuevo(true)} />
+                    <Boton name="Nuevo" tooltip="Nuevo Ubicación" color="green" icon="plus" size="sm" position="end" onClick={() => setNuevo(true)} />
                 </div>
             }
             { (nuevo || editar.estado) &&
                 <>
                     <hr className="border border-dark" />
-                    <h4>{(nuevo) ? ("Agregar Categoria") : ("Editar Categoria")}</h4>
+                    <h4>{(nuevo) ? ("Agregar Ubicación") : ("Editar Ubicación")}</h4>
                     <div className="input-group mt-3 mb-3">
-                        <input id="nombre_tipo" type="text" placeholder="Nombre de la Categoria" className="rounded-0 form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                        <input id="nombre_tipo" type="text" placeholder="Nombre de la Ubicación" className="rounded-0 form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} />
                     </div>
                     <div className="row">
                         <div className="col-md-6 float-left">
@@ -237,4 +237,4 @@ const Categoria = ({ ...props }) => {
     );
 }
 
-export default withRouter(Categoria);
+export default withRouter(Ubicacion)

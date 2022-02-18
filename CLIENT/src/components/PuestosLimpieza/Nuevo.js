@@ -5,8 +5,9 @@ import Boton from '../shared/Boton'
 import Label from '../shared/Label'
 import Action from '../shared/Action'
 import { withRouter } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { SAVE_PUESTO_LIMPIEZA } from '../../services/PuestoLimpiezaService'
+import { OBTENER_UBICACIONES } from '../../services/UbicacionService';
 
 const NuevoPuesto = ({ ...props }) => {
     const [nombre, setNombre] = useState('')
@@ -16,7 +17,20 @@ const NuevoPuesto = ({ ...props }) => {
     const [datos, setDatos] = useState(true)
     const [reload, setReload] = useState(false)
     const [insertar] = useMutation(SAVE_PUESTO_LIMPIEZA);
+    const { loading: load_ubicaciones, data: data_ubicaciones } = useQuery(OBTENER_UBICACIONES, { pollInterval: 1000 })
 
+    const getUbicaciones = () => {
+        const ubicaciones = []
+        if (data_ubicaciones) {
+            data_ubicaciones.obtenerUbicaciones.map(item => {
+                ubicaciones.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return ubicaciones
+    }
 
     const onSavePuestoLimpieza = async () => {
         try {
@@ -97,6 +111,8 @@ const NuevoPuesto = ({ ...props }) => {
         return !nombre || !ubicacion || !codigo || areas.length === 0
     }
 
+    if (load_ubicaciones) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+
     return (
         <>
             <div>
@@ -112,7 +128,7 @@ const NuevoPuesto = ({ ...props }) => {
                 </div>
                 <div className="col-md-6">
                     <h6 className="my-1">Ubicación en Planta</h6>
-                    <Input type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e)} />
+                    <SelectPicker className="mx-auto w-100" size="md" placeholder="Ubicación en Planta" data={getUbicaciones()} onChange={(e) => setUbicacion(e)} searchable={true} />
                 </div>
             </div>
             <div className="row border-bottom border-dark my-3">

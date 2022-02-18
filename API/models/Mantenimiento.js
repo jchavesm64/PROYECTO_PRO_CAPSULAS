@@ -11,12 +11,12 @@ const MantenimientoSchema = new mongoose.Schema({
         require: true,
         trim: true
     },
-    fecha_aviso: {
-        type: Date,
+    descripcion: {
+        type: String,
         require: true,
         trim: true
     },
-    descripcion: {
+    observaciones: {
         type: String,
         require: true,
         trim: true
