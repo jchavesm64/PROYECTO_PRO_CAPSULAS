@@ -96,7 +96,7 @@ async function notificarMantenimientos() {
     }
 }
 
-//const interval = setInterval(notificarMantenimientos, 86400000)
+const interval = setInterval(notificarMantenimientos, 86400000)
 
 export default {
     Query: {
