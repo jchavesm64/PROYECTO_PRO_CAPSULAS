@@ -113,3 +113,12 @@ export const DELETE_PRODUCTO = gql`
         }
     }
 `;
+
+export const OBTENER_PRODUCTOS_2 = gql`
+    query obtenerProductos{
+        obtenerProductos{
+            id
+            nombre
+        }
+    }
+`;

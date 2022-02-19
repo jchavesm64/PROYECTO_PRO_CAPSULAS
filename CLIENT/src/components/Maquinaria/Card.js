@@ -62,7 +62,9 @@ const CardMaquina = ({ ...props }) => {
                         </>
                     ) : (
                         <div className='row mx-1'>
-                            <QRCode className='m-1' value={`http://localhost:3000/info/maquina/${maquina.id}`} size={256} bgColor="#282c34" fgColor="#fff" level="H" />
+                            <div className='p-2'>
+                                <QRCode value={`http://192.168.100.13:3000/info/maquina/${maquina.id}`} />
+                            </div>
                             <Action className="m-1" tooltip="Ocultar Codigo QR" icon="eye-slash" size="xs" color="blue" onClick={() => setShow(false)} />
                         </div>
                     )

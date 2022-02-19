@@ -75,13 +75,14 @@ const Router = ({ refetch, session }) => {
 
     const { obtenerUsuarioAutenticado } = session;
     const { estado, data } = obtenerUsuarioAutenticado;
-    var mensaje = (!session || !estado) ? <Redirect to="/login" /> : ''
+    let info = window.location.href.toString().includes('info')
+    var mensaje = (!session || !estado) ? info ? '' : <Redirect to="/login" /> : ''
     return (
         <BrowserRouter>
             <>
                 {mensaje}
                 <div className="wrapper">
-                    {estado ? <Sidebar session={data} /> : ''}
+                    {estado ? info ? '' : <Sidebar session={data} /> : ''}
                     <div id="content">
                         <NavMenu session={data} refetch={refetch} />
                         <div className="container-fluid p-5">

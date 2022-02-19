@@ -5,7 +5,7 @@ export default {
     Query: {
         obtenerDispensados: async (_, { }) => {
             try {
-                const dispensados = await Dispensado.find({ estado: 'ACTIVO' })
+                const dispensados = await Dispensado.find({ estado: 'ACTIVO' }).populate('producto')
                 return dispensados.sort(function(a, b){
                     if(a.nombre > b.nombre){
                         return 1
@@ -22,7 +22,7 @@ export default {
         obtenerDispensadoConMovimientos: async (_, { }) => {
             try {
                 var dispensadomovimientos = []
-                const dispensados = await Dispensado.find({ estado: 'ACTIVO' })
+                const dispensados = await Dispensado.find({ estado: 'ACTIVO' }).populate('producto')
                 dispensados.map(item => {
                     const result = MovimientoDispensado.find({dispensado: item.id}).populate('usuario')
                     dispensadomovimientos.push({
@@ -45,7 +45,7 @@ export default {
         },
         obtenerDispensado: async (_, { id }) => {
             try {
-                const dispensado = await Dispensado.findById(id);
+                const dispensado = await Dispensado.findById(id).populate('producto')
                 return dispensado;
             } catch (error) {
 

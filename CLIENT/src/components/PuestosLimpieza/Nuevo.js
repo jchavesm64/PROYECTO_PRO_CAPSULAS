@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { Notification, SelectPicker, Loader, Input } from 'rsuite'
 import Boton from '../shared/Boton'
-import Label from '../shared/Label'
 import Action from '../shared/Action'
 import { withRouter } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/react-hooks'

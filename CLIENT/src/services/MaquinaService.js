@@ -101,14 +101,17 @@ export const OBTENER_INFORMACION_MAQUINA = gql`
             incidentes{
                 descripcion
                 fecha
-                ubicacion
+                ubicacion{
+                    id
+                    nombre
+                }
                 causa
                 estado
             }
             mantenimientos{
                 fecha_mantenimiento
-                fecha_aviso
                 descripcion
+                observaciones
                 estado
             }
         }

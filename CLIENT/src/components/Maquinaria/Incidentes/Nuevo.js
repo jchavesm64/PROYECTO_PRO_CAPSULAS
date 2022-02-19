@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { Input, Notification } from 'rsuite'
-import { useMutation } from '@apollo/react-hooks'
+import { Input, Notification, SelectPicker, Loader } from 'rsuite'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { SAVE_INCIDENTE } from '../../../services/IncidenteService';
+import { OBTENER_UBICACIONES } from '../../../services/UbicacionService';
 import Boton from '../../shared/Boton';
 
 const NuevoIncidente = ({ ...props }) => {
@@ -12,6 +13,20 @@ const NuevoIncidente = ({ ...props }) => {
     const [ubicacion, setUbicacion] = useState('')
     const [causa, setCausa] = useState('')
     const [insertar] = useMutation(SAVE_INCIDENTE);
+    const { loading: load_ubicaciones, data: data_ubicaciones } = useQuery(OBTENER_UBICACIONES, { pollInterval: 1000 })
+
+    const getUbicaciones = () => {
+        const ubicaciones = []
+        if (data_ubicaciones) {
+            data_ubicaciones.obtenerUbicaciones.map(item => {
+                ubicaciones.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return ubicaciones
+    }
 
     const onSaveIncidente = async () => {
         var date = new Date();
@@ -55,6 +70,8 @@ const NuevoIncidente = ({ ...props }) => {
         return !descripcion || !fecha || !ubicacion
     }
 
+    if (load_ubicaciones) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+
     return (
         <>
             <div>
@@ -70,7 +87,7 @@ const NuevoIncidente = ({ ...props }) => {
                 </div>
                 <div className="col-md-6">
                     <h6 className="my-1">Ubicación en Planta</h6>
-                    <Input type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e)} />
+                    <SelectPicker className="mx-auto w-100" size="md" placeholder="Ubicación en Planta" data={getUbicaciones()} onChange={(e) => setUbicacion(e)} searchable={true} />
                     <h6 className="my-1">Causa</h6>
                     <textarea className="form-control" placeholder="Causa" value={causa} onChange={(e) => setCausa(e.target.value)} />
                 </div>

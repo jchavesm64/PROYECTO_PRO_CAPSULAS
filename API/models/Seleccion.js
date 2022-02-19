@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 
 const SeleccionSchema = mongoose.Schema({
 
-    nombre:{
-        type: String,
-        require: true,
-        trim: true,
+    producto:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Productos'
     },
     estado:{
         type: String,

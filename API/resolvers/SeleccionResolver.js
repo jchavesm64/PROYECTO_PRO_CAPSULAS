@@ -5,7 +5,7 @@ export default {
     Query: {
         obtenerSelecciones: async (_, { }) => {
             try {
-                const seleccions = await Seleccion.find({ estado: 'ACTIVO' })
+                const seleccions = await Seleccion.find({ estado: 'ACTIVO' }).populate('producto')
                 return seleccions.sort(function(a, b){
                     if(a.nombre > b.nombre){
                         return 1
@@ -22,7 +22,7 @@ export default {
         obtenerSeleccionConMovimientos: async (_, { }) => {
             try {
                 var seleccionmovimientos = []
-                const seleccions = await Seleccion.find({ estado: 'ACTIVO' })
+                const seleccions = await Seleccion.find({ estado: 'ACTIVO' }).populate('producto')
                 seleccions.map(item => {
                     const result = MovimientoSeleccion.find({seleccion: item.id}).populate('usuario')
                     seleccionmovimientos.push({
@@ -45,7 +45,7 @@ export default {
         },
         obtenerSeleccion: async (_, { id }) => {
             try {
-                const seleccion = await Seleccion.findById(id);
+                const seleccion = await Seleccion.findById(id).populate('producto');
                 return seleccion;
             } catch (error) {
 

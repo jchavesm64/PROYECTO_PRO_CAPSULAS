@@ -1,23 +1,39 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react'
-import { Notification, Input, InputPicker } from 'rsuite'
+import { Notification, InputPicker, Loader, SelectPicker } from 'rsuite'
 import Boton from '../../shared/Boton'
 import { withRouter } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { UPDATE_INCIDENTE } from '../../../services/IncidenteService'
+import { OBTENER_UBICACIONES } from '../../../services/UbicacionService';
 
 const Editar = ({props, incidente}) => {
     const [descripcion, setDescripcion] = useState(incidente.descripcion)
-    const [ubicacion, setUbicacion] = useState(incidente.ubicacion)
+    const [ubicacion, setUbicacion] = useState(incidente.ubicacion.id)
     const [causa, setCausa] = useState(incidente.causa)
     const [state, setEstado] = useState(incidente.estado)
     const [actualizar] = useMutation(UPDATE_INCIDENTE);
+    const { loading: load_ubicaciones, data: data_ubicaciones } = useQuery(OBTENER_UBICACIONES, { pollInterval: 1000 })
 
     useEffect(() => {
         setDescripcion(incidente.descripcion)
-        setUbicacion(incidente.ubicacion)
+        setUbicacion(incidente.ubicacion.id)
         setCausa(incidente.causa)
         setEstado(incidente.estado)
     }, [incidente])
+
+    const getUbicaciones = () => {
+        const ubicaciones = []
+        if (data_ubicaciones) {
+            data_ubicaciones.obtenerUbicaciones.map(item => {
+                ubicaciones.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return ubicaciones
+    }
 
     const onSaveIncidente = async () => {
         const input = {
@@ -58,6 +74,8 @@ const Editar = ({props, incidente}) => {
         return !descripcion || !ubicacion || !causa || !state
     }
 
+    if (load_ubicaciones) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+
     return (
         <>
             <div>
@@ -72,8 +90,8 @@ const Editar = ({props, incidente}) => {
                     <textarea className="form-control" placeholder="Descripción" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
                 </div>
                 <div className="col-md-6">
-                    <h6 className="my-1">Ubicación en Planta</h6>
-                    <Input type="text" placeholder="Ubicación en Planta" value={ubicacion} onChange={(e) => setUbicacion(e)} />
+                <h6 className="my-1">Ubicación en Planta</h6>
+                    <SelectPicker className="mx-auto w-100" size="md" placeholder="Ubicación en Planta" value={ubicacion} data={getUbicaciones()} onChange={(e) => setUbicacion(e)} searchable={true} />
                     <h6 className="my-1">Causa</h6>
                     <textarea className="form-control" placeholder="Causa" value={causa} onChange={(e) => setCausa(e.target.value)} />
                 </div>

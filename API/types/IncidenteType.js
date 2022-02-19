@@ -9,7 +9,7 @@ const incidente_type = gql`
         maquina: Maquina
         descripcion: String
         fecha: Date
-        ubicacion: String
+        ubicacion: Ubicacion
         causa: String
         estado: String
     }
@@ -23,7 +23,7 @@ const incidente_type = gql`
         maquina: ID
         descripcion: String
         fecha: Date
-        ubicacion: String
+        ubicacion: ID
         causa: String
         estado: String
     }

@@ -4,7 +4,7 @@ const dispensado_type = gql`
 
     type Dispensado{
         id: ID
-        nombre: String
+        producto: Producto
         estado: Estado
     }
 
@@ -15,7 +15,7 @@ const dispensado_type = gql`
     }
 
     input DispensadoInput{
-        nombre: String
+        producto: ID
         estado: Estado
     }
 

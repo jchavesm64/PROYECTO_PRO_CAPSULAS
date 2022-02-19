@@ -1,14 +1,29 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import { Notification } from 'rsuite'
+import { Notification, Loader } from 'rsuite'
 import Boton from '../shared/Boton'
 import { withRouter } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { SAVE_DISPENSADO } from '../../services/DispensadoService'
+import { OBTENER_PRODUCTOS_2 } from '../../services/ProductoService'
 
 const NuevaDispensado = ({...props}) => {
     const [nombre, setNombre] = useState('');
     const [insertar] = useMutation(SAVE_DISPENSADO);
+    const { loading: load_productos, error: error_productos, data: data_productos } = useQuery(OBTENER_PRODUCTOS_2, { pollInterval: 1000 })
+
+    const getProductos = () => {
+        const productos = []
+        if (data_productos) {
+            data_productos.obtenerProductos.map(item => {
+                productos.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return productos
+    }
 
     const onSaveDispensado = async () => {
         try {
@@ -44,6 +59,15 @@ const NuevaDispensado = ({...props}) => {
 
     const validarForm = () => {
         return !nombre
+    }
+
+    if (load_productos) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (error_productos) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de productos, verificar tu conexión a internet'
+        })
     }
 
     return (

@@ -10,13 +10,13 @@ const CardIncidente = ({ ...props }) => {
 
     const getHora = (date) => {
         var hora = date.getHours(), minutos = date.getMinutes(), am_pm = "a.m."
-        if(hora > 12){
+        if (hora > 12) {
             hora = hora - 12
             am_pm = "p.m."
-        }else if(hora === 12){
+        } else if (hora === 12) {
             am_pm = "p.m."
         }
-        if(minutos < 10){
+        if (minutos < 10) {
             minutos = '0' + minutos
         }
         return hora + ":" + minutos + ' ' + am_pm
@@ -40,11 +40,16 @@ const CardIncidente = ({ ...props }) => {
                 <h6>Fecha</h6>
                 <Label icon="fas fa-clock" value={getFecha(incidente.fecha)} />
                 <h6>Ubicación en Planta</h6>
-                <Label icon="globe" value={incidente.ubicacion} />
+                <Label icon="globe" value={incidente.ubicacion.nombre} />
                 <h6>Descripción</h6>
                 <Label icon="font" value={incidente.descripcion} />
-                <h6>Causa</h6>
-                <Label icon="font" value={incidente.causa} />
+                {
+                    incidente.causa &&
+                    <>
+                        <h6>Causa</h6>
+                        <Label icon="font" value={incidente.causa} />
+                    </>
+                }
                 <h6>Estado</h6>
                 <Label icon="font" value={incidente.estado} />
             </div>

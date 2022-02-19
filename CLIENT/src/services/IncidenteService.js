@@ -10,7 +10,10 @@ export const OBTENER_INCIDENTES = gql`
             }
             descripcion
             fecha
-            ubicacion
+            ubicacion{
+                id
+                nombre
+            }
             causa
             estado
         }
@@ -27,7 +30,10 @@ export const OBTENER_INCIDENTE = gql`
             }
             descripcion
             fecha
-            ubicacion
+            ubicacion{
+                id
+                nombre
+            }
             causa
             estado
         }

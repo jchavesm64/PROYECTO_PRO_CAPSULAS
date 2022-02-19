@@ -4,7 +4,7 @@ const seleccion_type = gql`
 
     type Seleccion{
         id: ID
-        nombre: String
+        producto: Producto
         estado: Estado
     }
 
@@ -15,7 +15,7 @@ const seleccion_type = gql`
     }
 
     input SeleccionInput{
-        nombre: String
+        producto: ID
         estado: Estado
     }
 

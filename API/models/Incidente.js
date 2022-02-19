@@ -17,9 +17,8 @@ const IncidenteSchema = new mongoose.Schema({
         trim: true
     },
     ubicacion: {
-        type: String,
-        require: true,
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ubicaciones'
     },
     causa: {
         type: String,

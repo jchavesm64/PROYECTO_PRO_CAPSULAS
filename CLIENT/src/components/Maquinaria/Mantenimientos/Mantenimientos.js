@@ -6,22 +6,16 @@ import Boton from '../../shared/Boton'
 import { withRouter } from 'react-router';
 import DataGrid from '../../shared/DataGrid';
 import { Link } from 'react-router-dom';
+import Label from '../../shared/Label';
 
 const Mantenimientos = ({ ...props }) => {
     const { id, nombre } = props.match.params;
     const [filter, setFilter] = useState('')
-    const [modo, setModo] = useState('1')
     const { loading: load_mantenimientos, error: error_mantenimientos, data: data_mantenimientos } = useQuery(OBTENER_MANTENIMIENTOS, { variables: { id: id }, pollInterval: 1000 })
 
-    function getFilteredByKey(modo, key, value) {
-        if (modo === "2") {
-            if (key.fecha_mantenimiento <= value) {
-                return key
-            }
-        } else if (modo === "3") {
-            if (key.fecha_aviso <= value) {
-                return key
-            }
+    function getFilteredByKey(key, value) {
+        if (key.fecha_mantenimiento <= value) {
+            return key
         }
         return null;
     }
@@ -30,8 +24,8 @@ const Mantenimientos = ({ ...props }) => {
         if (data_mantenimientos) {
             if (data_mantenimientos.obtenerMantenimientos) {
                 return data_mantenimientos.obtenerMantenimientos.filter((value, index) => {
-                    if (filter !== "" && modo !== "") {
-                        return getFilteredByKey(modo, value, filter);
+                    if (filter !== "") {
+                        return getFilteredByKey(value, filter);
                     }
                     return value
                 });
@@ -61,12 +55,7 @@ const Mantenimientos = ({ ...props }) => {
                 <>
                     <h5 className="text-center">{nombre}</h5>
                     <div className="input-group mt-3 mb-3">
-                        <div>
-                            <select id="select_modo" className="rounded-0 btn btn-outline-secondary dropdown-toggle" onChange={(e) => setModo(e.target.options[e.target.selectedIndex].value)}>
-                                <option value="1"> Fecha de Mantenimiento</option>
-                                <option value="2"> Fecha de Aviso</option>
-                            </select>
-                        </div>
+                        <span className="text-center pt-2 px-1 text-dark bg-white border border-ligth"><strong style={{fontSize: '15px'}}>Fecha del Mantenimiento</strong></span>
                         <input id="filter" type="date" className="rounded-0 form-control" onChange={(e) => { if (e.target.value === "") setFilter(e.target.value); }} />
                         <Boton className="rounded-0" icon="search" color="green" onClick={() => setFilter(document.getElementById('filter').value)} tooltip="Filtrado automatico" />
                     </div>
