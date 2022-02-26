@@ -90,6 +90,7 @@ const Personal = ({ ...props }) => {
         })
     }
 
+
     if (load_clientes) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
     if (error_clientes) {
         Notification['error']({
@@ -100,6 +101,7 @@ const Personal = ({ ...props }) => {
     }
 
     const data = getData();
+
     return (
         <>
             <h3 className="text-center">Gestión de Personal</h3>

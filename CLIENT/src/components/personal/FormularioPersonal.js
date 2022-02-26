@@ -11,7 +11,9 @@ import Boton from '../shared/Boton'
 import Action from '../shared/Action'
 import { withRouter } from 'react-router';
 
-const FormularioCliente = ({ props, personal }) => {
+const FormularioPersonal = ({ props, personal }) => {
+
+    const {uso} = props;
 
     const getPais = (pais) => {
         var country = null
@@ -59,9 +61,6 @@ const FormularioCliente = ({ props, personal }) => {
     const [puesto, setPuesto] = useState(personal.puesto.id);
     const [fecha, setFecha] = useState(getFecha(personal.fecha_contrato))
     const { loading: load_puestos, error, data: puestos } = useQuery(OBTENER_PUESTOS, { pollInterval: 1000 });
-
-
-    console.log(personal)
 
     useEffect(() => {
         setNombre(personal.nombre)
@@ -369,4 +368,4 @@ const FormularioCliente = ({ props, personal }) => {
     );
 }
 
-export default withRouter(FormularioCliente);
+export default withRouter(FormularioPersonal);

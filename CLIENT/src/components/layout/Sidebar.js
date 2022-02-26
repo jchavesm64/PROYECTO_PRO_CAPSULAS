@@ -98,6 +98,9 @@ const SideBar = ({ session }) => {
                                                 <li className="List">
                                                     <Link to={`/personal/nuevo`}><Icon icon="plus" />Nuevo Colaborador</Link>
                                                 </li>
+                                                <li className="List">
+                                                    <Link to={`/personal/cargarhoras`}><Icon icon="fas fa-clock" />Cargar Horas</Link>
+                                                </li>
                                             </ul>
                                         </li>
                                         : ''
