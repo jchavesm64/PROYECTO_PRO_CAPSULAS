@@ -5,6 +5,7 @@ import Action from '../shared/Action';
 import Label from '../shared/Label'
 import moment from 'moment'
 import QRCode from 'react-qr-code'
+import { CLIENT_URL } from '../../Json/Constantes';
 
 const CardMaquina = ({ ...props }) => {
     const [state, setState] = useState(false);
@@ -63,7 +64,7 @@ const CardMaquina = ({ ...props }) => {
                     ) : (
                         <div className='row mx-1'>
                             <div className='p-2'>
-                                <QRCode value={`http://192.168.1.9:3000/info/maquina/${maquina.id}`} />
+                                <QRCode value={`${CLIENT_URL}info/maquina/${maquina.id}`} />
                             </div>
                             <Action className="m-1" tooltip="Ocultar Codigo QR" icon="eye-slash" size="xs" color="blue" onClick={() => setShow(false)} />
                         </div>

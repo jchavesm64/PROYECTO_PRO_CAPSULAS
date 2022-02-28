@@ -12,8 +12,9 @@ import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
 import { ApolloProvider } from 'react-apollo';
 import { Notification } from 'rsuite';
+import {API_URL} from './Json/Constantes'
 
-const uploadLink = createUploadLink({ uri: "http://192.168.1.9:4000/graphql" });
+const uploadLink = createUploadLink({ uri: API_URL + "graphql" });
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');

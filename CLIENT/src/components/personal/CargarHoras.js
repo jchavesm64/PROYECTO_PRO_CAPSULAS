@@ -3,11 +3,12 @@ import { Loader, Notification, IconButton, Icon } from 'rsuite';
 import { withRouter } from 'react-router'
 import Label from '../shared/Label';
 import readXlsxFile from 'read-excel-file';
+import Table from '../shared/Table';
 
 const CargarHoras = ({ ...props }) => {
     const [cargando, setCargando] = useState(false)
     const [datos, setDatos] = useState({ fecha: null, planta: [], administrativos: [], produccion: [], procesado: false })
-    const key = ['PLANILLA OPERATIVA', 'PRODUCCION DE CAPSULAS', 'PLANILLA ADMINISTRATIVA', 'TOTAL PLANILLA OPERATIVA', 'TOTAL DE SALARIOS' ]
+    const key = ['PLANILLA OPERATIVA', 'PRODUCCION DE CAPSULAS', 'PLANILLA ADMINISTRATIVA', 'TOTAL PLANILLA OPERATIVA', 'TOTAL DE SALARIOS']
 
     const guardarExcel = (data) => {
         console.log(data)
@@ -64,7 +65,7 @@ const CargarHoras = ({ ...props }) => {
         }
         if (fila !== null) {
             for (let i = fila; i < data.length; i++) {
-                if(salto){
+                if (salto) {
                     break
                 }
                 aux = data[i];
@@ -72,12 +73,12 @@ const CargarHoras = ({ ...props }) => {
                 for (let j = 0; j < aux.length; j++) {
                     if (aux[j] !== key[0] && aux[j] !== key[1] && aux[j] !== key[2] && aux[j] !== key[3] && aux[j] !== key[4]) {
                         aux[j] === null ? vector.push('-') : vector.push(aux[j])
-                    }else{
+                    } else {
                         salto = true
                         break
                     }
                 }
-                if(vector.length > 0){
+                if (vector.length > 0) {
                     info.push(vector)
                 }
             }
@@ -132,6 +133,34 @@ const CargarHoras = ({ ...props }) => {
 
     }
 
+    const getTitles = (data) => {
+        const titles = []
+        data.map(t => {
+            titles.push({
+                title: t,
+                class: ""
+            })
+        })
+        return titles
+    }
+
+    const RowData = ({ data }) => {
+        return (
+            <tr>
+                {
+                    data.map(i => {
+                        return (<td>{i}</td>)
+                    })
+                }
+            </tr>
+        )
+    }
+
+    const getData = (data) => {
+        data.splice(0, 1)
+        return data
+    }
+
     if (cargando) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
     console.log(datos)
@@ -142,10 +171,33 @@ const CargarHoras = ({ ...props }) => {
             <hr />
             {
                 datos.procesado &&
-                <div>
-                    <h5>Fecha</h5>
-                    <Label icon="fas fa-calendar" value={datos.fecha} />
-                </div>
+                <>
+                    <div>
+                        <h5>Fecha</h5>
+                        <Label icon="fas fa-calendar" value={datos.fecha} />
+                    </div>
+                    {
+                        (datos.planta.length !== 0) &&
+                        <div>
+                            <h5 className="text-center my-2">Planilla Operativa</h5>
+                            <Table Title={getTitles(datos.planta[0])} Rows={RowData} info={getData(datos.planta)} />
+                        </div>
+                    }
+                    {
+                        (datos.produccion.length !== 0) &&
+                        <div>
+                            <h5 className="text-center my-2">Producción de Cápsulas</h5>
+                            <Table Title={getTitles(datos.produccion[0])} Rows={RowData} info={getData(datos.produccion)} />
+                        </div>
+                    }
+                    {
+                        (datos.administrativos.length !== 0) &&
+                        <div>
+                            <h5 className="text-center my-2">Planilla Administrativa</h5>
+                            <Table Title={getTitles(datos.administrativos[0])} Rows={RowData} info={getData(datos.administrativos)} />
+                        </div>
+                    }
+                </>
             }
             <div className='mt-3'>
                 <IconButton icon={<Icon icon="fas fa-file-excel" />} placement="left" color="green" size="sm">
