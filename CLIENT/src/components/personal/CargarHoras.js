@@ -5,7 +5,9 @@ import { withRouter } from 'react-router'
 import Label from '../shared/Label';
 import readXlsxFile from 'read-excel-file';
 import Table from '../shared/Table';
-import Boton from '../shared/Boton'
+import Boton from '../shared/Boton';
+import { SAVE_HORAS } from '../../services/HorasService';
+import { useMutation } from "@apollo/react-hooks";
 
 const CargarHoras = ({ ...props }) => {
 
@@ -82,11 +84,116 @@ const CargarHoras = ({ ...props }) => {
     const [cargando, setCargando] = useState(false)
     const [datos, setDatos] = useState({ fecha: null, planta: [], administrativos: [], produccion: [], procesado: false })
     const [fecha, setFecha] = useState('')
-    const [recargar, setRecargar] = useState(false)
+    const [insertar] = useMutation(SAVE_HORAS);
     const key = ['PLANILLA OPERATIVA', 'PRODUCCION DE CAPSULAS', 'PLANILLA ADMINISTRATIVA', 'TOTAL PLANILLA OPERATIVA', 'TOTAL DE SALARIOS']
 
-    const guardarExcel = (data) => {
+    const guardarExcel = async () => {
+        const h = []
+        let aux = datos.planta[0], aux2 = null, cedula = 0, horas = 0, monto = 0, detalle = 0
+        if (datos.planta.length > 0) {
+            for (let i = 0; i < aux.length; i++) {
+                if (aux[i].toString().toUpperCase() === 'CÉDULA') {
+                    cedula = i
+                }
+                if (aux[i].toString().toUpperCase() === 'HORAS') {
+                    horas = i
+                }
+                if (aux[i].toString().toUpperCase() === 'PRECIO HORA') {
+                    monto = i
+                }
+                if (aux[i].toString().toUpperCase() === 'DETALLE') {
+                    detalle = i
+                }
+            }
+            const planta = datos.planta
+            for (let i = 1; i < planta.length; i++) {
+                aux2 = planta[i]
+                h.push({
+                    empleado: aux2[cedula].replace(/-/g, ""),
+                    horas: aux2[horas],
+                    costo_hora: aux2[monto],
+                    detalle: aux2[detalle],
+                    tipo: 'P',
+                    fecha: fecha
+                })
+            }
+        }
+        if (datos.produccion.length > 0) {
+            aux = datos.produccion[0]
+            for (let i = 0; i < aux.length; i++) {
+                if (aux[i].toString().toUpperCase() === 'CÉDULA') {
+                    cedula = i
+                }
+                if (aux[i].toString().toUpperCase() === 'HORAS') {
+                    horas = i
+                }
+                if (aux[i].toString().toUpperCase() === 'PRECIO HORA') {
+                    monto = i
+                }
+                if (aux[i].toString().toUpperCase() === 'DETALLE') {
+                    detalle = i
+                }
+            }
+            const produccion = datos.produccion
+            for (let i = 1; i < produccion.length; i++) {
+                aux2 = produccion[i]
+                h.push({
+                    empleado: aux2[cedula].replace(/-/g, ""),
+                    horas: aux2[horas],
+                    costo_hora: aux2[monto],
+                    detalle: aux2[detalle],
+                    tipo: 'C',
+                    fecha: fecha
+                })
+            }
+        }
+        if (datos.administrativos.length > 0) {
+            aux = datos.administrativos[0]
+            for (let i = 0; i < aux.length; i++) {
+                if (aux[i].toString().toUpperCase() === 'CÉDULA') {
+                    cedula = i
+                }
+                if (aux[i].toString().toUpperCase() === 'HORAS') {
+                    horas = i
+                }
+                if (aux[i].toString().toUpperCase() === 'DETALLE') {
+                    detalle = i
+                }
+            }
+            const admin = datos.administrativos
+            for (let i = 1; i < admin.length; i++) {
+                aux2 = admin[i]
+                h.push({
+                    empleado: aux2[cedula].replace(/-/g, ""),
+                    horas: aux2[horas],
+                    costo_hora: 0,
+                    detalle: aux2[detalle],
+                    tipo: 'A',
+                    fecha: fecha
+                })
+            }
+        }
+        setCargando(true)
+        const input = { horas: h }
+        console.log(input)
+        const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
         console.log(data)
+        const { estado, message } = data.saveHoras;
+        if (estado) {
+            Notification['success']({
+                title: 'Insertar Horas',
+                duration: 5000,
+                description: message
+            })
+            props.history.push(`/personal`);
+        } else {
+            Notification['error']({
+                title: 'Insertar Horas',
+                duration: 5000,
+                description: message
+            })
+        }
+        setCargando(false)
     }
 
     const eliminarFilasNulas = (data) => {
@@ -125,7 +232,6 @@ const CargarHoras = ({ ...props }) => {
     }
 
     const encontrarClaves = (clave, data) => {
-        console.log(key)
         const info = []
         let fila = null, aux = null, vector = null, salto = false;
         for (let i = 0; i < data.length; i++) {
@@ -239,8 +345,6 @@ const CargarHoras = ({ ...props }) => {
 
     if (cargando) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
-    console.log(datos, fecha)
-
     return (
         <div className='mx-auto'>
             <h3 className='text-center'>Cargar Horas del Personal</h3>
@@ -291,7 +395,7 @@ const CargarHoras = ({ ...props }) => {
                             </label>
                         </IconButton>
                     ) : (
-                        <Boton onClick={guardarExcel()} tooltip="Guardar Información" name="Guardar Información" icon="save" color="green" disabled={!fecha} />
+                        <Boton onClick={guardarExcel} tooltip="Guardar Información" name="Guardar Información" icon="save" color="green" disabled={!fecha} />
                     )
                 }
             </div>
