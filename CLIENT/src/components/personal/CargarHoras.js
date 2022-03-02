@@ -175,9 +175,7 @@ const CargarHoras = ({ ...props }) => {
         }
         setCargando(true)
         const input = { horas: h }
-        console.log(input)
         const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
-        console.log(data)
         const { estado, message } = data.saveHoras;
         if (estado) {
             Notification['success']({
