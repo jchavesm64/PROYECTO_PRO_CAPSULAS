@@ -1,13 +1,88 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import { Loader, Notification, IconButton, Icon } from 'rsuite';
+import { Loader, Notification, IconButton, Icon, Input } from 'rsuite';
 import { withRouter } from 'react-router'
 import Label from '../shared/Label';
 import readXlsxFile from 'read-excel-file';
 import Table from '../shared/Table';
+import Boton from '../shared/Boton'
 
 const CargarHoras = ({ ...props }) => {
+
+    const meses = {
+        'ENERO': 0,
+        'FEBRERO': 1,
+        'MARZO': 2,
+        'ABRIL': 3,
+        'MAYO': 4,
+        'JUNIO': 5,
+        'JULIO': 6,
+        'AGOSTO': 7,
+        'SEPTIEMBRE': 8,
+        'OCTUBRE': 9,
+        'NOVIEMBRE': 10,
+        'DICIEMBRE': 11
+    }
+
+    function getFecha(fecha) {
+        var date = new Date(fecha);
+        var day = (date.getDate() < 9) ? '0' + (date.getDate()) : date.getDate();
+        var mes = (date.getMonth() < 9) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+        return date.getFullYear() + '-' + mes + '-' + day;
+    }
+
+    const crearFecha = (dato) => {
+        let fecha1 = dato
+        let array1 = fecha1.split(' ')
+        const array2 = []
+        array1.map(i => {
+            if (i !== 'DE' && i !== 'DEL') {
+                array2.push(i)
+            }
+        })
+        if (array2.length === 3) {
+            if (!isNaN(array2[0]) && isNaN(array2[1]) && !isNaN(array2[2])) {
+                let dia = array2[0]
+                let mes = meses[array2[1]]
+                let anho = array2[2]
+                let correcto = false
+                if (mes === 1) {
+                    correcto = (anho % 4 === 0) ? (dia >= 1 && dia <= 29) : (dia >= 1 && dia <= 28)
+                } else if (mes === 3 || mes === 5 || mes === 8 || mes === 10) {
+                    correcto = (dia >= 1 && dia <= 30)
+                } else {
+                    correcto = (dia >= 1 && dia <= 31)
+                }
+                if (correcto) {
+                    return getFecha(new Date(anho, mes, dia))
+                } else {
+                    Notification["error"]({
+                        title: "Detectar Fecha",
+                        duration: 10000,
+                        description: "Error al detectar la fecha",
+                    });
+                }
+            } else {
+                Notification["error"]({
+                    title: "Detectar Fecha",
+                    duration: 10000,
+                    description: "Error al detectar la fecha",
+                });
+            }
+        } else {
+            Notification["error"]({
+                title: "Detectar Fecha",
+                duration: 10000,
+                description: "Error al detectar la fecha",
+            });
+        }
+        return new Date()
+    }
+
     const [cargando, setCargando] = useState(false)
     const [datos, setDatos] = useState({ fecha: null, planta: [], administrativos: [], produccion: [], procesado: false })
+    const [fecha, setFecha] = useState('')
+    const [recargar, setRecargar] = useState(false)
     const key = ['PLANILLA OPERATIVA', 'PRODUCCION DE CAPSULAS', 'PLANILLA ADMINISTRATIVA', 'TOTAL PLANILLA OPERATIVA', 'TOTAL DE SALARIOS']
 
     const guardarExcel = (data) => {
@@ -93,8 +168,8 @@ const CargarHoras = ({ ...props }) => {
         info.planta = encontrarClaves(key[0], data)
         info.produccion = encontrarClaves(key[1], data)
         info.administrativos = encontrarClaves(key[2], data)
-        console.log(info)
         setDatos(info)
+        setFecha(crearFecha(info.fecha))
     }
 
     const ReadFile = (e) => {
@@ -157,13 +232,14 @@ const CargarHoras = ({ ...props }) => {
     }
 
     const getData = (data) => {
-        data.splice(0, 1)
-        return data
+        let newData = data.slice()
+        newData.splice(0, 1)
+        return newData
     }
 
     if (cargando) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
-    console.log(datos)
+    console.log(datos, fecha)
 
     return (
         <div className='mx-auto'>
@@ -172,9 +248,15 @@ const CargarHoras = ({ ...props }) => {
             {
                 datos.procesado &&
                 <>
-                    <div>
-                        <h5>Fecha</h5>
-                        <Label icon="fas fa-calendar" value={datos.fecha} />
+                    <div className='row'>
+                        <div className='col-md-6'>
+                            <h5>Fecha Detectada</h5>
+                            <Label icon="fas fa-calendar" value={datos.fecha} />
+                        </div>
+                        <div className='col-md-6'>
+                            <h5>Fecha</h5>
+                            <Input type="date" placeholder="Fecha" value={fecha} onChange={(e) => setFecha(e)} />
+                        </div>
                     </div>
                     {
                         (datos.planta.length !== 0) &&
@@ -200,12 +282,18 @@ const CargarHoras = ({ ...props }) => {
                 </>
             }
             <div className='mt-3'>
-                <IconButton icon={<Icon icon="fas fa-file-excel" />} placement="left" color="green" size="sm">
-                    <label htmlFor="file-choser" size="sm">
-                        Cargar Excel
-                        <input id="file-choser" type="file" style={{ display: "none" }} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={(event) => { ReadFile(event) }} size="sm" />
-                    </label>
-                </IconButton>
+                {
+                    !datos.procesado ? (
+                        <IconButton icon={<Icon icon="fas fa-file-excel" />} placement="left" color="green" size="sm">
+                            <label htmlFor="file-choser" size="sm">
+                                Cargar Excel
+                                <input id="file-choser" type="file" style={{ display: "none" }} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={(event) => { ReadFile(event) }} size="sm" />
+                            </label>
+                        </IconButton>
+                    ) : (
+                        <Boton onClick={guardarExcel()} tooltip="Guardar Información" name="Guardar Información" icon="save" color="green" disabled={!fecha} />
+                    )
+                }
             </div>
         </div>
     )
