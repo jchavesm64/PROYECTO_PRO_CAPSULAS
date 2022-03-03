@@ -4,7 +4,10 @@ export const OBTENER_DISPENSADOS = gql`
     query obtenerDispensados{
         obtenerDispensados{
             id
-            nombre
+            producto{
+                id
+                nombre
+            }
             estado
         }
     }
@@ -15,7 +18,10 @@ export const OBTENER_DISPENSADO_MOVIMIENTOS = gql`
         obtenerDispensadoConMovimientos{
             dispensado{
                 id
-                nombre
+                producto{
+                    id
+                    nombre
+                }
                 estado
             }
             movimientos{
@@ -38,7 +44,10 @@ export const OBTENER_DISPENSADO = gql`
     query obtenerDispensado($id:ID){
         obtenerDispensado(id:$id){
             id
-            nombre
+            producto{
+                id
+                nombre
+            }
             estado
         }
     }

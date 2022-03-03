@@ -4,7 +4,10 @@ export const OBTENER_SELECIONES = gql`
     query obtenerSelecciones{
         obtenerSelecciones{
             id
-            nombre
+            producto{
+                id
+                nombre
+            }
             estado
         }
     }
@@ -15,7 +18,10 @@ export const OBTENER_SELECCION_MOVIMIENTOS = gql`
         obtenerSeleccionConMovimientos{
             seleccion{
                 id
-                nombre
+                producto{
+                    id
+                    nombre
+                }
                 estado
             }
             movimientos{
@@ -38,7 +44,10 @@ export const OBTENER_SELECION = gql`
     query obtenerSeleccion($id:ID){
         obtenerSeleccion(id:$id){
             id
-            nombre
+            producto{
+                id
+                nombre
+            }
             estado
         }
     }

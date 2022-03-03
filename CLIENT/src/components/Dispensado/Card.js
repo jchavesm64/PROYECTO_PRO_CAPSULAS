@@ -30,7 +30,7 @@ const CardDispensado = ({ ...props }) => {
             <h4 className="mt-4 text-center">{"Datos del Dispensado"}</h4>
             <div className="mx-1">
                 <h6>Dispensado</h6>
-                <Label icon="font" value={dispensado.dispensado.nombre} />
+                <Label icon="font" value={dispensado.dispensado.producto.nombre} />
                 <h6>Existencias</h6>
                 <Label icon="hashtag" value={calcularMovimientos(dispensado.movimientos)} />
             </div>

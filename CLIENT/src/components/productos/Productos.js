@@ -50,7 +50,7 @@ const Productos = ({ ...props}) => {
                 return key
             }
         } else if (modo === "2") {
-            const val = key.producto.formula.nombre.toLowerCase();
+            const val = key.producto.orden_produccion.formula.nombre.toLowerCase();
             const val2 = value.toLowerCase();
             if (val.includes(val2)) {
                 return key

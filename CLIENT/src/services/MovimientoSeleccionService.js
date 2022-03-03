@@ -13,10 +13,6 @@ export const OBTENER_MOVIMIENTOS_SELECCION = gql`
                 nombre
                 cedula
             }
-            seleccion{
-                id
-                nombre
-            }
         }
     }
 `;

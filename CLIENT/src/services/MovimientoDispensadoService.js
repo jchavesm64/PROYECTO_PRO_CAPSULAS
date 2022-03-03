@@ -13,10 +13,6 @@ export const OBTENER_MOVIMIENTOS_DISPENSADO = gql`
                 nombre
                 cedula
             }
-            dispensado{
-                id
-                nombre
-            }
         }
     }
 `;

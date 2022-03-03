@@ -30,7 +30,7 @@ const CardMateria = ({ ...props }) => {
             <h4 className="mt-4 text-center">{"Datos del Seleccion"}</h4>
             <div className="mx-1">
                 <h6>Selección</h6>
-                <Label icon="font" value={seleccion.seleccion.nombre} />
+                <Label icon="font" value={seleccion.seleccion.producto.nombre} />
                 <h6>Existencias</h6>
                 <Label icon="hashtag" value={calcularMovimientos(seleccion.movimientos)} />
             </div>

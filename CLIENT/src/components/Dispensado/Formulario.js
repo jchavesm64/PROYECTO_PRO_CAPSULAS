@@ -1,23 +1,38 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import { Notification } from 'rsuite'
+import { Notification, Loader, SelectPicker } from 'rsuite'
 import Boton from '../shared/Boton'
 import { withRouter } from 'react-router-dom'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { UPDATE_DISPENSADO } from '../../services/DispensadoService'
+import { OBTENER_PRODUCTOS_2 } from '../../services/ProductoService'
 
 const EditarSeleccion = ({props, dispensado}) => {
-    const [nombre, setNombre] = useState(dispensado.nombre);
+    const [producto, setProducto] = useState(dispensado.producto.id)
     const [actualizar] = useMutation(UPDATE_DISPENSADO);
+    const { loading: load_productos, error: error_productos, data: data_productos } = useQuery(OBTENER_PRODUCTOS_2, { pollInterval: 1000 })
+
+    const getProductos = () => {
+        const productos = []
+        if (data_productos) {
+            data_productos.obtenerProductos.map(item => {
+                productos.push({
+                    "label": item.nombre,
+                    "value": item.id
+                })
+            })
+        }
+        return productos
+    }
 
     React.useEffect(() => {
-        setNombre(dispensado.nombre)
+        setProducto(dispensado.producto.id)
     }, [dispensado])
 
     const onSaveDispensado = async () => {
         try {
             const input = {
-                nombre,
+                producto,
                 estado: 'ACTIVO'
             }
             const { data } = await actualizar({ variables: { id: dispensado.id, input }, errorPolicy: 'all' });
@@ -47,7 +62,16 @@ const EditarSeleccion = ({props, dispensado}) => {
     }
 
     const validarForm = () => {
-        return !nombre
+        return !producto
+    }
+
+    if (load_productos) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (error_productos) {
+        Notification['error']({
+            title: 'Error',
+            duration: 20000,
+            description: 'Error, no podemos obtener la información de productos, verificar tu conexión a internet'
+        })
     }
 
     return (
@@ -56,8 +80,8 @@ const EditarSeleccion = ({props, dispensado}) => {
                 <Boton name="Atras" onClick={e => props.history.push(`/dispensado`)} icon="arrow-left-line" tooltip="Ir a Selección" size="xs" color="blue" />
             </div>
             <h3 className="text-center">Editar Selección</h3>
-            <h6>Nombre de la Selección</h6>
-            <input className="form-control mt-2" type="text" placeholder="Nombre de la Selección" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+            <h6>Producto</h6>
+            <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Productos" data={getProductos()} onChange={(e) => setProducto(e)} searchable={true} />
             <div className="d-flex justify-content-end float-rigth mt-2">
                 <Boton onClick={onSaveDispensado} tooltip="Guardar Selección" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>

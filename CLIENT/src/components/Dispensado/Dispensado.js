@@ -43,7 +43,7 @@ const Dispensado = ({ ...props }) => {
         : ""
 
     function getFilteredByKey(key, value) {
-        const val = key.dispensado.nombre.toLowerCase();
+        const val = key.dispensado.producto.nombre.toLowerCase();
         const val2 = value.toLowerCase();
         if (val.includes(val2)) {
             return key

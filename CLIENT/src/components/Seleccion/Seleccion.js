@@ -43,7 +43,7 @@ const Seleccion = ({ ...props }) => {
         : ""
 
     function getFilteredByKey(key, value) {
-        const val = key.seleccion.nombre.toLowerCase();
+        const val = key.seleccion.producto.nombre.toLowerCase();
         const val2 = value.toLowerCase();
         if (val.includes(val2)) {
             return key
