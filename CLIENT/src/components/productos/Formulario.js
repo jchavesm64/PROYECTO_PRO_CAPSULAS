@@ -23,7 +23,7 @@ const FormularioProducto = ({ props, producto }) => {
 
     const getOrdenes = () => {
         const ordenes = []
-        data_ordenes.obtenerCotizaciones.map(item => {
+        data_ordenes.obtenerCotizaciones2.map(item => {
             ordenes.push({
                 "label": item.formula.nombre + " - " + item.cliente.nombre + " - " + item.presentacion.tipo,
                 "value": item.id
