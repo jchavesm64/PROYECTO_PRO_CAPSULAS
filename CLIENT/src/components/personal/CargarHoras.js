@@ -6,277 +6,46 @@ import Label from '../shared/Label';
 import readXlsxFile from 'read-excel-file';
 import Table from '../shared/Table';
 import Boton from '../shared/Boton';
-import { SAVE_HORAS } from '../../services/HorasService';
-import { useMutation } from "@apollo/react-hooks";
+import { SAVE_PLANILLA } from '../../services/PlanillaService';
+import { useMutation, useLazyQuery } from "@apollo/react-hooks";
+import { OBTENER_EMPLEADOS } from '../../services/PersonalService'
 
 const CargarHoras = ({ ...props }) => {
+    const date1 = new Date(), date2 = new Date()
+    const day = date1.getDay()
+    const diff1 = date1.getDate() - day + (day === 0 ? -6 : 1);
+    const diff2 = date2.getDate() + day - (day === 0 ? -6 : 1);
+    const dateL = new Date(date1.setDate((diff1-1)))
+    const dateD = new Date(date2.setDate((diff2-1)))
+    const titles = [{ title: 'Nombre', class: '' }, { title: 'Cédula', class: '' }, { title: 'Horas Laboradas', class: '' }, { title: 'Precio Horas', class: '' }, { title: 'Total', class: '' }];
 
-    const meses = {
-        'ENERO': 0,
-        'FEBRERO': 1,
-        'MARZO': 2,
-        'ABRIL': 3,
-        'MAYO': 4,
-        'JUNIO': 5,
-        'JULIO': 6,
-        'AGOSTO': 7,
-        'SEPTIEMBRE': 8,
-        'OCTUBRE': 9,
-        'NOVIEMBRE': 10,
-        'DICIEMBRE': 11
-    }
+    const [fecha_lunes, setFechaLunes] = useState(dateL.toISOString().split('T')[0])
+    const [fecha_domingo, setFechaDomingo] = useState(dateD.toISOString().split('T')[0])
+    const [cargando, setCargando] = useState(false)
+    const [data, setData] = useState('')
+    const [datos, setDatos] = useState({ operativa: [], produccion: [], administrativa: [], procesado: false })
+    const [insertar] = useMutation(SAVE_PLANILLA);
+    const [empleados, { loading, error, data: datos_empleados }] = useLazyQuery(OBTENER_EMPLEADOS);
 
-    function getFecha(fecha) {
-        var date = new Date(fecha);
-        var day = (date.getDate() < 9) ? '0' + (date.getDate()) : date.getDate();
-        var mes = (date.getMonth() < 9) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-        return date.getFullYear() + '-' + mes + '-' + day;
-    }
 
-    const crearFecha = (dato) => {
-        let fecha1 = dato
-        let array1 = fecha1.split(' ')
-        const array2 = []
-        array1.map(i => {
-            if (i !== 'DE' && i !== 'DEL') {
-                array2.push(i)
+    const obtenerCedulas = (data) => {
+        const cedulas = []
+        let find = false
+        data.map(d => {
+            find = false
+            cedulas.map(c => {
+                if (c === d[0].replace(/-/g, "")) {
+                    find = true
+                }
+            })
+            if (!find) {
+                cedulas.push(d[0].replace(/-/g, ""))
             }
         })
-        if (array2.length === 3) {
-            if (!isNaN(array2[0]) && isNaN(array2[1]) && !isNaN(array2[2])) {
-                let dia = array2[0]
-                let mes = meses[array2[1]]
-                let anho = array2[2]
-                let correcto = false
-                if (mes === 1) {
-                    correcto = (anho % 4 === 0) ? (dia >= 1 && dia <= 29) : (dia >= 1 && dia <= 28)
-                } else if (mes === 3 || mes === 5 || mes === 8 || mes === 10) {
-                    correcto = (dia >= 1 && dia <= 30)
-                } else {
-                    correcto = (dia >= 1 && dia <= 31)
-                }
-                if (correcto) {
-                    return getFecha(new Date(anho, mes, dia))
-                } else {
-                    Notification["error"]({
-                        title: "Detectar Fecha",
-                        duration: 10000,
-                        description: "Error al detectar la fecha",
-                    });
-                }
-            } else {
-                Notification["error"]({
-                    title: "Detectar Fecha",
-                    duration: 10000,
-                    description: "Error al detectar la fecha",
-                });
-            }
-        } else {
-            Notification["error"]({
-                title: "Detectar Fecha",
-                duration: 10000,
-                description: "Error al detectar la fecha",
-            });
-        }
-        return new Date()
+        return cedulas
     }
 
-    const [cargando, setCargando] = useState(false)
-    const [datos, setDatos] = useState({ fecha: null, planta: [], administrativos: [], produccion: [], procesado: false })
-    const [fecha, setFecha] = useState('')
-    const [insertar] = useMutation(SAVE_HORAS);
-    const key = ['PLANILLA OPERATIVA', 'PRODUCCION DE CAPSULAS', 'PLANILLA ADMINISTRATIVA', 'TOTAL PLANILLA OPERATIVA', 'TOTAL DE SALARIOS']
-
-    const guardarExcel = async () => {
-        const h = []
-        let aux = datos.planta[0], aux2 = null, cedula = 0, horas = 0, monto = 0, detalle = 0
-        if (datos.planta.length > 0) {
-            for (let i = 0; i < aux.length; i++) {
-                if (aux[i].toString().toUpperCase() === 'CÉDULA') {
-                    cedula = i
-                }
-                if (aux[i].toString().toUpperCase() === 'HORAS') {
-                    horas = i
-                }
-                if (aux[i].toString().toUpperCase() === 'PRECIO HORA') {
-                    monto = i
-                }
-                if (aux[i].toString().toUpperCase() === 'DETALLE') {
-                    detalle = i
-                }
-            }
-            const planta = datos.planta
-            for (let i = 1; i < planta.length; i++) {
-                aux2 = planta[i]
-                h.push({
-                    empleado: aux2[cedula].replace(/-/g, ""),
-                    horas: aux2[horas],
-                    costo_hora: aux2[monto],
-                    detalle: aux2[detalle],
-                    tipo: 'P',
-                    fecha: fecha
-                })
-            }
-        }
-        if (datos.produccion.length > 0) {
-            aux = datos.produccion[0]
-            for (let i = 0; i < aux.length; i++) {
-                if (aux[i].toString().toUpperCase() === 'CÉDULA') {
-                    cedula = i
-                }
-                if (aux[i].toString().toUpperCase() === 'HORAS') {
-                    horas = i
-                }
-                if (aux[i].toString().toUpperCase() === 'PRECIO HORA') {
-                    monto = i
-                }
-                if (aux[i].toString().toUpperCase() === 'DETALLE') {
-                    detalle = i
-                }
-            }
-            const produccion = datos.produccion
-            for (let i = 1; i < produccion.length; i++) {
-                aux2 = produccion[i]
-                h.push({
-                    empleado: aux2[cedula].replace(/-/g, ""),
-                    horas: aux2[horas],
-                    costo_hora: aux2[monto],
-                    detalle: aux2[detalle],
-                    tipo: 'C',
-                    fecha: fecha
-                })
-            }
-        }
-        if (datos.administrativos.length > 0) {
-            aux = datos.administrativos[0]
-            for (let i = 0; i < aux.length; i++) {
-                if (aux[i].toString().toUpperCase() === 'CÉDULA') {
-                    cedula = i
-                }
-                if (aux[i].toString().toUpperCase() === 'HORAS') {
-                    horas = i
-                }
-                if (aux[i].toString().toUpperCase() === 'DETALLE') {
-                    detalle = i
-                }
-            }
-            const admin = datos.administrativos
-            for (let i = 1; i < admin.length; i++) {
-                aux2 = admin[i]
-                h.push({
-                    empleado: aux2[cedula].replace(/-/g, ""),
-                    horas: aux2[horas],
-                    costo_hora: 0,
-                    detalle: aux2[detalle],
-                    tipo: 'A',
-                    fecha: fecha
-                })
-            }
-        }
-        setCargando(true)
-        const input = { horas: h }
-        const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
-        const { estado, message } = data.saveHoras;
-        if (estado) {
-            Notification['success']({
-                title: 'Insertar Horas',
-                duration: 5000,
-                description: message
-            })
-            props.history.push(`/personal`);
-        } else {
-            Notification['error']({
-                title: 'Insertar Horas',
-                duration: 5000,
-                description: message
-            })
-        }
-        setCargando(false)
-    }
-
-    const eliminarFilasNulas = (data) => {
-        const newData = []
-        let aux = null, vector = null, null_cont = 0;
-        for (let a = 0; a < data.length; a++) {
-            aux = data[a];
-            vector = [];
-            null_cont = 0;
-            for (let b = 0; b < aux.length; b++) {
-                if (aux[b] === null) {
-                    null_cont++;
-                }
-                vector.push(aux[b])
-            }
-            if (null_cont < aux.length) {
-                newData.push(vector)
-            }
-        }
-        return newData
-    }
-
-    const encontrarFecha = (data) => {
-        let aux = null, fecha = null
-        for (let i = 0; i < data.length; i++) {
-            aux = data[i];
-            for (let j = 0; j < aux.length; j++) {
-                if (aux[j] !== null) {
-                    if (aux[j].toString().toUpperCase() === 'FECHA' || aux[j].toString().toUpperCase() === 'FECHA:') {
-                        fecha = aux[j + 1]
-                    }
-                }
-            }
-        }
-        return fecha
-    }
-
-    const encontrarClaves = (clave, data) => {
-        const info = []
-        let fila = null, aux = null, vector = null, salto = false;
-        for (let i = 0; i < data.length; i++) {
-            aux = data[i];
-            for (let j = 0; j < aux.length; j++) {
-                if (aux[j] !== null) {
-                    if (aux[j].toString().toUpperCase() === clave) {
-                        fila = i + 1;
-                    }
-                }
-            }
-        }
-        if (fila !== null) {
-            for (let i = fila; i < data.length; i++) {
-                if (salto) {
-                    break
-                }
-                aux = data[i];
-                vector = []
-                for (let j = 0; j < aux.length; j++) {
-                    if (aux[j] !== key[0] && aux[j] !== key[1] && aux[j] !== key[2] && aux[j] !== key[3] && aux[j] !== key[4]) {
-                        aux[j] === null ? vector.push('-') : vector.push(aux[j])
-                    } else {
-                        salto = true
-                        break
-                    }
-                }
-                if (vector.length > 0) {
-                    info.push(vector)
-                }
-            }
-        }
-        return info
-    }
-
-    const procesarDatos = (data) => {
-        data = eliminarFilasNulas(data)
-        const info = { fecha: null, planta: [], administrativos: [], produccion: [], procesado: true }
-        info.fecha = encontrarFecha(data)
-        info.planta = encontrarClaves(key[0], data)
-        info.produccion = encontrarClaves(key[1], data)
-        info.administrativos = encontrarClaves(key[2], data)
-        setDatos(info)
-        setFecha(crearFecha(info.fecha))
-    }
-
-    const ReadFile = (e) => {
+    const ReadFile = async (e) => {
         setCargando(true)
         try {
             let files = e.target.files, file = files[0];
@@ -284,7 +53,10 @@ const CargarHoras = ({ ...props }) => {
             if (isValid) {
                 readXlsxFile(file).then((rows) => {
                     if (rows !== undefined) {
-                        procesarDatos(rows);
+                        rows.splice(0, 1)
+                        setData(rows)
+                        const cedulas = obtenerCedulas(rows)
+                        empleados({ variables: { lista: cedulas } })
                     } else {
                         Notification['error']({
                             title: 'Error',
@@ -309,93 +81,202 @@ const CargarHoras = ({ ...props }) => {
         } finally {
             setCargando(false)
         }
-
-    }
-
-    const getTitles = (data) => {
-        const titles = []
-        data.map(t => {
-            titles.push({
-                title: t,
-                class: ""
-            })
-        })
-        return titles
     }
 
     const RowData = ({ data }) => {
         return (
             <tr>
                 {
-                    data.map(i => {
-                        return (<td>{i}</td>)
-                    })
+                    data.empleado.cedula ? (
+                        <>
+                            <td>{data.empleado.nombre}</td>
+                            <td>{data.empleado.cedula}</td>
+                            <td>{data.horas}</td>
+                            <td>{data.empleado.puesto.salario}</td>
+                            <td>{data.horas * data.empleado.puesto.salario}</td>
+                        </>
+                    ) : (
+                        <>
+                            <td className='text-white bg-danger'>{'DESCONOCIDO'}</td>
+                            <td className='text-white bg-danger'>{data.empleado}</td>
+                            <td className='text-white bg-danger'>{data.horas}</td>
+                            <td className='text-white bg-danger'>{0}</td>
+                            <td className='text-white bg-danger'>{0}</td>
+                        </>
+                    )
                 }
-            </tr>
+            </tr >
         )
     }
 
-    const getData = (data) => {
-        let newData = data.slice()
-        newData.splice(0, 1)
-        return newData
+    const getEmpleado = (cedula, lista_empleados) => {
+        let emp = null
+        for (let a = 0; a < lista_empleados.length; a++) {
+            if (lista_empleados[a].cedula === cedula.replace(/-/g, "")) {
+                emp = lista_empleados[a]
+                break
+            }
+        }
+        return emp
     }
 
-    if (cargando) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
+    if (datos_empleados && !datos.procesado) {
+        if (datos_empleados.obtenerEmpleados) {
+            const info = { operativa: [], produccion: [], administrativa: [], procesado: true }
+            let aux = null
+            data.map(d => {
+                aux = getEmpleado(d[0], datos_empleados.obtenerEmpleados)
+                if (d[2] === 'PLANILLA OPERATIVA') {
+                    info.operativa.push({
+                        empleado: aux === null ? d[0].replace(/-/g, "") : aux,
+                        horas: d[1],
+                        tipo: d[2]
+                    })
+                } else if (d[2] === 'PRODUCCION DE CAPSULAS') {
+                    info.produccion.push({
+                        empleado: aux === null ? d[0].replace(/-/g, "") : aux,
+                        horas: d[1],
+                        tipo: d[2]
+                    })
+                } else {
+                    info.administrativa.push({
+                        empleado: aux === null ? d[0].replace(/-/g, "") : aux,
+                        horas: d[1],
+                        tipo: d[2]
+                    })
+                }
+            })
+            setDatos(info)
+        }
+    }
+
+    const guardarExcel = async () => {
+        setCargando(true)
+        const input = {
+            fecha_lunes,
+            fecha_domingo,
+            listado_horas: []
+        }
+        datos.operativa.map(o => {
+            input.listado_horas.push({
+                empleado: o.empleado.cedula,
+                horas: o.horas,
+                tipo: o.tipo
+            })
+        })
+        datos.produccion.map(o => {
+            input.listado_horas.push({
+                empleado: o.empleado.cedula,
+                horas: o.horas,
+                tipo: o.tipo
+            })
+        })
+        datos.administrativa.map(o => {
+            input.listado_horas.push({
+                empleado: o.empleado.cedula,
+                horas: o.horas,
+                tipo: o.tipo
+            })
+        })
+        console.log(input)
+        const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
+        const { estado, message } = data.savePlanilla;
+        if (estado) {
+            Notification['success']({
+                title: 'Insertar Planilla',
+                duration: 5000,
+                description: message
+            })
+            props.history.push(`/personal/planilla`);
+        } else {
+            Notification['error']({
+                title: 'Insertar Planilla',
+                duration: 5000,
+                description: message
+            })
+        }
+        setCargando(false)
+    }
+
+    const validarData = () => {
+        let disable = false
+        for(let a = 0; a < datos.operativa.length; a++){
+            if(datos.operativa[a].empleado.cedula === undefined){
+                disable = true
+                break
+            }
+        }
+        for(let a = 0; a < datos.produccion.length; a++){
+            if(datos.produccion[a].empleado.cedula === undefined){
+                disable = true
+                break
+            }
+        }
+        for(let a = 0; a < datos.administrativa.length; a++){
+            if(datos.administrativa[a].empleado.cedula === undefined){
+                disable = true
+                break
+            }
+        }
+        return disable
+    }
+
+    if (cargando || loading) return (<Loader backdrop content="Cargando..." vertical size="lg" />);
 
     return (
         <div className='mx-auto'>
             <h3 className='text-center'>Cargar Horas del Personal</h3>
             <hr />
+            <div className='row'>
+                <div className='col-md-6'>
+                    <h5>Fecha del Lunes</h5>
+                    <Input type="date" placeholder="Fecha del Lunes" value={fecha_lunes} onChange={(e) => setFechaLunes(e)} />
+                </div>
+                <div className='col-md-6'>
+                    <h5>Fecha del Domingo</h5>
+                    <Input type="date" placeholder="Fecha del Domingo" value={fecha_domingo} onChange={(e) => setFechaDomingo(e)} />
+                </div>
+            </div>
             {
                 datos.procesado &&
                 <>
-                    <div className='row'>
-                        <div className='col-md-6'>
-                            <h5>Fecha Detectada</h5>
-                            <Label icon="fas fa-calendar" value={datos.fecha} />
-                        </div>
-                        <div className='col-md-6'>
-                            <h5>Fecha</h5>
-                            <Input type="date" placeholder="Fecha" value={fecha} onChange={(e) => setFecha(e)} />
-                        </div>
-                    </div>
                     {
-                        (datos.planta.length !== 0) &&
+                        (datos.operativa.length !== 0) &&
                         <div>
                             <h5 className="text-center my-2">Planilla Operativa</h5>
-                            <Table Title={getTitles(datos.planta[0])} Rows={RowData} info={getData(datos.planta)} />
+                            <Table Title={titles} Rows={RowData} info={datos.operativa} />
                         </div>
                     }
                     {
                         (datos.produccion.length !== 0) &&
                         <div>
                             <h5 className="text-center my-2">Producción de Cápsulas</h5>
-                            <Table Title={getTitles(datos.produccion[0])} Rows={RowData} info={getData(datos.produccion)} />
+                            <Table Title={titles} Rows={RowData} info={datos.produccion} />
                         </div>
                     }
                     {
-                        (datos.administrativos.length !== 0) &&
+                        (datos.administrativa.length !== 0) &&
                         <div>
                             <h5 className="text-center my-2">Planilla Administrativa</h5>
-                            <Table Title={getTitles(datos.administrativos[0])} Rows={RowData} info={getData(datos.administrativos)} />
+                            <Table Title={titles} Rows={RowData} info={datos.administrativa} />
                         </div>
                     }
                 </>
             }
             <div className='mt-3'>
                 {
-                    !datos.procesado ? (
+                    datos.procesado ? (
+                        <Boton onClick={guardarExcel} tooltip="Guardar Información" name="Guardar Información" icon="save" color="green" disabled={validarData()} />
+                    ) : (
                         <IconButton icon={<Icon icon="fas fa-file-excel" />} placement="left" color="green" size="sm">
                             <label htmlFor="file-choser" size="sm">
                                 Cargar Excel
                                 <input id="file-choser" type="file" style={{ display: "none" }} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={(event) => { ReadFile(event) }} size="sm" />
                             </label>
                         </IconButton>
-                    ) : (
-                        <Boton onClick={guardarExcel} tooltip="Guardar Información" name="Guardar Información" icon="save" color="green" disabled={!fecha} />
                     )
                 }
+
             </div>
         </div>
     )

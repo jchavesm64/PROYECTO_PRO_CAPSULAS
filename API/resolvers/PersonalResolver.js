@@ -25,6 +25,22 @@ export default{
             }catch(error){
                 return error;
             }
+        },
+        obtenerEmpleados: async (_, {lista}) => {
+            let consulta = {
+                $or: []
+            }  
+            lista.map(l => {
+                consulta.$or.push({
+                    cedula: {$eq: l}
+                })
+            }) 
+            try{
+                const personal = await Personal.find(consulta).populate('puesto');
+                return personal
+            }catch(error){
+                return error
+            }
         }
     },
     Mutation:{

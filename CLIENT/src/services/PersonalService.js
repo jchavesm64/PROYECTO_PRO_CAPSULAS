@@ -29,6 +29,22 @@ export const OBTENER_PERSONAL = gql`
     }
 `;
 
+export const OBTENER_EMPLEADOS = gql`
+    query obtenerEmpleados($lista:[String]){
+        obtenerEmpleados(lista:$lista){
+            id
+            nombre
+            cedula
+            puesto{
+                id
+                nombre
+                salario
+            }
+            estado
+        }
+    }
+`;
+
 export const OBTENER_PERSONAL_ONE = gql`
     query obtenerPersonalOne($id:ID){
         obtenerPersonalOne(id:$id){

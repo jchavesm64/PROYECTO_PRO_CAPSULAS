@@ -24,6 +24,7 @@ const personal_type = gql`
     type Query{
         obtenerPersonal: [Personal]
         obtenerPersonalOne(id:ID): Personal
+        obtenerEmpleados(lista: [String]): [Personal]
     }
 
     input PersonalInput{

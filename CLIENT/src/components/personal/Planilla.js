@@ -1,16 +1,18 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react'
-import { Loader, Notification, IconButton, Icon, Input } from 'rsuite';
+import { Loader, Notification, Input } from 'rsuite';
+import PlanillaExcel from './Exportar/PlanillaExcel';
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import PlanillaPDF from './Exportar/PlanillaPDF';
 import { useLazyQuery } from "@apollo/react-hooks";
 import { withRouter } from 'react-router'
-import { OBTENER_HORAS } from '../../services/HorasService';
+import { OBTENER_PLANILLA } from '../../services/PlanillaService';
 import Boton from '../shared/Boton';
+import Label from '../shared/Label'
 import Table from '../shared/Table';
 
 const Planilla = ({ ...props }) => {
-    const [filtrar, { loading, error, data }] = useLazyQuery(OBTENER_HORAS);
+    const [filtrar, { loading, error, data }] = useLazyQuery(OBTENER_PLANILLA);
     const [fecha1, setFecha1] = useState('')
     const [fecha2, setFecha2] = useState('')
     const titles = [{ title: 'Nombre', class: '' }, { title: 'Cédula', class: '' }, { title: 'Horas Laboradas', class: '' }, { title: 'Precio Horas', class: '' }, { title: 'Total', class: '' }];
@@ -38,94 +40,22 @@ const Planilla = ({ ...props }) => {
 
     const getData = () => {
         if (data) {
-            if (data.obtenerHoras) {
-                const datos = data.obtenerHoras
+            if (data.obtenerPlanilla) {
+                const datos = data.obtenerPlanilla
                 const planta = [], capsulas = [], admin = []
-                datos.map(d => {
-                    if (d.tipo === 'P') {
+                datos.listado_horas.map(d => {
+                    if (d.tipo === 'PLANILLA OPERATIVA') {
                         planta.push(d)
-                    } else if (d.tipo === 'C') {
+                    } else if (d.tipo === 'PRODUCCION DE CAPSULAS') {
                         capsulas.push(d)
                     } else {
                         admin.push(d)
                     }
                 })
-                let pla_f = [], cap_f = [], adm_f = [], aux = null, horas = 0, existe = false
-                planta.map(obj1 => {
-                    aux = {
-                        empleado: obj1.empleado,
-                        horas: 0,
-                        costo_hora: obj1.costo_hora,
-                    }
-                    horas = 0
-                    existe = false
-                    planta.map(obj2 => {
-                        if (obj1.empleado.cedula === obj2.empleado.cedula) {
-                            horas += obj2.horas
-                        }
-                    })
-                    aux.horas = horas
-                    pla_f.map(i => {
-                        if (i.empleado.cedula === aux.empleado.cedula) {
-                            existe = true
-                        }
-                    })
-                    if (!existe) {
-                        pla_f.push(aux)
-                    }
-                })
-                //
-                capsulas.map(obj1 => {
-                    aux = {
-                        empleado: obj1.empleado,
-                        horas: 0,
-                        costo_hora: obj1.costo_hora,
-                    }
-                    horas = 0
-                    existe = false
-                    capsulas.map(obj2 => {
-                        if (obj1.empleado.cedula === obj2.empleado.cedula) {
-                            horas += obj2.horas
-                        }
-                    })
-                    aux.horas = horas
-                    cap_f.map(i => {
-                        if (i.empleado.cedula === aux.empleado.cedula) {
-                            existe = true
-                        }
-                    })
-                    if (!existe) {
-                        cap_f.push(aux)
-                    }
-                })
-                //
-                admin.map(obj1 => {
-                    aux = {
-                        empleado: obj1.empleado,
-                        horas: 0,
-                        costo_hora: obj1.empleado.puesto.salario,
-                    }
-                    horas = 0
-                    existe = false
-                    admin.map(obj2 => {
-                        if (obj1.empleado.cedula === obj2.empleado.cedula) {
-                            horas += obj2.horas
-                        }
-                    })
-                    aux.horas = horas
-                    adm_f.map(i => {
-                        if (i.empleado.cedula === aux.empleado.cedula) {
-                            existe = true
-                        }
-                    })
-                    if (!existe) {
-                        adm_f.push(aux)
-                    }
-                })
                 return {
-                    p: pla_f,
-                    c: cap_f,
-                    a: adm_f
+                    p: planta,
+                    c: capsulas,
+                    a: admin
                 }
             }
         }
@@ -138,16 +68,72 @@ const Planilla = ({ ...props }) => {
                 <td>{data.empleado.nombre}</td>
                 <td>{data.empleado.cedula}</td>
                 <td>{data.horas}</td>
-                <td>{data.costo_hora}</td>
-                <td>{data.horas * data.costo_hora}</td>
+                <td>{data.empleado.puesto.salario}</td>
+                <td>{data.horas * data.empleado.puesto.salario}</td>
             </tr>
         )
+    }
+
+    const calcularTotal = () => {
+        let total = 0
+        if (info !== null) {
+            info.p.map(item => {
+                total += (item.horas * item.empleado.puesto.salario);
+            })
+            info.c.map(item => {
+                total += (item.horas * item.empleado.puesto.salario);
+            })
+            info.a.map(item => {
+                total += (item.horas * item.empleado.puesto.salario);
+            })
+        }
+        return total
+    }
+
+    const getInfoExcel = () => {
+        const info_excel = { general: [], operativa: [], produccion: [], administrativa: [] }
+        if (info !== null) {
+            info_excel.general.push({ fecha1: fecha1 })
+            info_excel.general.push({ fecha2: fecha2 })
+            info_excel.general.push({ total: calcularTotal() })
+            info_excel.operativa.push({nombre: 'PLANILLA OPERATIVA'})
+            info.p.map(item => {
+                info_excel.operativa.push({
+                    nombre: item.empleado.nombre,
+                    cedula: item.empleado.cedula,
+                    horas: item.horas,
+                    precio: item.empleado.puesto.salario,
+                    total: item.horas * item.empleado.puesto.salario
+                })
+            })
+            info.c.map(item => {
+                info_excel.produccion.push({
+                    nombre: item.empleado.nombre,
+                    cedula: item.empleado.cedula,
+                    horas: item.horas,
+                    precio: item.empleado.puesto.salario,
+                    total: item.horas * item.empleado.puesto.salario
+                })
+            })
+            info.a.map(item => {
+                info_excel.administrativa.push({
+                    nombre: item.empleado.nombre,
+                    cedula: item.empleado.cedula,
+                    horas: item.horas,
+                    precio: item.empleado.puesto.salario,
+                    total: item.horas * item.empleado.puesto.salario
+                })
+            })
+        }
+        return info_excel
     }
 
     const info = getData()
 
     return (
         <div className='mx-auto'>
+            <h3 className='text-center'>Generar Planilla del Personal</h3>
+            <hr />
             <div className='row'>
                 <div className='col-md-6'>
                     <h5>Fecha Menor</h5>
@@ -182,6 +168,14 @@ const Planilla = ({ ...props }) => {
                             <Table Title={titles} Rows={RowData} info={info.a} />
                         </div>
                     }
+                    <div className='mt-5 row'>
+                        <div className='d-flex justify-content-end col-md-6'>
+                            <span><h4>Total: </h4></span>
+                        </div>
+                        <div className='col-md-6'>
+                            <Label className="bg-white" icon="fas fa-hashtag" value={calcularTotal()} />
+                        </div>
+                    </div>
                 </div>
             }
             <div className='mt-3'>
@@ -189,17 +183,22 @@ const Planilla = ({ ...props }) => {
                     info === null ? (
                         <Boton onClick={obtenerInfo} tooltip="Obtener Información" name="Obtener Información" icon="save" color="green" disabled={!fecha1 && !fecha2} />
                     ) : (
-                        <PDFDownloadLink
-                            document={<PlanillaPDF info={info} fecha1={getFecha(fecha1, " - ")} fecha2={getFecha(fecha2, " - ")} />}
-                            fileName={`INFORME_COTIZACION_${getFecha(fecha1, "_")}_${getFecha(fecha2, "_")}.pdf`}
-                        >
-                            {({ blob, url, loading: loadingDocument, error: error_loading }) =>
-                                loadingDocument ?
-                                    ''
-                                    :
-                                    <Boton icon="download" size="lg" color="yellow" tooltip="Descargar Planilla" name="Descargar Planilla" position='end' />
-                            }
-                        </PDFDownloadLink>
+                        <div className='row'>
+                            <div className='col-md-6 d-flex justify-content-start'>
+                                <PDFDownloadLink
+                                    document={<PlanillaPDF info={info} fecha1={getFecha(fecha1, " - ")} fecha2={getFecha(fecha2, " - ")} total={calcularTotal()} />}
+                                    fileName={`PLANILLA_PDF_${getFecha(fecha1, "_")}_${getFecha(fecha2, "_")}.pdf`}
+                                >
+                                    {({ blob, url, loading: loadingDocument, error: error_loading }) =>
+                                        loadingDocument ?
+                                            ''
+                                            :
+                                            <Boton icon="fas fa-file-pdf" size="lg" color="red" tooltip="Descargar Planilla en PDF" name="Descargar Planilla en PDF" position='end' />
+                                    }
+                                </PDFDownloadLink>
+                                <PlanillaExcel data={getInfoExcel()} name="Descargar Planilla en Excel" color="green" filename={`PLANILLA_EXCEL_${getFecha(fecha1, "_")}_${getFecha(fecha2, "_")}`} />
+                            </div>
+                        </div>
                     )
                 }
             </div>

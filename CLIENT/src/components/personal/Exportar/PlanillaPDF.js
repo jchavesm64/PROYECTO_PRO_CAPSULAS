@@ -7,11 +7,7 @@ import srcRoboto4 from "../../Cotizaciones/pdf/assets/Roboto-Black.ttf";
 import logo from "../../Cotizaciones/pdf/assets/logo.png";
 
 const PlanillaPDF = ({ ...props }) => {
-    const { info, fecha1, fecha2 } = props
-
-    const tablaPlanta = (data) => {
-
-    }
+    const { info, fecha1, fecha2, total } = props
 
     return (
         <Document>
@@ -19,7 +15,7 @@ const PlanillaPDF = ({ ...props }) => {
                 <Image style={styles.image} src={logo} />
                 <Text style={[styles.title, { fontWeight: 400, fontSize: 12, color: '#777777' }]}>{'PLANILLA DEL ' + fecha1 + ' AL ' + fecha2}</Text>
                 {
-                    info.c.length > 0 &&
+                    info.p.length > 0 &&
                     <View style={{ marginTop: 10 }}>
                         <View>
                             <View style={{ width: '100%' }}>
@@ -57,10 +53,10 @@ const PlanillaPDF = ({ ...props }) => {
                                             <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas}</Text>
                                         </View>
                                         <View style={[styles.tableCol, { width: '15%' }]}>
-                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.costo_hora}</Text>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.puesto.salario}</Text>
                                         </View>
                                         <View style={[styles.tableCol, { width: '20%' }]}>
-                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas * item.costo_hora}</Text>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas * item.empleado.puesto.salario}</Text>
                                         </View>
                                     </View>
                                 )
@@ -68,8 +64,116 @@ const PlanillaPDF = ({ ...props }) => {
                         </View>
                     </View>
                 }
+                {
+                    info.c.length > 0 &&
+                    <View style={{ marginTop: 10 }}>
+                        <View>
+                            <View style={{ width: '100%' }}>
+                                <Text style={[styles.subtitle, { fontWeight: 400, textAlign: 'center', marginRight: 10 }]}>PRODUCCION DE CAPSULAS</Text>
+                            </View>
+                        </View>
+                        <View style={styles.table}>
+                            <View style={styles.tableRow}>
+                                <View style={[styles.tableColGray, { width: '30%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Nombre</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '15%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Cédula</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '20%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Horas Laboradas</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '15%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Precio Hora</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '20%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Total</Text>
+                                </View>
+                            </View>
+                            {
+                                info.c.map((item, index) =>
+                                    <View key={index} style={styles.tableRow}>
+                                        <View style={[styles.tableCol, { width: '30%', borderLeftWidth: 1 }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.nombre}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '15%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.cedula}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '20%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '15%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.puesto.salario}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '20%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas * item.empleado.puesto.salario}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            }
+                        </View>
+                    </View>
+                }
+                {
+                    info.a.length > 0 &&
+                    <View style={{ marginTop: 10 }}>
+                        <View>
+                            <View style={{ width: '100%' }}>
+                                <Text style={[styles.subtitle, { fontWeight: 400, textAlign: 'center', marginRight: 10 }]}>PLANILLA ADMINISTRATIVA</Text>
+                            </View>
+                        </View>
+                        <View style={styles.table}>
+                            <View style={styles.tableRow}>
+                                <View style={[styles.tableColGray, { width: '30%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Nombre</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '15%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Cédula</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '20%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Horas Laboradas</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '15%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Precio Hora</Text>
+                                </View>
+                                <View style={[styles.tableColGray, { width: '20%' }]}>
+                                    <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>Total</Text>
+                                </View>
+                            </View>
+                            {
+                                info.a.map((item, index) =>
+                                    <View key={index} style={styles.tableRow}>
+                                        <View style={[styles.tableCol, { width: '30%', borderLeftWidth: 1 }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.nombre}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '15%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.cedula}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '20%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '15%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.empleado.puesto.salario}</Text>
+                                        </View>
+                                        <View style={[styles.tableCol, { width: '20%' }]}>
+                                            <Text style={[styles.tableCell, { fontWeight: 200, textAlign: 'center', marginRight: 10 }]}>{item.horas * item.empleado.puesto.salario}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            }
+                        </View>
+                    </View>
+                }
+                <View style={styles.tableRow}>
+                    <View style={{ width: '70%' }}>
+                        <Text style={[styles.tableCellGray, { fontWeight: 200, textAlign: 'right', marginRight: 10 }]}>TOTAL:</Text>
+                    </View>
+                    <View style={{ width: '30%' }}>
+                        <Text style={[styles.tableCell, { fontWeight: 100, marginLeft: 10 }]}>{total}</Text>
+                    </View>
+                </View>
             </Page>
-        </Document>
+        </Document >
     )
 }
 
