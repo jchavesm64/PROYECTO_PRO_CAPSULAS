@@ -72,19 +72,22 @@ import InformacionMaquinaria from '../components/Maquinaria/Informacion';
 import Ubicacion from '../components/ConfiguracionesGenerales/Ubicacion/Ubicacion';
 import CargarHoras from '../components/personal/CargarHoras';
 import Planilla from '../components/personal/Planilla';
+import Chequeo from '../components/PuestosLimpieza/Chequeo';
 
 const Router = ({ refetch, session }) => {
 
     const { obtenerUsuarioAutenticado } = session;
     const { estado, data } = obtenerUsuarioAutenticado;
     let info = window.location.href.toString().includes('info')
+    const vinculo = localStorage.getItem('id_vincular_puesto')
     var mensaje = (!session || !estado) ? info ? '' : <Redirect to="/login" /> : ''
+    mensaje = (vinculo !== null) ? <Redirect to="/puestos_limpieza/chequeo" /> : mensaje
     return (
         <BrowserRouter>
             <>
                 {mensaje}
                 <div className="wrapper">
-                    {estado ? info ? '' : <Sidebar session={data} /> : ''}
+                    {estado ? (info || (vinculo !== null)) ? '' : <Sidebar session={data} /> : ''}
                     <div id="content">
                         <NavMenu session={data} refetch={refetch} />
                         <div className="container-fluid p-5">
@@ -179,8 +182,8 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/puestos_limpieza/nuevo" render={(props) => <NuevoPuestoLimpieza session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/puestos_limpieza/editar/:id" render={(props) => <EditarPuestoLimpieza uso={true} session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/puestos_limpieza/detalles/:id" render={(props) => <EditarPuestoLimpieza uso={false} session={data} refetch={refetch} {...props} />} />
-
-                                {(estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" />}
+                                <Route exact path="/puestos_limpieza/chequeo" render={(props) => <Chequeo session={data} refetch={refetch} {...props} />} />
+                                {(vinculo === null ) ? (estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" /> : <Redirect to='/puestos_limpieza/chequeo' />}
                             </Switch>
                         </div>
                     </div>

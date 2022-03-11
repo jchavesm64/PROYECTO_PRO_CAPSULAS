@@ -12,11 +12,8 @@ import { OBTENER_EMPLEADOS } from '../../services/PersonalService'
 
 const CargarHoras = ({ ...props }) => {
     const date1 = new Date(), date2 = new Date()
-    const day = date1.getDay()
-    const diff1 = date1.getDate() - day + (day === 0 ? -6 : 1);
-    const diff2 = date2.getDate() + day - (day === 0 ? -6 : 1);
-    const dateL = new Date(date1.setDate((diff1-1)))
-    const dateD = new Date(date2.setDate((diff2-1)))
+    let dateL = date1.getDay() !== 0 ? new Date(date1.setDate(date1.getDate() - date1.getDay() + 1)) : new Date(date1.setDate(date1.getDate() - date1.getDay() - 6))
+    let dateD = date2.getDay() !== 0 ? new Date(date2.setDate(date2.getDate() - date2.getDay() + 7)) : date2
     const titles = [{ title: 'Nombre', class: '' }, { title: 'Cédula', class: '' }, { title: 'Horas Laboradas', class: '' }, { title: 'Precio Horas', class: '' }, { title: 'Total', class: '' }];
 
     const [fecha_lunes, setFechaLunes] = useState(dateL.toISOString().split('T')[0])
@@ -200,20 +197,20 @@ const CargarHoras = ({ ...props }) => {
 
     const validarData = () => {
         let disable = false
-        for(let a = 0; a < datos.operativa.length; a++){
-            if(datos.operativa[a].empleado.cedula === undefined){
+        for (let a = 0; a < datos.operativa.length; a++) {
+            if (datos.operativa[a].empleado.cedula === undefined) {
                 disable = true
                 break
             }
         }
-        for(let a = 0; a < datos.produccion.length; a++){
-            if(datos.produccion[a].empleado.cedula === undefined){
+        for (let a = 0; a < datos.produccion.length; a++) {
+            if (datos.produccion[a].empleado.cedula === undefined) {
                 disable = true
                 break
             }
         }
-        for(let a = 0; a < datos.administrativa.length; a++){
-            if(datos.administrativa[a].empleado.cedula === undefined){
+        for (let a = 0; a < datos.administrativa.length; a++) {
+            if (datos.administrativa[a].empleado.cedula === undefined) {
                 disable = true
                 break
             }

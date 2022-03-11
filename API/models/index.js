@@ -26,6 +26,7 @@ import Incidente from './Incidente';
 import PuestoLimpieza from './PuestoLimpieza';
 import Ubicacion from './Ubicacion';
 import Planilla from './Planilla';
+import Chequeo from './Chequeo';
 
 export {
     Rol,
@@ -55,5 +56,6 @@ export {
     Incidente,
     PuestoLimpieza,
     Ubicacion,
-    Planilla
+    Planilla,
+    Chequeo
 }

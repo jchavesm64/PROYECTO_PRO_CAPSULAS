@@ -9,6 +9,9 @@ const format = /^[a-zA-Z0-9]+$/;
 
 const crearToken = (usuario, secreto, expiresIn) => {
     const { cedula } = usuario;
+    if(expiresIn === null){
+        return jwt.sign({ cedula }, secreto)
+    }
     return jwt.sign({ cedula }, secreto, { expiresIn })
 }
 
@@ -200,8 +203,9 @@ export default {
                             mensaje: "La contraseña es incorrecta"
                         };
                     } else {
+                        let time = (existe.roles[0].tipo !== 'PUESTO_LIMPIEZA') ? '1hr' : null
                         return {
-                            token: await crearToken(existe, process.env.SECRETO, "1hr"),
+                            token: await crearToken(existe, process.env.SECRETO, time),
                             mensaje: "Usuario correcto"
                         }
                     }

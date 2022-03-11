@@ -15,6 +15,9 @@ const Maquinaria = ({ ...props }) => {
     const { loading: load_puesto_limpieza, error: error_puesto_limpieza, data: data_puesto_limpieza } = useQuery(OBTENER_PUESTO_LIMPIEZAS, { pollInterval: 1000 })
     const [desactivar] = useMutation(DELETE_PUESTO_LIMPIEZA);
 
+    const { session } = props
+    const uso = session.roles[0].tipo === 'PUESTO_LIMPIEZA'
+
     const onDeletePuestoLimpieza = async (id) => {
         const { data } = await desactivar({ variables: { id } });
         const { estado, message } = data.desactivarPuestoLimpieza;
@@ -60,8 +63,8 @@ const Maquinaria = ({ ...props }) => {
     }
 
     const getData = () => {
-        if(data_puesto_limpieza){
-            if(data_puesto_limpieza.obtenerPuestoLimpiezas){
+        if (data_puesto_limpieza) {
+            if (data_puesto_limpieza.obtenerPuestoLimpiezas) {
                 return data_puesto_limpieza.obtenerPuestoLimpiezas.filter((value, index) => {
                     if (filter !== "" && modo !== "") {
                         return getFilteredByKey(modo, value, filter);
@@ -112,9 +115,12 @@ const Maquinaria = ({ ...props }) => {
             <div className="mt-3">
                 <DataGrid data={data} setConfirmation={setConfirmation} mostrarMsj={mostrarMsj} type="puesto" displayLength={9} {...props} />
             </div>
-            <div className="d-flex justify-content-start my-2">
-                <Link to={`/puestos_limpieza/nuevo`}><Boton tooltip="Nueva Puesto de Limpieza" name="Nuevo" icon="plus" color="green" /></Link>
-            </div>
+            {
+                !uso &&
+                <div className="d-flex justify-content-start my-2">
+                    <Link to={`/puestos_limpieza/nuevo`}><Boton tooltip="Nueva Puesto de Limpieza" name="Nuevo" icon="plus" color="green" /></Link>
+                </div>
+            }
             {isConfirmation}
         </>
     )

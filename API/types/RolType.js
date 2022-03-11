@@ -4,6 +4,7 @@ const rol_type = gql`
     enum tipo_rol{
         ADMINISTRADOR
         GESTOR
+        PUESTO_LIMPIEZA
     }
 
     type Acciones{

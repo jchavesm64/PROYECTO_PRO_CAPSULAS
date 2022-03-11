@@ -8,6 +8,15 @@ const CardPuestoLimpieza = ({ ...props }) => {
     const [state, setState] = useState(false);
     const { puestoLimpieza, setConfirmation, mostrarMsj } = props
 
+    const vincularDispositivo = (id) => {
+        localStorage.setItem('id_vincular_puesto', id)
+        window.location.reload()
+    }
+
+    const { session } = props
+
+    const uso = session.roles[0].tipo === 'PUESTO_LIMPIEZA'
+
     return (
         <Panel shaded bordered bodyFill style={{ width: 300, maxWidth: 300 }}
             className={` ${state ? 'shadow-lg' : ' '} mx-4 my-4`}
@@ -24,9 +33,18 @@ const CardPuestoLimpieza = ({ ...props }) => {
                 <Label icon="globe" value={puestoLimpieza.ubicacion.nombre} />
             </div>
             <div className="d-flex justify-content-end mx-1 my-1">
-                <div className="mx-1"><Link to={`puestos_limpieza/editar/${puestoLimpieza.id}`}><Action tooltip="Editar Puesto de Limpieza" color="orange" icon="edit" size="xs" /></Link></div>
-                <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: puestoLimpieza.id }) : mostrarMsj() }} tooltip="Eliminar Puesto de Limpieza" color="red" icon="trash" size="xs" /></div>
-                <div className="mx-1"><Link to={`puestos_limpieza/detalles/${puestoLimpieza.id}`}><Action tooltip="Detalles" color="cyan" icon="info" size="xs" /></Link></div>
+                {
+                    uso ? (
+                        <div className="mx-1"><Action tooltip="Vincular con este Dispositivo" color="violet" icon="fas fa-link" size="xs" onClick={() => vincularDispositivo(puestoLimpieza.id)} /></div>
+                    ) : (
+                        <>
+                            <div className="mx-1"><Link to={`puestos_limpieza/editar/${puestoLimpieza.id}`}><Action tooltip="Editar Puesto de Limpieza" color="orange" icon="edit" size="xs" /></Link></div>
+                            <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: puestoLimpieza.id }) : mostrarMsj() }} tooltip="Eliminar Puesto de Limpieza" color="red" icon="trash" size="xs" /></div>
+                            <div className="mx-1"><Link to={`puestos_limpieza/detalles/${puestoLimpieza.id}`}><Action tooltip="Detalles" color="cyan" icon="info" size="xs" /></Link></div>
+                        </>
+                    )
+                }
+
             </div>
         </Panel>
     )
