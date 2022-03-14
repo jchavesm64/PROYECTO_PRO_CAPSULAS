@@ -73,6 +73,7 @@ import Ubicacion from '../components/ConfiguracionesGenerales/Ubicacion/Ubicacio
 import CargarHoras from '../components/personal/CargarHoras';
 import Planilla from '../components/personal/Planilla';
 import Chequeo from '../components/PuestosLimpieza/Chequeo';
+import Chequeos from '../components/PuestosLimpieza/Chequeos';
 
 const Router = ({ refetch, session }) => {
 
@@ -183,6 +184,7 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/puestos_limpieza/editar/:id" render={(props) => <EditarPuestoLimpieza uso={true} session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/puestos_limpieza/detalles/:id" render={(props) => <EditarPuestoLimpieza uso={false} session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/puestos_limpieza/chequeo" render={(props) => <Chequeo session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/puestos_limpieza/chequeos/:id" render={(props) => <Chequeos session={data} refetch={refetch} {...props} />} />
                                 {(vinculo === null ) ? (estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" /> : <Redirect to='/puestos_limpieza/chequeo' />}
                             </Switch>
                         </div>

@@ -41,6 +41,7 @@ const CardPuestoLimpieza = ({ ...props }) => {
                             <div className="mx-1"><Link to={`puestos_limpieza/editar/${puestoLimpieza.id}`}><Action tooltip="Editar Puesto de Limpieza" color="orange" icon="edit" size="xs" /></Link></div>
                             <div className="mx-1"><Action onClick={() => { props.session.roles.some(rol => rol.tipo === localStorage.getItem('rol') && (rol.acciones[0].eliminar === true)) ? setConfirmation({ bool: true, id: puestoLimpieza.id }) : mostrarMsj() }} tooltip="Eliminar Puesto de Limpieza" color="red" icon="trash" size="xs" /></div>
                             <div className="mx-1"><Link to={`puestos_limpieza/detalles/${puestoLimpieza.id}`}><Action tooltip="Detalles" color="cyan" icon="info" size="xs" /></Link></div>
+                            <div className="mx-1"><Link to={`puestos_limpieza/chequeos/${puestoLimpieza.id}`}><Action tooltip="Ver chequeos" color="blue" icon="fas fa-check" size="xs" /></Link></div>
                         </>
                     )
                 }

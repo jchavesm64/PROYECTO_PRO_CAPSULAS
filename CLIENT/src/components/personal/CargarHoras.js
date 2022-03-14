@@ -175,7 +175,6 @@ const CargarHoras = ({ ...props }) => {
                 tipo: o.tipo
             })
         })
-        console.log(input)
         const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
         const { estado, message } = data.savePlanilla;
         if (estado) {

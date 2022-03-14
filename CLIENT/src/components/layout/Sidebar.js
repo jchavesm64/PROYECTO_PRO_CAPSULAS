@@ -192,7 +192,7 @@ const SideBar = ({ session }) => {
                                                     <Link to={`/puestos_limpieza`}><i className="fas fa-soap" />Puesto de Limpieza</Link>
                                                 </li>
                                                 {
-                                                    session.roles.some(rol => rol.acciones.agregar === true) ?
+                                                    session.roles.some(rol => rol.acciones[0]['agregar'] === true) ?
                                                         <li className="List">
                                                             <Link to={`/puestos_limpieza/nuevo`}><Icon icon="plus" />Nuevo Puesto</Link>
                                                         </li> : ""
