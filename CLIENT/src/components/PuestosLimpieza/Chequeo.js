@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import Boton from "../shared/Boton";
+import Confirmation from '../shared/Confirmation';
 import { OBTENER_PUESTO_LIMPIEZA } from "../../services/PuestoLimpiezaService";
 import { Loader, Notification, Input, Checkbox } from 'rsuite'
-import { useQuery, useLazyQuery } from '@apollo/react-hooks'
-import { OBTENER_CHEQUEO } from '../../services/ChequeoService'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks'
+import { OBTENER_CHEQUEO, SAVE_CHEQUEO, UPDATE_CHEQUEO } from '../../services/ChequeoService'
 
 const Chequeo = ({ ...props }) => {
     const fecha = new Date().toLocaleString().split(' ')[0].split('/')
@@ -15,6 +16,9 @@ const Chequeo = ({ ...props }) => {
     const [chequeo, { loading: load_chequeo, error: error_chequeo, data: datos_chequeo }] = useLazyQuery(OBTENER_CHEQUEO);
     const [datos, setDatos] = useState({ areas: [], procesado: false })
     const [refresh, setRefresh] = useState(false)
+    const [confimation, setConfirmation] = useState(false);
+    const [insertar] = useMutation(SAVE_CHEQUEO);
+    const [actualizar] = useMutation(UPDATE_CHEQUEO);
 
     const desvincularDispositivo = () => {
         localStorage.removeItem('id_vincular_puesto')
@@ -24,6 +28,25 @@ const Chequeo = ({ ...props }) => {
     const buscarChequeo = () => {
         chequeo({ variables: { id: id, fecha: date } })
     }
+
+    const cambiarEstado = (index) => {
+        const area = datos.areas[index]
+        const new_area = {
+            area: area.area,
+            estado: true
+        }
+        datos.areas[index] = new_area
+        setRefresh(!refresh)
+    }
+
+    const isConfirmation = (confimation.bool) ?
+        <Confirmation
+            message="Si marca esta área, no podra desmarcarla después"
+            onDeletObjeto={cambiarEstado}
+            setConfirmation={setConfirmation}
+            idDelete={confimation.id}
+        />
+        : ""
 
     if (loading || load_chequeo) {
         return (<Loader backdrop content="Cargando..." vertical size="lg" />);
@@ -45,6 +68,7 @@ const Chequeo = ({ ...props }) => {
 
 
     if (datos_chequeo && !datos.procesado) {
+        console.log(datos_chequeo)
         if (datos_chequeo.obtenerChequeo) {
             const { chequeo, estado } = datos_chequeo.obtenerChequeo
             let areas = []
@@ -66,24 +90,43 @@ const Chequeo = ({ ...props }) => {
         }
     }
 
-    const cambiarEstado = (estado, index) => {
-        const area = datos.areas[index]
-        const new_area = {
-            area: area.area,
-            estado: !estado
-        }
-        datos.areas[index] = new_area
-        console.log(datos)
-        setRefresh(!refresh)
-    }
-
     const AreaChequeo = ({ area, index }) => {
         return (
             <div className={`p-2 m-2 shadow-lg rounded-3`} style={{ minWidth: '300px', width: '300px', maxWidth: '300px', backgroundColor: area.estado ? "#6de069" : "white" }}>
                 <h4 className="text-center">{area.area}</h4>
-                <Checkbox checked={area.estado} onChange={() => cambiarEstado(area.estado, index)}><label style={{ fontSize: '16pt', marginTop: '-5px' }} >Área Chequeada</label></Checkbox>
+                <Checkbox checked={area.estado} onChange={!area.estado ? () => setConfirmation({ bool: true, id: index }) : () => { }}><label style={{ fontSize: '16pt', marginTop: '-5px' }} >Área Chequeada</label></Checkbox>
             </div>
         )
+    }
+
+    const guardarChequeo = async () => {
+        const { session } = props
+        const input = {
+            puesto_limpieza: id,
+            areas: datos.areas,
+            fecha: date,
+            aprobado: false,
+            usuario: session.id
+        }
+        const { data } = await insertar({ variables: { input }, errorPolicy: 'all' });
+        const { estado, message } = data.insertarChequeo;
+        if (estado) {
+            Notification['success']({
+                title: 'Registrar Chequeo',
+                duration: 5000,
+                description: message
+            })
+        } else {
+            Notification['error']({
+                title: 'Registrar Chequeo',
+                duration: 5000,
+                description: message
+            })
+        }
+    }
+
+    const validarForm = () => {
+        return datos.areas.length === 0
     }
 
     return (
@@ -111,6 +154,10 @@ const Chequeo = ({ ...props }) => {
                     }
                 </div>
             }
+            <div className="d-flex justify-content-end float-rigth mt-3">
+                <Boton onClick={guardarChequeo} tooltip="Guardar Chequeo" name="Guardar" icon="save" color="green" disabled={validarForm()} />
+            </div>
+            {isConfirmation}
         </div>
     )
 

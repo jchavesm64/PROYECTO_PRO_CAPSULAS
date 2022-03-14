@@ -13,7 +13,7 @@ export default {
         obtenerChequeo: async (_, { id, fecha }) => {
             try {
                 const chequeo = await Chequeo.findOne({ puesto_limpieza: id, fecha: { $eq: fecha } }).populate('puesto_limpieza')
-                if(chequeo){
+                if (chequeo) {
                     return {
                         chequeo: chequeo,
                         estado: 1
@@ -34,25 +34,21 @@ export default {
     Mutation: {
         insertarChequeo: async (_, { input }) => {
             try {
-                const chequeo = new Chequeo(input)
-                await chequeo.save()
-                return {
-                    estado: true,
-                    message: 'El chequeo fue registrado correctamente'
-                }
-            } catch (error) {
-                return {
-                    estado: false,
-                    message: "Ocurrio un error al registrar el producto"
-                };
-            }
-        },
-        actualizarChequeo: async (_, { id, input }) => {
-            try {
-                await Chequeo.findOneAndUpdate({_id: id}, input, {new: true});
-                return {
-                    estado: true,
-                    message: 'El chequeo fue actualizada correctamente'
+                const { puesto_limpieza, fecha } = input
+                const chequeo_find = await Chequeo.findOne({ puesto_limpieza: puesto_limpieza, fecha: { $eq: fecha } })
+                if (chequeo_find) {
+                    await Chequeo.findOneAndUpdate({ _id: chequeo_find.id }, input, { new: true });
+                    return {
+                        estado: true,
+                        message: 'El chequeo fue actualizada correctamente'
+                    }
+                } else {
+                    const chequeo = new Chequeo(input)
+                    await chequeo.save()
+                    return {
+                        estado: true,
+                        message: 'El chequeo fue registrado correctamente'
+                    }
                 }
             } catch (error) {
                 return {
@@ -62,8 +58,8 @@ export default {
             }
         },
         aprobarChequeo: async (_, { id }) => {
-            try{
-                const chequeo = await Chequeo.findOneAndUpdate({_id: id}, {aprobado: "APROBADO"}, {new: true})
+            try {
+                const chequeo = await Chequeo.findOneAndUpdate({ _id: id }, { aprobado: "APROBADO" }, { new: true })
                 if (chequeo) {
                     return {
                         estado: true,
@@ -77,7 +73,7 @@ export default {
                         message: "No se pudo aprobar el chequeo"
                     };
                 }
-            }catch(error){
+            } catch (error) {
                 return {
                     estado: false,
                     message: "Ocurrio un error al aprobar el chequeo"

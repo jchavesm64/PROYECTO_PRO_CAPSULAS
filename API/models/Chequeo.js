@@ -14,10 +14,14 @@ const ChequeoSchema = new mongoose.Schema({
         require: true
     },
     aprobado:{
-        type: String,
+        type: Boolean,
         require: true,
         trim: true,
-    }
+    },
+    usuario:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'usuarios'
+    },
 })
 
 module.exports = mongoose.model('chequeo', ChequeoSchema)

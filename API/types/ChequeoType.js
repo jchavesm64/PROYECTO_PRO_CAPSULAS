@@ -5,19 +5,9 @@ const chequeo_type = gql`
     scalar Date
     scalar Number
 
-    enum Aprobado {
-        APROBADO
-        SIN_REVISAR
-    }
-
-    enum EstadoArea {
-        VISTO
-        SIN_VER
-    }
-
     type AreasChequeo {
         area: String
-        estado: EstadoArea
+        estado: Boolean
     }
 
     type Chequeo {
@@ -25,7 +15,8 @@ const chequeo_type = gql`
         puesto_limpieza: PuestoLimpieza
         areas: [AreasChequeo]
         fecha: Date
-        aprobado: Aprobado
+        aprobado: Boolean
+        usuario: Usuario
     }
 
     type RespuestaBuscar {
@@ -40,15 +31,15 @@ const chequeo_type = gql`
 
     input AreasChequeoInput {
         area: String
-        estado: EstadoArea
+        estado: Boolean
     }
 
     input ChequeoInput {
-        id: ID
         puesto_limpieza: ID
         areas: [AreasChequeoInput]
         fecha: Date
-        aprobado: Aprobado
+        aprobado: Boolean
+        usuario: ID
     }
 
     type RespuestaChequeo {
@@ -58,7 +49,6 @@ const chequeo_type = gql`
 
     type Mutation {
         insertarChequeo(input:ChequeoInput): RespuestaChequeo
-        actualizarChequeo(id:ID, input: ChequeoInput): RespuestaChequeo
         aprobarChequeo(id:ID): RespuestaChequeo
     }
 

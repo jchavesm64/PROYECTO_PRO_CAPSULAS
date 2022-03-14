@@ -40,7 +40,7 @@ export const OBTENER_CHEQUEO = gql`
 `;
 
 export const SAVE_CHEQUEO = gql`
-    query insertarChequeo($input:ChequeoInput){
+    mutation insertarChequeo($input:ChequeoInput){
         insertarChequeo(input:$input){
             estado
             message
@@ -49,7 +49,7 @@ export const SAVE_CHEQUEO = gql`
 `;
 
 export const UPDATE_CHEQUEO = gql`
-    query actualizarChequeo($id:ID, $input:ChequeoInput){
+    mutation actualizarChequeo($id:ID, $input:ChequeoInput){
         actualizarChequeo(id:$id, input:$input){
             estado
             message
