@@ -4,7 +4,7 @@ export default {
     Query: {
         obtenerChequeos: async (_, { id, fecha1, fecha2 }) => {
             try {
-                const chequeos = await Chequeo.find({ puesto_limpieza: id, $or: [{ fecha: { $eq: fecha1 } }, { fecha: { $eq: fecha2 } }] }).populate('puesto_limpieza')
+                const chequeos = await Chequeo.find({ puesto_limpieza: id, $or: [{ fecha: { $gte: fecha1 } }, { fecha: { $lte: fecha2 } }] }).populate('puesto_limpieza')
                 return chequeos
             } catch (error) {
                 return error
@@ -59,7 +59,7 @@ export default {
         },
         aprobarChequeo: async (_, { id }) => {
             try {
-                const chequeo = await Chequeo.findOneAndUpdate({ _id: id }, { aprobado: "APROBADO" }, { new: true })
+                const chequeo = await Chequeo.findOneAndUpdate({ _id: id }, { aprobado: true }, { new: true })
                 if (chequeo) {
                     return {
                         estado: true,

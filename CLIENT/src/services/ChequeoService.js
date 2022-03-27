@@ -56,3 +56,12 @@ export const UPDATE_CHEQUEO = gql`
         }
     }
 `;
+
+export const APROBAR_CHEQUEO = gql`
+    mutation aprobarChequeo($id:ID){
+        aprobarChequeo(id:$id){
+            estado
+            message
+        }
+    }
+`;
