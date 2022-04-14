@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import { OBTENER_CHEQUEOS } from '../../../services/ChequeoService'
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { APROBAR_CHEQUEO } from '../../../services/ChequeoService'
-import Label from "../../shared/Label";
 import Confirmation from '../../shared/Confirmation';
-import { Loader, Notification } from 'rsuite';
+import Boton from "../../shared/Boton";
+import { Loader, Notification, Input } from 'rsuite';
 import CardChequeo from "./CardChequeo";
 
 const Chequeos = ({ ...props }) => {
@@ -15,8 +15,8 @@ const Chequeos = ({ ...props }) => {
     let dateL = date1.getDay() !== 0 ? new Date(date1.setDate(date1.getDate() - date1.getDay() + 1)) : new Date(date1.setDate(date1.getDate() - date1.getDay() - 6))
     let dateD = date2.getDay() !== 0 ? new Date(date2.setDate(date2.getDate() - date2.getDay() + 7)) : date2
     const [aprobar] = useMutation(APROBAR_CHEQUEO);
-    const [fecha_lunes] = useState(dateL.toISOString().split('T')[0])
-    const [fecha_domingo] = useState(dateD.toISOString().split('T')[0])
+    const [fecha_lunes, setFechaLunes] = useState(dateL.toISOString().split('T')[0])
+    const [fecha_domingo, setFechaDomingo] = useState(dateD.toISOString().split('T')[0])
     const [confimation, setConfirmation] = useState(false);
     const { loading, error, data } = useQuery(OBTENER_CHEQUEOS, { variables: { id: id, fecha1: fecha_lunes, fecha2: fecha_domingo }, pollInterval: 1000 });
 
@@ -72,21 +72,29 @@ const Chequeos = ({ ...props }) => {
         })
     }
 
+    const setFilter = (fecha1, fecha2) => {
+        console.log(fecha1, fecha2)
+        setFechaLunes(fecha1)
+        setFechaDomingo(fecha2)
+    }
+
     const datos = getData()
-    console.log(datos)
 
     return (
         <>
             <h3 className="text-center">Chequeos del Puesto del Limpieza</h3>
             <hr />
             <div className='row'>
-                <div className='col-lg-6 col-md-6'>
-                    <h5>Fecha del Lunes</h5>
-                    <Label icon="fas fa-calendar" value={fecha_lunes}/>
+                <div className='col-lg-5 col-md-5'>
+                    <h5>Fecha Menor</h5>
+                    <Input id="fecha_lunes" type="date" placeholder="Fecha" defaultValue={fecha_lunes} />
                 </div>
-                <div className='col-lg-6 col-md-6'>
-                    <h5>Fecha del Domingo</h5>
-                    <Label icon="fas fa-calendar" value={fecha_domingo}/>
+                <div className='col-lg-5 col-md-5'>
+                    <h5>Fecha Mayor</h5>
+                    <Input id="fecha_domingo" type="date" placeholder="Fecha" defaultValue={fecha_domingo} />
+                </div>
+                <div className='col-lg-2 col-md-2'>
+                    <Boton className="rounded-0 mt-4" icon="search" color="green" onClick={() => setFilter(document.getElementById('fecha_lunes').value, document.getElementById('fecha_domingo').value)} tooltip="Filtrado automatico" />
                 </div>
             </div>
             <div className="d-flex flex-wrap justify-content-center col-xs mt-5">

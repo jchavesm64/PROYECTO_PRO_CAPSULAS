@@ -4,7 +4,7 @@ export default {
     Query: {
         obtenerChequeos: async (_, { id, fecha1, fecha2 }) => {
             try {
-                const chequeos = await Chequeo.find({ puesto_limpieza: id, $or: [{ fecha: { $gte: fecha1 } }, { fecha: { $lte: fecha2 } }] }).populate('puesto_limpieza')
+                const chequeos = await Chequeo.find({ puesto_limpieza: id, $and: [{ fecha: { $gte: fecha1 } }, { fecha: { $lte: fecha2 } }] }).populate('puesto_limpieza')
                 return chequeos
             } catch (error) {
                 return error
