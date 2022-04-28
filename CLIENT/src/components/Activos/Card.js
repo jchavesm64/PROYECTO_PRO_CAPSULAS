@@ -35,7 +35,13 @@ const CardActivos = ({ ...props }) => {
                 <h6>Fecha de Etiquetado</h6>
                 <Label icon="fas fa-calendar" value={getFecha(activo.fecha_etiquetado)} />
                 <h6>Fecha de Desecho</h6>
-                <Label icon="fas fa-calendar" value={getFecha(activo.fecha_desecho)} />
+                {
+                    activo.fecha_desechado ? (
+                        <Label icon="fas fa-calendar" value={getFecha(activo.fecha_desecho)} />
+                    ): (
+                        <Label icon="fas fa-calendar" value={"Sin Especificar"} />
+                    )
+                }
                 <h6>Estado</h6>
                 <Label icon="fas fa-clock" value={activo.estado} />
             </div>
