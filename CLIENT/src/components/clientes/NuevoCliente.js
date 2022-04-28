@@ -221,8 +221,6 @@ const NuevoCliente = (props) => {
         }
     }
 
-    console.log(pais)
-
     return (
         <>
             <div>

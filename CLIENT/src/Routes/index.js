@@ -74,6 +74,9 @@ import CargarHoras from '../components/personal/CargarHoras';
 import Planilla from '../components/personal/Planilla';
 import ManagerChequeo from '../components/PuestosLimpieza/Chequeos/ManagerChequeo';
 import Chequeos from '../components/PuestosLimpieza/Chequeos/Chequeos';
+import Activos from '../components/Activos/Activos';
+import NuevoActivo from '../components/Activos/Nuevo';
+import EditarActivos from '../components/Activos/Editar';
 
 const Router = ({ refetch, session }) => {
 
@@ -185,6 +188,11 @@ const Router = ({ refetch, session }) => {
                                 <Route exact path="/puestos_limpieza/detalles/:id" render={(props) => <EditarPuestoLimpieza uso={false} session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/puestos_limpieza/chequeo" render={(props) => <ManagerChequeo session={data} refetch={refetch} {...props} />} />
                                 <Route exact path="/puestos_limpieza/chequeos/:id" render={(props) => <Chequeos session={data} refetch={refetch} {...props} />} />
+
+                                <Route exact path="/activos" render={(props) => <Activos session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/activos/nuevo" render={(props) => <NuevoActivo session={data} refetch={refetch} {...props} />} />
+                                <Route exact path="/activos/editar/:id" render={(props) => <EditarActivos uso={true} session={data} refetch={refetch} {...props} />} />
+
                                 {(vinculo === null ) ? (estado && localStorage.getItem('rol')) ? <Redirect to='/perfil' /> : <Redirect to="/login" /> : <Redirect to='/puestos_limpieza/chequeo' />}
                             </Switch>
                         </div>

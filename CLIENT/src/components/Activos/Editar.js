@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { OBTENER_CLIENTE } from '../../services/ClienteService'
-import Formulario from './FormularioCliente';
+import { OBTENER_ACTIVO } from '../../services/ActivosService'
+import Formulario from './Formulario';
 import { withRouter } from 'react-router'
 import { Loader, Notification } from 'rsuite';
 
-const EditarCliente = (props) => {
+const EditarActivo = ({...props}) => {
 
     const {id} = props.match.params;
-    const {loading, error, data, refetch, startPolling, stopPolling } = useQuery(OBTENER_CLIENTE, { variables: { id: id }, pollInterval: 1000 });
+    const {loading, error, data, refetch, startPolling, stopPolling } = useQuery(OBTENER_ACTIVO, { variables: { id: id }, pollInterval: 1000 });
 
     useEffect( () => {
         startPolling(1000)
@@ -24,15 +24,13 @@ const EditarCliente = (props) => {
         Notification['error']({
             title: "Error",
             duration: 20000,
-            description: "Error al obtener la informacion del cliente"
+            description: "Error al obtener la informacion del activo"
         })
     }
 
     return (
-        <>
-            <Formulario  props={props} cliente={data.obtenerCliente} refetch={refetch}/>
-        </>
-    );
+        <Formulario props={props} activo={data.obtenerActivo} refetch={refetch}/>
+    )
 }
 
-export default withRouter(EditarCliente);
+export default withRouter(EditarActivo)
