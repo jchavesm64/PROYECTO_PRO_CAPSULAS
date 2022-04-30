@@ -28,6 +28,8 @@ import Ubicacion from './Ubicacion';
 import Planilla from './Planilla';
 import Chequeo from './Chequeo';
 import Activos from './Activos';
+import Insumos from './Insumos';
+import MovimientosInsumo from './MovimientosInsumo';
 
 export {
     Rol,
@@ -59,5 +61,7 @@ export {
     Ubicacion,
     Planilla,
     Chequeo,
-    Activos
+    Activos,
+    Insumos,
+    MovimientosInsumo,
 }

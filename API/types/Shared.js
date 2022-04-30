@@ -51,6 +51,11 @@ const shared = gql`
         dispensado: Dispensado
         movimientos: [MovimientosDispensadoType]
     }
+
+    type InsumoMovimientos{
+        insumo: Insumo
+        movimientos: [MovimientosInsumoType]
+    }
 `;
 
 module.exports = shared;
