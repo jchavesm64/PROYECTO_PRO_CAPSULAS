@@ -21,7 +21,7 @@ export default {
         obtenerInsumosConMovimientos: async (_, { }) => {
             try {
                 var insumosmovimientos = []
-                const insumos = await Insumo.find({ estado: 'ACTIVO' }).populate('area')
+                const insumos = await Insumos.find({ estado: 'ACTIVO' }).populate('area')
                 insumos.map(item => {
                     const result = MovimientosInsumo.find({ insumo: item.id }).populate('usuario')
                     insumosmovimientos.push({
@@ -44,7 +44,7 @@ export default {
         },
         obtenerInsumo: async (_, { id }) => {
             try {
-                const insumo = await Insumo.findById(id).populate('area')
+                const insumo = await Insumos.findById(id).populate('area')
                 return insumo;
             } catch (error) {
                 return error
@@ -54,7 +54,7 @@ export default {
     Mutation: {
         insertarInsumo: async (_, { input }) => {
             try {
-                const insumo = new Insumo(input);
+                const insumo = new Insumos(input);
                 const result = await insumo.save();
                 return {
                     estado: true,
@@ -72,7 +72,7 @@ export default {
         },
         actualizarInsumo: async (_, { id, input }) => {
             try {
-                const insumo = await Insumo.findOneAndUpdate({ _id: id }, input, { new: true });
+                const insumo = await Insumos.findOneAndUpdate({ _id: id }, input, { new: true });
                 return {
                     estado: true,
                     data: insumo,
@@ -88,7 +88,7 @@ export default {
         },
         desactivarInsumo: async (_, { id }) => {
             try {
-                const insumo = await Insumo.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
+                const insumo = await Insumos.findOneAndUpdate({ _id: id }, { estado: "INACTIVO" }, { new: true });
                 if (insumo) {
                     return {
                         estado: true,

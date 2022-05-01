@@ -81,7 +81,7 @@ const EditarSeleccion = ({props, dispensado}) => {
             </div>
             <h3 className="text-center">Editar Selección</h3>
             <h6>Producto</h6>
-            <SelectPicker className="mx-auto w-100 mt-3" size="md" placeholder="Productos" data={getProductos()} onChange={(e) => setProducto(e)} searchable={true} />
+            <SelectPicker className="mx-auto w-100 mt-3" value={producto} size="md" placeholder="Productos" data={getProductos()} onChange={(e) => setProducto(e)} searchable={true} />
             <div className="d-flex justify-content-end float-rigth mt-2">
                 <Boton onClick={onSaveDispensado} tooltip="Guardar Selección" name="Guardar" icon="save" color="green" disabled={validarForm()} />
             </div>

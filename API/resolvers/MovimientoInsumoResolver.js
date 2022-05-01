@@ -2,9 +2,9 @@ import { MovimientosInsumo } from '../models';
 
 export default {
     Query: {
-        obtenerMovimientosDispensado: async (_, { id }) => {
+        obtenerMovimientosInsumo: async (_, { id }) => {
             try {
-                const mov = await MovimientosInsumo.find({ insumo: id }).populate('usuario').populate('dispensado');
+                const mov = await MovimientosInsumo.find({ insumo: id }).populate('usuario')
                 return mov
             } catch (error) {
                 return error;

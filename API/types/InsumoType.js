@@ -2,9 +2,13 @@ const { gql } = require('apollo-server-express');
 
 const insumo_type = gql`
 
-type Insumo{
+    scalar Number
+
+    type Insumo{
         id: ID
         codigo: String
+        cantidad_limite: Number
+        descripcion: String
         area: Ubicacion
         estado: Estado
     }
@@ -17,6 +21,8 @@ type Insumo{
 
     input InsumoInput{
         codigo: String
+        descripcion: String
+        cantidad_limite: Number
         area: ID
         estado: Estado
     }

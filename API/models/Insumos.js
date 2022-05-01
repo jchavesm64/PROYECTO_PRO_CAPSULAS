@@ -11,6 +11,10 @@ const InsumoSchema = new mongose.Schema({
         require: true,
         trim: true
     },
+    cantidad_limite: {
+        type: Number,
+        require: true,
+    },
     area: {
         type: mongose.Schema.Types.ObjectId,
         ref: 'ubicaciones'
