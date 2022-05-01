@@ -34,6 +34,7 @@ const NuevoInsumo = ({ ...props }) => {
                 const input = {
                     descripcion,
                     codigo,
+                    cantidad_limite,
                     area,
                     estado: "ACTIVO"
                 }
@@ -46,7 +47,7 @@ const NuevoInsumo = ({ ...props }) => {
                         duration: 5000,
                         description: message
                     })
-                    props.history.push(`/activos`);
+                    props.history.push(`/insumos`);
                 } else {
                     Notification['error']({
                         title: 'Insertar Insumo',
